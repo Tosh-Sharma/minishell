@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "libft.h"
 
 void	new_prompt(t_shell *mini)
 {

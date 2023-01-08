@@ -1,7 +1,7 @@
-NAME = minishell
-CC = gcc
-CFLAGS = -L /opt/homebrew/opt/readline/lib -I /opt/homebrew/opt/readline/include -lreadline
-LIBFT_SRC_FILES = ft_isalpha.c \
+NAME ?= libft.a
+CC ?= gcc
+CFLAGS = -Wall -Wextra -Werror
+SRCS = 	ft_isalpha.c \
 		ft_isdigit.c \
 		ft_isalnum.c \
 		ft_isascii.c \
@@ -23,12 +23,14 @@ LIBFT_SRC_FILES = ft_isalpha.c \
 		ft_strnstr.c \
 		ft_atoi.c \
 		ft_calloc.c \
+		ft_cpyarray.c \
 		ft_strdup.c \
 		ft_substr.c \
 		ft_strjoin.c \
 		ft_strtrim.c \
 		ft_split.c \
 		ft_itoa.c \
+		ft_superatoi.c \
 		ft_strmapi.c \
 		ft_striteri.c \
 		ft_putchar_fd.c \
@@ -50,18 +52,12 @@ LIBFT_SRC_FILES = ft_isalpha.c \
 		ft_lstiter.c \
 		ft_lstmap.c
 
-LIB_SRC = $(addprefix libft/, $(LIBFT_SRC_FILES))
-SRCS = 	main.c \
-		sig.c \
-		$(LIB_SRC)
-
 OBJS = ${SRCS:.c=.o}
 
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-	make -C ./libft
-	${CC} ${CFLAGS} -o ${@} ${^} libft/libft.a
+	ar rcs ${NAME} ${OBJS}
 
 %.o: %.c
 	${CC} ${CFLAGS} -o ${@} -c ${@:.o=.c}
