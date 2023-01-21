@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/01/12 16:06:29 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/01/21 20:50:42 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@
 ** Libs
 */
 # include <unistd.h>
-# include "libft/libft.h"
+# include <stdlib.h>
 # include <stdio.h>
+# include "libft/libft.h"
 # include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -32,7 +33,7 @@
 
 typedef struct s_shell
 {
-	char	*main_line;
+	char	*input;
 	int		sig;
 }	t_shell;
 

@@ -7,7 +7,7 @@
 - Part 3: If its not a signal, tokenize the input
 What is tokenize?
 It is to split into words the input being passed.
-Can be treated as 
+Can be treated as either pairs of strings or individual strings. TBD.
 - Part 4: Once you have tokenized the input, next step is lexting
 What is "lexting it up"?
 It is understanding each and every input and then acting accordingly on the input.

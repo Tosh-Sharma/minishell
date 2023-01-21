@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/01/12 16:11:18 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/01/21 23:10:00 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,56 +21,26 @@ void	print_welcome(void)
 	printf("%s--------------------------------------------------\n\n", CYAN);
 }
 
-void	init_mini(t_shell *mini)
+// Update history if its not a signal input
+// If it is signal input, handle accordingly, else manage as follows
+// Allow execution of singlular inputs.
+// Allow execution of piped inputs.
+// Determine how to allow handle file inputs/ redirects.
+void	parse_and_execute(char *input)
 {
-	mini->main_line = NULL;
-	mini->sig = 0;
-	printf("ICI\n");
-	print_welcome();
-}
-
-void	get_line(t_shell *mini)
-{
-	char		*buf;
-	int			size;
-	char		*prompt;
-	char		*cyan;
-	char		*white;
-	unsigned int	i;
-
-	i = 0;
-	size = 1000;
-	buf = NULL;
-	buf = getcwd(buf, size);
-	cyan = ft_strdup(CYAN);
-	white = ft_strdup(WHITE);
-	prompt = ft_strjoin(cyan, buf);
-	free(buf);
-	prompt = ft_strjoin(prompt, white);
-	free(white);
-	prompt = ft_strjoin(prompt, " $ ");
-	printf("PROMPT = %s\n", prompt);
-	// signal(SIGINT, new_prompt);
-	signal(SIGQUIT, SIG_IGN);
-	mini->main_line = readline(prompt);
-	free(prompt);
 }
 
 int	main(void)
 {
-	t_shell	mini;
+	t_shell	shell;
 
-	init_mini(&mini);
+	shell.input = NULL;
+	shell.sig = 0;
+	print_welcome();
 	while (1)
 	{
-		get_line(&mini);
-		if (mini.main_line)
-			printf("You got a line going\n");
-		else
-		{
-			printf("quit\n");
-			exit(0);
-		}
+		shell.input = readline("$>:");
+		parse_and_execute(shell.input);
 	}
 	return (0);
 }
