@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/01/21 23:10:00 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/01/23 12:13:38 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ void	print_welcome(void)
 // Determine how to allow handle file inputs/ redirects.
 void	parse_and_execute(char *input)
 {
+	if (input[0])
+		add_history(input);
+	if (is_a_signal(input) == 0)
+		execute_it(input);
+	else
+		execute_signal(input);
 }
 
 int	main(void)

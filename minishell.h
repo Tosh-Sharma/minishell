@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/01/21 20:50:42 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/01/23 12:31:23 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,8 @@ typedef struct s_shell
 }	t_shell;
 
 void	new_prompt(t_shell *mini);
+int		is_a_signal(char *input);
+void	execute_it(char *input);
+void	execute_signal(char *input);
 
 #endif

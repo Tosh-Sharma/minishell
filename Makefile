@@ -1,6 +1,10 @@
 NAME = minishell
 CC = gcc
-CFLAGS = -L /opt/homebrew/opt/readline/lib -I /opt/homebrew/opt/readline/include -lreadline
+# TODO: Figure out how to make this compilation stuff work in a single go
+# This is unnecessarily fucked up
+# and I don't want to spend time trying to figure it out :p
+# Below code is missing flags like -Wall -Wextra -Werror
+CFLAGS = -lreadline
 LIBFT_SRC_FILES = ft_isalpha.c \
 		ft_isdigit.c \
 		ft_isalnum.c \
@@ -52,6 +56,8 @@ LIBFT_SRC_FILES = ft_isalpha.c \
 
 LIB_SRC = $(addprefix libft/, $(LIBFT_SRC_FILES))
 SRCS = 	main.c \
+		parsing.c \
+		utils/parsing_utils.c \
 		$(LIB_SRC)
 
 OBJS = ${SRCS:.c=.o}

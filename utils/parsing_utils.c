@@ -1,21 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/21 17:45:46 by tsharma           #+#    #+#             */
-/*   Updated: 2023/01/23 12:38:00 by tsharma          ###   ########.fr       */
+/*   Created: 2023/01/23 10:45:40 by tsharma           #+#    #+#             */
+/*   Updated: 2023/01/23 12:31:59 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-void	execute_it(char *input)
+int	is_a_signal(char *input)
 {
-}
-
-void	execute_signal(char *input)
-{
+	(void)input;
+	return (0);
 }
