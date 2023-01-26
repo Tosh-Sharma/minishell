@@ -22,6 +22,7 @@ LIBFT_SRC_FILES = ft_isalpha.c \
 		ft_strchr.c \
 		ft_strrchr.c \
 		ft_strncmp.c \
+		ft_strcmp.c \
 		ft_memchr.c \
 		ft_memcmp.c \
 		ft_strnstr.c \
@@ -57,7 +58,9 @@ LIBFT_SRC_FILES = ft_isalpha.c \
 LIB_SRC = $(addprefix libft/, $(LIBFT_SRC_FILES))
 SRCS = 	main.c \
 		parsing.c \
+		signal_handling.c \
 		utils/parsing_utils.c \
+		env/env.c \
 		$(LIB_SRC)
 
 OBJS = ${SRCS:.c=.o}

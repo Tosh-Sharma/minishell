@@ -6,11 +6,13 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/01/23 12:13:38 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/01/26 14:41:15 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_shell	shell;
 
 void	print_welcome(void)
 {
@@ -23,30 +25,29 @@ void	print_welcome(void)
 
 // Update history if its not a signal input
 // If it is signal input, handle accordingly, else manage as follows
-// Allow execution of singlular inputs.
 // Allow execution of piped inputs.
-// Determine how to allow handle file inputs/ redirects.
-void	parse_and_execute(char *input)
+// Handle file inputs/ redirects.
+void	add_to_history_and_execute(t_shell *shell)
 {
-	if (input[0])
-		add_history(input);
-	if (is_a_signal(input) == 0)
-		execute_it(input);
-	else
-		execute_signal(input);
+	if (shell->input[0])
+	{
+		add_history(shell->input);
+		parser(shell);
+	}
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
-	t_shell	shell;
-
 	shell.input = NULL;
-	shell.sig = 0;
+	if (!envp || envp[0] == 0)
+		return (0);
+	copy_env_variables(&shell, envp);
 	print_welcome();
+	signal_handling();
 	while (1)
 	{
 		shell.input = readline("$>:");
-		parse_and_execute(shell.input);
+		add_to_history_and_execute(&shell);
 	}
 	return (0);
 }

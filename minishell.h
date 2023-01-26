@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/01/23 12:31:23 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/01/26 14:39:12 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@
 typedef struct s_shell
 {
 	char	*input;
-	int		sig;
+	char	**envp;
 }	t_shell;
 
-void	new_prompt(t_shell *mini);
-int		is_a_signal(char *input);
-void	execute_it(char *input);
-void	execute_signal(char *input);
+void	parser(t_shell *shell);
+void	signal_handling(void);
+void	copy_env_variables(t_shell *shell, char **envp);
+int		get_pipe_count(char **input);
 
 #endif
