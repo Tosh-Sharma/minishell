@@ -1,9 +1,8 @@
 NAME = minishell
 CC = gcc
-# TODO: Figure out how to make this compilation stuff work in a single go
-# This is unnecessarily fucked up
-# and I don't want to spend time trying to figure it out :p
-# Below code is missing flags like -Wall -Wextra -Werror
+# TODO: Need to prevent warnings from occuring during compilation.
+# This requires knowledge of Makefile in more detail. Need to study it.
+# TODO: Need to update missing flags like -Wall -Wextra -Werror
 CFLAGS = -lreadline
 LIBFT_SRC_FILES = ft_isalpha.c \
 		ft_isdigit.c \

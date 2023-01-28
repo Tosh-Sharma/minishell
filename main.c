@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/01/26 14:41:15 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/01/28 02:14:48 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ void	add_to_history_and_execute(t_shell *shell)
 	}
 }
 
+/** TODO: Need to write a syntax checker for illegal syntax. You can refuse 
+ * to handle all terrible input BUT make sure you don't crash.
+ **/
 int	main(int argc, char **argv, char **envp)
 {
 	shell.input = NULL;
@@ -47,6 +50,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		shell.input = readline("$>:");
+		check_for_incorrect_syntax(shell.input);
 		add_to_history_and_execute(&shell);
 	}
 	return (0);

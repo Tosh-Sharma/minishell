@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/01/26 14:39:12 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/01/28 02:14:21 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_shell
 void	parser(t_shell *shell);
 void	signal_handling(void);
 void	copy_env_variables(t_shell *shell, char **envp);
-int		get_pipe_count(char **input);
+void	check_for_incorrect_syntax(char *input);
+void	perror_and_exit(char *input, int exit_code);
 
 #endif
