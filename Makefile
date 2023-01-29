@@ -59,6 +59,7 @@ SRCS = 	main.c \
 		parsing.c \
 		signal_handling.c \
 		utils/parsing_utils.c \
+		utils/basic_utils.c \
 		env/env.c \
 		$(LIB_SRC)
 

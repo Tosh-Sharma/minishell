@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 17:45:46 by tsharma           #+#    #+#             */
-/*   Updated: 2023/01/28 05:17:29 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/01/29 20:22:40 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,29 +78,50 @@ void	get_pipe_positions(char *input, int count, int *pipes, char search)
 
 void	split_commands(char *input, int *position, int count, char **commands)
 {
-	// int	i;
+	int	i;
 	int	j;
 	int	k;
 
-	// i = -1;
+	i = 0;
 	j = 0;
 	k = -1;
-	while (++k < (count + 1))
+	while (++k < count)
 	{
 		commands[k] = (char *)malloc(sizeof(char) * (position[k] - j + 1));
 		if (!commands[k])
 			perror_and_exit("Could not allocate commands", 1);
-		ft_strlcpy(commands[k], &input[j], (position[k] - j + 1));
-		printf("command passed was %s\n", commands[k]);
+		if (k == (count - 1))
+			ft_strlcpy(commands[k], &input[j], (ft_strlen(input) - j + 1));
+		else
+			ft_strlcpy(commands[k], &input[j], (position[k] - j + 1));
+		j = position[k] + 1;
 	}
+	commands[k] = NULL;
 }
 
 /**
  * This function is responsible for expanding variables passed
  * and replacing them with their values.
+ * Fun fact: if its double quotes, we need to expand the variable.
+ * For single quotes, no need to expand the variable.
 */
-void	expander(char **splitted_commands)
+// TODO for TOSH: Currently working on the expander.
+void	expander(char **commands)
 {
+	int	i;
+	int	*positions;
+
+	i = -1;
+	while (commands[++i] != NULL)
+	{
+		positions = NULL;
+		check_for_env_variable(commands[i], positions);
+		if (positions != NULL)
+		{
+			replace_env_variable(commands[i], positions);
+			free(positions);
+		}
+	}
 }
 
 /**
@@ -119,7 +140,6 @@ void	parser(t_shell *shell)
 	char	**splitted_commands;
 	int		pipe_count;
 	int		*pipe_positions;
-	int		i;
 
 	pipe_count = get_pipe_count(shell->input, '|');
 	pipe_positions = (int *)malloc(sizeof(int) * pipe_count);
@@ -129,8 +149,7 @@ void	parser(t_shell *shell)
 	splitted_commands = (char **)malloc(sizeof(char *) * (pipe_count + 2));
 	if (!splitted_commands)
 		perror_and_exit("Could not allocated memory for splitted_commands", 1);
-	splitted_commands = split_commands(shell->input, pipe_positions,
-			pipe_count);
-	// expander(splitted_commands);
+	split_commands(shell->input, pipe_positions, pipe_count, splitted_commands);
+	expander(splitted_commands);
 	// execute_commands(shell, splitted_commands);
 }
