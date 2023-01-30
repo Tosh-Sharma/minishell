@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
+/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 17:45:46 by tsharma           #+#    #+#             */
-/*   Updated: 2023/01/29 20:22:40 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/01/30 11:21:51 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,20 +108,20 @@ void	split_commands(char *input, int *position, int count, char **commands)
 // TODO for TOSH: Currently working on the expander.
 void	expander(char **commands)
 {
-	int	i;
-	int	*positions;
+	// int	i;
+	// int	*positions;
 
-	i = -1;
-	while (commands[++i] != NULL)
-	{
-		positions = NULL;
-		check_for_env_variable(commands[i], positions);
-		if (positions != NULL)
-		{
-			replace_env_variable(commands[i], positions);
-			free(positions);
-		}
-	}
+	// i = -1;
+	// while (commands[++i] != NULL)
+	// {
+	// 	positions = NULL;
+	// 	check_for_env_variable(commands[i], positions);
+	// 	if (positions != NULL)
+	// 	{
+	// 		replace_env_variable(commands[i], positions);
+	// 		free(positions);
+	// 	}
+	// }
 }
 
 /**
@@ -150,6 +150,6 @@ void	parser(t_shell *shell)
 	if (!splitted_commands)
 		perror_and_exit("Could not allocated memory for splitted_commands", 1);
 	split_commands(shell->input, pipe_positions, pipe_count, splitted_commands);
-	expander(splitted_commands);
+	// expander(splitted_commands);
 	// execute_commands(shell, splitted_commands);
 }
