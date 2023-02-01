@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/01 12:27:10 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/01 19:46:22 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,12 @@
 # define WHITE "\001\033[0m\002"
 # define GREEN "\001\033[1;32m\002"
 
+// TODO: Return_value is in place for $? handling. Check its requirement
 typedef struct s_shell
 {
 	char	*input;
 	char	**envp;
+	int		return_value;
 }	t_shell;
 
 void	parser(t_shell *shell);
