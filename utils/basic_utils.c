@@ -6,14 +6,15 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:41 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/01 20:24:48 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/01 20:32:09 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/**
- * TODO: There are a few things that we need to check for.
+/** TODO: Need to write a syntax checker for illegal syntax. You can refuse 
+ * to handle all terrible input BUT make sure you don't crash.
+ * There are a few things that we need to check for.
  * 1. We need to check if someone inserted something like 
  * two pipes together -> ||
  * 2. We need to check for illegal syntax in inserting env variables
