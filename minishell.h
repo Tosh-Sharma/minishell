@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
+/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/01/28 02:14:21 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/02/01 12:27:10 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,7 @@ void	signal_handling(void);
 void	copy_env_variables(t_shell *shell, char **envp);
 void	check_for_incorrect_syntax(char *input);
 void	perror_and_exit(char *input, int exit_code);
+void	expander(char **commands);
+void	replace_env_variable(char *command, int *positions, int count);
 
 #endif
