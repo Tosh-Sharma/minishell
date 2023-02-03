@@ -38,6 +38,7 @@ typedef struct s_shell
 	char	**envp;
 	int		env_count;
 	int		return_value;
+	int		env_y;
 }	t_shell;
 
 void	parser(t_shell *shell);
@@ -45,12 +46,12 @@ void	signal_handling(void);
 void	copy_env_variables(t_shell *shell, char **envp);
 void	check_for_incorrect_syntax(char *input);
 void	perror_and_exit(char *input, int exit_code);
-void	expander(char **commands);
 void	execute_commands(t_shell *shell, char **splitted_commands);
-void	replace_env_variable(char *command, int *positions, int count);
 void	env_command(t_shell *shell);
 void	export_command(t_shell *shell, char *input);
 void	unset_command(t_shell *shell, char *input);
 int		join_and_cmp(const char *s1, const char *s2, size_t n);
+void	expander(char **commands, t_shell *shell);
+void	replace_env_variable(char *command, int *positions, int count, t_shell *shell);
 
 #endif

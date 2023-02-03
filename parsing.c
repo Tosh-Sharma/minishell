@@ -131,6 +131,6 @@ void	parser(t_shell *shell)
 	if (!splitted_commands)
 		perror_and_exit("Could not allocate memory for splitted_commands", 1);
 	split_commands(shell->input, pipe_positions, pipe_count, splitted_commands);
-	expander(splitted_commands);
-	execute_commands(shell, splitted_commands);
+	expander(splitted_commands, shell);
+	// execute_commands(shell, splitted_commands);
 }

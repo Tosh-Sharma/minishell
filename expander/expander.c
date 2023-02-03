@@ -60,7 +60,7 @@ void	store_positions(char *input, int *positions)
  * For single quotes, no need to expand the variable.
 */
 // FYI: The positions array has one last extra space. It can be NULL.
-void	expander(char **commands)
+void	expander(char **commands, t_shell *shell)
 {
 	int	i;
 	int	count;
@@ -77,8 +77,16 @@ void	expander(char **commands)
 			if (!positions)
 				perror_and_exit("Could not allocate memory for array.", 1);
 			store_positions(commands[i], positions);
-			replace_env_variable(commands[i], positions, count);
+			int j = 0;
+			while(positions[j])
+			{
+				//printf("positions[j] = : %d\n", positions[j]);
+				j++;
+			}
+			//printf("commands[i] = :%s\n", commands[i]);
+			replace_env_variable(commands[i], positions, count, shell);
 			free(positions);
 		}
 	}
+	printf("\n");
 }
