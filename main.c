@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
+/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/01/28 02:14:48 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/02/01 20:31:35 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,10 @@ void	add_to_history_and_execute(t_shell *shell)
 	}
 }
 
-/** TODO: Need to write a syntax checker for illegal syntax. You can refuse 
- * to handle all terrible input BUT make sure you don't crash.
- **/
 int	main(int argc, char **argv, char **envp)
 {
+	(void)argc;
+	(void)argv;
 	shell.input = NULL;
 	if (!envp || envp[0] == 0)
 		return (0);
