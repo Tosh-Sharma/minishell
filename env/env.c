@@ -6,12 +6,26 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:26:45 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/01 19:45:28 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/06 23:42:51 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/**
+ * TODO: There are 2 more commands apart from env command
+ * 1. Export: adds new variables to env.
+ * 2. Unset: removes variables in env.
+*/
 #include "../minishell.h"
 
+void	env_command(t_shell *shell)
+{
+	printf("We execute the env command\n");
+}
+
+/**
+ * TODO: The shell level variable needs to get incremented every time we store
+ * these set of variables.
+*/
 void	copy_env_variables(t_shell *shell, char **envp)
 {
 	int	count;

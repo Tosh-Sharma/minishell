@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/01 19:46:22 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/06 23:43:51 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	copy_env_variables(t_shell *shell, char **envp);
 void	check_for_incorrect_syntax(char *input);
 void	perror_and_exit(char *input, int exit_code);
 void	expander(char **commands);
+void	execute_commands(t_shell *shell, char **splitted_commands);
 void	replace_env_variable(char *command, int *positions, int count);
+void	env_command(t_shell *shell);
 
 #endif

@@ -63,6 +63,7 @@ SRCS = 	main.c \
 		env/env.c \
 		expander/expander.c \
 		expander/extra_utils.c \
+		executor/executor.c \
 		$(LIB_SRC)
 
 OBJS = ${SRCS:.c=.o}
