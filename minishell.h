@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/06 23:43:51 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/07 02:37:16 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_shell
 {
 	char	*input;
 	char	**envp;
+	int		env_count;
 	int		return_value;
 }	t_shell;
 
@@ -48,5 +49,7 @@ void	expander(char **commands);
 void	execute_commands(t_shell *shell, char **splitted_commands);
 void	replace_env_variable(char *command, int *positions, int count);
 void	env_command(t_shell *shell);
+void	export_command(t_shell *shell, char *input);
+void	unset_command(t_shell *shell, char *input);
 
 #endif
