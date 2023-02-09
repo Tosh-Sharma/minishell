@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/07 02:37:16 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/09 18:53:35 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,6 @@ void	replace_env_variable(char *command, int *positions, int count);
 void	env_command(t_shell *shell);
 void	export_command(t_shell *shell, char *input);
 void	unset_command(t_shell *shell, char *input);
+int		join_and_cmp(const char *s1, const char *s2, size_t n);
 
 #endif

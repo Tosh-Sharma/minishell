@@ -62,6 +62,7 @@ SRCS = 	main.c \
 		utils/basic_utils.c \
 		env/env.c \
 		env/unset.c \
+		env/unset_utilities.c \
 		expander/expander.c \
 		expander/extra_utils.c \
 		executor/executor.c \

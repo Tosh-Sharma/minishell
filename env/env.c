@@ -6,24 +6,23 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:26:45 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/07 02:31:08 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/09 19:45:35 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/** TODO: Unset command to delete env variable(s).*/
 #include "../minishell.h"
 
 void	store_latest_variables(t_shell *shell, int count, char **strings)
 {
 	int	i;
+	int	len;
 
 	i = -1;
 	while (++i < count)
 	{
-		shell->envp[shell->env_count + i] = (char *)malloc(sizeof(char)
-				* (ft_strlen(strings[i + 1]) + 1));
-		ft_strlcpy(shell->envp[shell->env_count + i], strings[i + 1],
-			ft_strlen(strings[i + 1]) + 1);
+		len = (ft_strlen(strings[i + 1]) + 1);
+		shell->envp[shell->env_count + i] = (char *)malloc(sizeof(char) * len);
+		ft_strlcpy(shell->envp[shell->env_count + i], strings[i + 1], len);
 		free(strings[i + 1]);
 	}
 	shell->envp[shell->env_count + i] = NULL;
@@ -31,15 +30,13 @@ void	store_latest_variables(t_shell *shell, int count, char **strings)
 	shell->env_count = shell->env_count + i;
 }
 
-void	realloc_new_and_copy_old(t_shell *shell, int count)
+char	**realloc_new_and_copy_old(t_shell *shell, int count)
 {
 	char	**new_envs;
-	int		new_count;
 	int		i;
 
-	new_count = shell->env_count + count;
 	i = -1;
-	new_envs = (char **)malloc(sizeof(char *) * (new_count + 1));
+	new_envs = (char **)malloc(sizeof(char *) * (shell->env_count + count + 1));
 	while (++i < shell->env_count)
 	{
 		new_envs[i] = (char *)malloc(sizeof(char) * (ft_strlen(shell->envp[i])
@@ -50,7 +47,7 @@ void	realloc_new_and_copy_old(t_shell *shell, int count)
 	}
 	new_envs[i] = NULL;
 	free(shell->envp);
-	shell->envp = new_envs;
+	return (new_envs);
 }
 
 /**
@@ -78,7 +75,7 @@ void	export_command(t_shell *shell, char *input)
 	while (split_string[++count] != NULL)
 		count++;
 	--count;
-	realloc_new_and_copy_old(shell, count);
+	shell->envp = realloc_new_and_copy_old(shell, count);
 	store_latest_variables(shell, count, split_string);
 }
 
