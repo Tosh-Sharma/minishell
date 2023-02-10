@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/02/07 02:37:00 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/10 16:36:39 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,20 @@
 // TODO: Delete this later. ONLY FOR TESTING.
 void	execute_commands(t_shell *shell, char **splitted_commands)
 {
+	// env_command(shell);
+	printf("\n\nexport USER2=THOMAS\n\n");
+	export_command(shell, "export USER2=THOMAS");
 	env_command(shell);
-	printf("\n\nEXPORT COMMAND\n\n");
-	export_command(shell, "export USER2=THOMAS USER3=THEO");
-	printf("\n\nLAST ENV COMMAND\n\n");
+	printf("\n\nexport USER3=THEO TEST=test\n\n");
+	export_command(shell, "export USER3=THEO TEST=test");
 	env_command(shell);
+	printf("\n\nunset USER2\n\n");
+	unset_command(shell, "unset USER2");
+	env_command(shell);
+	printf("\n\nunset USER3 TEST\n\n");
+	unset_command(shell, "unset USER3 TEST");
+	env_command(shell);
+	// printf("\n\nexport TEST1=TEST1\n\n");
+	// export_command(shell, "export TEST1=TEST1");
+	// env_command(shell);
 }

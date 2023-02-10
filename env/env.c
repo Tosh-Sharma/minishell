@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:26:45 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/09 19:45:35 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/10 16:33:03 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ char	**realloc_new_and_copy_old(t_shell *shell, int count)
 // One thing we can do is check for presence of spaces (illegal)
 // Another thing we can do is check for = sign. That is necessary
 // Lowercase and uppercase are accepted. Find more edge cases in this.
+// TODO: Checking for duplicates in the input and eliminating these inputs.
+// TODO: In case a parameter already exists, we need to ensure that 
+// it gets the updated value this time instead of retaining its old value.
 void	export_command(t_shell *shell, char *input)
 {
 	char	**split_string;
@@ -72,7 +75,7 @@ void	export_command(t_shell *shell, char *input)
 
 	split_string = ft_split(input, ' ');
 	count = 0;
-	while (split_string[++count] != NULL)
+	while (split_string[count] != NULL)
 		count++;
 	--count;
 	shell->envp = realloc_new_and_copy_old(shell, count);
