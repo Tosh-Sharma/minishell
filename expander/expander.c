@@ -23,7 +23,7 @@ int	get_env_variable_count(char *input)
 	flag_single = 0;
 	while (input[++i])
 	{
-		if (flag_single == 0 && input[i] == '$')
+		if (flag_single == 0 && input[i] == '$' && input[i + 1] && input[i + 1] != ' ')
 			count++;
 		if (input[i] == '\'' && flag_single == 0)
 			flag_single = 1;
@@ -44,7 +44,7 @@ void	store_positions(char *input, int *positions)
 	flag_single = 0;
 	while (input[++i])
 	{
-		if (flag_single == 0 && input[i] == '$')
+		if (flag_single == 0 && input[i] == '$' && input[i + 1] && input[i + 1] != ' ')
 			positions[++j] = i;
 		if (input[i] == '\'' && flag_single == 0)
 			flag_single = 1;
@@ -77,13 +77,6 @@ void	expander(char **commands, t_shell *shell)
 			if (!positions)
 				perror_and_exit("Could not allocate memory for array.", 1);
 			store_positions(commands[i], positions);
-			int j = 0;
-			while(positions[j])
-			{
-				//printf("positions[j] = : %d\n", positions[j]);
-				j++;
-			}
-			//printf("commands[i] = :%s\n", commands[i]);
 			replace_env_variable(commands[i], positions, count, shell);
 			free(positions);
 		}

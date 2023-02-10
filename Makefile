@@ -1,5 +1,5 @@
 NAME = minishell
-CC = gcc
+CC = gcc -g
 # TODO: Need to prevent warnings from occuring during compilation.
 # This requires knowledge of Makefile in more detail. Need to study it.
 # TODO: Need to update missing flags like -Wall -Wextra -Werror

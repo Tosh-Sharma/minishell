@@ -116,4 +116,5 @@ void	copy_env_variables(t_shell *shell, char **envp)
 			ft_strlcpy(shell->envp[i], envp[i], length + 1);
 		i++;
 	}
+	shell->env_y = i;
 }
