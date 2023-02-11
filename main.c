@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/01 20:31:35 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/06 23:44:28 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,9 @@ void	print_welcome(void)
 	printf("%s--------------------------------------------------\n\n", CYAN);
 }
 
-// Update history if its not a signal input
-// If it is signal input, handle accordingly, else manage as follows
-// Allow execution of piped inputs.
-// Handle file inputs/ redirects.
-void	add_to_history_and_execute(t_shell *shell)
-{
-	if (shell->input[0])
-	{
-		add_history(shell->input);
-		parser(shell);
-	}
-}
-
+/** TODO: Need to write a syntax checker for illegal syntax. You can refuse 
+ * to handle all terrible input BUT make sure you don't crash.
+ **/
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
@@ -50,7 +40,11 @@ int	main(int argc, char **argv, char **envp)
 	{
 		shell.input = readline("$>:");
 		check_for_incorrect_syntax(shell.input);
-		add_to_history_and_execute(&shell);
+		if (shell.input[0])
+		{
+			add_history(shell.input);
+			parser(&shell);
+		}
 	}
 	return (0);
 }
