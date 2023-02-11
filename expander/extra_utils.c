@@ -56,7 +56,7 @@ char    *replace_var(char *new_var, char *var, char *env_row)
 
     i = ft_strlen(var) + 1;
     printf("R_V i = %d\n", i);
-    printf("len env_row = %d\n", ft_strlen(env_row));
+    printf("len env_row = %d\n", (int)ft_strlen(env_row));
     new_var = (char *)malloc(sizeof(char) * ((ft_strlen(env_row)) + 1 - i));
     printf("env_row[%d] = %c\n %s IS THE VQLUE", i, env_row[i], env_row);
     ft_strlcpy(new_var, &env_row[ft_strlen(var) + 1], ft_strlen(env_row) + 1 - i);
@@ -71,35 +71,31 @@ int     new_len_com(char *command, char **res_var, int *positions)
     int p;
     int res;
 
-    i = 0;
     p = 0;
     res = 0;
-    printf("res_var[0] is %s\n", res_var[0]);
-    while (res_var[i] != NULL)
-    {
-        printf("res_var[%d] = %s\n", i, res_var[i]);
-        i++;
-    }
     i = 0;
     while (command[i])
     {
         printf("command[%d] = %c\n", i, command[i]);
+
         if (i == positions[p])
         {
-            printf("NLC command[%d] = %c\n", i, command[i]);
             i++;
+            printf("NLC command[%d] = %c\n", i, command[i]);
             printf("NLC res_var[%d] :%s\n", p, res_var[p]);
             if (res_var[p] != NULL)
-                res += ft_strlen(res_var[p]);
-            printf("res pos[%d] = %d\n", p, res);
-            while (command[i] && command[i] != ' ' && i != positions[p + 1]
-                && command[i] != '"')
             {
-                printf("command[%d] = %c\n", i, command[i]);
-                i++;
+                printf("NLC res_var[%d] len : %d\n", p, (int)ft_strlen(res_var[p]));
+                res += (int)ft_strlen(res_var[p]) - 1;
             }
-            i++;
+            else
+                res += 1;
             p++;
+            printf("res = %d\n", res);
+            while (command[i + 1] && command[i + 1] != ' ' && i + 1 != positions[p]
+                && command[i + 1] != '"')
+                i++;
+            printf("POST WHILE command[%d] = %c\n", i, command[i]);
         }
         else
         {
@@ -128,16 +124,24 @@ char    *replace_com(char *res_com, char *command, char **res_var, int *position
         if (i == positions[k])
         {
             l = 0;
-            printf("%s\n", res_var[k]);
-            while (res_var[k][l] != '\0')
+            printf("res_var[k] :%s\n", res_var[k]);
+            if (res_var[k] == NULL)
             {
-                res_com[j] = res_var[k][l];
-                printf("%c", res_com[j]);
-                j++;
-                l++;
+                k++;
+                i++;
             }
-            k++;
-            while (command[i + 1] != ' ' && command[i + 1] != '\0')
+            else
+            {
+                while (res_var[k][l] != '\0')
+                {
+                    res_com[j] = res_var[k][l];
+                    printf("%c", res_com[j]);
+                    j++;
+                    l++;
+                }
+                k++;
+            }
+            while (command[i + 1] && command[i + 1] != ' ' && i + 1 != positions[k] && command[i + 1] != '\0')
                 i++;
         }
         else
@@ -146,9 +150,10 @@ char    *replace_com(char *res_com, char *command, char **res_var, int *position
             printf("%c", res_com[j]);
             j++;
         }
+        printf("\n");
         i++;
+        printf("i = %d\n", i);
     }
-    printf("\n");
     res_com[j] = '\0';
     return (res_com);
 }
@@ -164,6 +169,7 @@ void	replace_env_variable(char *command, int *positions, int count, t_shell *she
 
     i = 0;
     j = 0;
+    res_var = (char **)malloc(sizeof(char *) * (count));
     while (i < count)
     {
         if (positions[i] != 0)
@@ -183,7 +189,6 @@ void	replace_env_variable(char *command, int *positions, int count, t_shell *she
         get_var(command, positions[i], var, k);
         //printf("var post :%s\n", var);
         //printf("count : %d\n", count);
-        res_var = (char **)malloc(sizeof(char *) * (count + 1));
         j = 0;
         //printf("env_y = %d\n", shell->env_y);
         while (j < shell->env_y && ft_strncmp(var, shell->envp[j], ft_strlen(var)) != 0)
@@ -214,5 +219,7 @@ void	replace_env_variable(char *command, int *positions, int count, t_shell *she
         kl++;
     }
     res_com = (char *)malloc(sizeof(char) * new_len_com(command, res_var, positions));
-    //res_com = replace_com(res_com, command, res_var, positions);
+    res_com = replace_com(res_com, command, res_var, positions);
+    printf("FINAL :%s\n", res_com);
+    printf("FINAL LEN :%d\n", (int)ft_strlen(res_com));
 }

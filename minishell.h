@@ -39,6 +39,7 @@ typedef struct s_shell
 	int		env_count;
 	int		return_value;
 	int		env_y;
+	char	**env_input;
 }	t_shell;
 
 void	parser(t_shell *shell);
