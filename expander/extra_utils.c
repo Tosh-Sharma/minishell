@@ -30,9 +30,10 @@ char    *get_var(char *command, int nb, char *var, int len)
     k = 0;
     if (nb != 0)
         j = nb;
-    while(k < len)
+    while (k < len)
     {
-        if (command[j + 1] == '{' || command[j + 1] == '}' || command[j + 1] == ' ')
+        if (command[j + 1] && (command[j + 1] == '{' 
+            || command[j + 1] == '}' || command[j + 1] == ' '))
             j++;
         else
         {
@@ -77,7 +78,6 @@ int     new_len_com(char *command, char **res_var, int *positions)
     while (command[i])
     {
         printf("command[%d] = %c\n", i, command[i]);
-
         if (i == positions[p])
         {
             i++;
@@ -86,14 +86,11 @@ int     new_len_com(char *command, char **res_var, int *positions)
             if (res_var[p] != NULL)
             {
                 printf("NLC res_var[%d] len : %d\n", p, (int)ft_strlen(res_var[p]));
-                res += (int)ft_strlen(res_var[p]) - 1;
+                res += (int)ft_strlen(res_var[p]);
             }
-            else
-                res += 1;
             p++;
             printf("res = %d\n", res);
-            while (command[i + 1] && command[i + 1] != ' ' && i + 1 != positions[p]
-                && command[i + 1] != '"')
+            while (command[i] && command[i] != ' ' && i != positions[p])
                 i++;
             printf("POST WHILE command[%d] = %c\n", i, command[i]);
         }
@@ -125,11 +122,10 @@ char    *replace_com(char *res_com, char *command, char **res_var, int *position
         {
             l = 0;
             printf("res_var[k] :%s\n", res_var[k]);
+            i++;
+            printf("R_C command[%d] = %c\n", i, command[i]);
             if (res_var[k] == NULL)
-            {
                 k++;
-                i++;
-            }
             else
             {
                 while (res_var[k][l] != '\0')
@@ -141,7 +137,7 @@ char    *replace_com(char *res_com, char *command, char **res_var, int *position
                 }
                 k++;
             }
-            while (command[i + 1] && command[i + 1] != ' ' && i + 1 != positions[k] && command[i + 1] != '\0')
+            while (command[i + 1] && command[i + 1] != ' ' && i + 1 != positions[k])
                 i++;
         }
         else
@@ -179,7 +175,7 @@ void	replace_env_variable(char *command, int *positions, int count, t_shell *she
         if (command[j + 1] == '{')
             j++;
         k = 0;
-        while(command[j + 1] && command[j + 1] != ' ' && command[j + 1] != '$' &&
+        while(command[j + 1] && command[j + 1] != '"' && command[j + 1] != ' ' && command[j + 1] != '$' &&
             command[j + 1] != '}' && ++k)
             ++j;
         //var = (char *)malloc(sizeof(char) * k);
@@ -191,7 +187,7 @@ void	replace_env_variable(char *command, int *positions, int count, t_shell *she
         //printf("count : %d\n", count);
         j = 0;
         //printf("env_y = %d\n", shell->env_y);
-        while (j < shell->env_y && ft_strncmp(var, shell->envp[j], ft_strlen(var)) != 0)
+        while (j < shell->env_y && join_and_cmp(var, shell->envp[j], ft_strlen(var)) != 0)
             j++;
         if (j == shell->env_y)
         {
