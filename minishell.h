@@ -40,6 +40,7 @@ typedef struct s_shell
 	int		return_value;
 	int		env_y;
 	char	**env_input;
+	char	*res_com;
 }	t_shell;
 
 void	parser(t_shell *shell);
@@ -53,6 +54,6 @@ void	export_command(t_shell *shell, char *input);
 void	unset_command(t_shell *shell, char *input);
 int		join_and_cmp(const char *s1, const char *s2, size_t n);
 void	expander(char **commands, t_shell *shell);
-void	replace_env_variable(char *command, int *positions, int count, t_shell *shell);
+char	*replace_env_variable(char *command, int *positions, int count, t_shell *shell);
 
 #endif

@@ -42,9 +42,7 @@ char    *get_var(char *command, int nb, char *var, int len)
             k++;
         }
     }
-    //printf("get_var k = : %d\n", k);
     var[k] = '\0';
-    printf("var :%s\n", var);
     return (var);
 }
 
@@ -52,16 +50,10 @@ char    *replace_var(char *new_var, char *var, char *env_row)
 {
     int     i;
 
-
-    //First detect the position of = sign
-
     i = ft_strlen(var) + 1;
-    printf("R_V i = %d\n", i);
-    printf("len env_row = %d\n", (int)ft_strlen(env_row));
     new_var = (char *)malloc(sizeof(char) * ((ft_strlen(env_row)) + 1 - i));
-    printf("env_row[%d] = %c\n %s IS THE VQLUE", i, env_row[i], env_row);
-    ft_strlcpy(new_var, &env_row[ft_strlen(var) + 1], ft_strlen(env_row) + 1 - i);
-    printf("new_var :%s\n", new_var);
+    ft_strlcpy(new_var, &env_row[ft_strlen(var) + 1], 
+        ft_strlen(env_row) + 1 - i);
     return (new_var);
 }
 
@@ -74,148 +66,119 @@ int     new_len_com(char *command, char **res_var, int *positions)
 
     p = 0;
     res = 0;
-    i = 0;
-    while (command[i])
+    i = -1;
+    while (command[++i])
     {
-        printf("command[%d] = %c\n", i, command[i]);
         if (i == positions[p])
         {
             i++;
-            printf("NLC command[%d] = %c\n", i, command[i]);
-            printf("NLC res_var[%d] :%s\n", p, res_var[p]);
             if (res_var[p] != NULL)
-            {
-                printf("NLC res_var[%d] len : %d\n", p, (int)ft_strlen(res_var[p]));
                 res += (int)ft_strlen(res_var[p]);
-            }
             p++;
-            printf("res = %d\n", res);
-            while (command[i] && command[i] != ' ' && i != positions[p])
+            while (command[i + 1] && command[i + 1] != ' ' && 
+                command[i + 1] != '"' && i + 1 != positions[p])
                 i++;
-            printf("POST WHILE command[%d] = %c\n", i, command[i]);
         }
         else
-        {
-            //printf("command[%d] = %c\n", i, command[i]);
             res++;
-            i++;
-        }
     }
-    printf("N_L_C res = %d\n", res + 1);
     return (res + 1);
 }
 
-char    *replace_com(char *res_com, char *command, char **res_var, int *positions)
+char    *rep_com(char **chars, int *ints, int *positions, char **res_var)
+{
+    while (chars[0][++ints[0]])
+    {
+        if (ints[0] == positions[ints[2]])
+        {
+            ints[3] = -1;
+            ints[0]++;
+            if (res_var[ints[2]] == NULL)
+                ints[2]++;
+            else
+            {
+                while (res_var[ints[2]][++ints[3]])
+                    chars[1][++ints[1]] = res_var[ints[2]][ints[3]];
+                ints[2]++;
+            }
+            while (chars[0][ints[0] + 1] && chars[0][ints[0] + 1] != ' '
+                && chars[0][ints[0] + 1] != '"' && 
+                ints[0] + 1 != positions[ints[2]])
+                ints[0]++;
+        }
+        else
+            chars[1][++ints[1]] = chars[0][ints[0]];
+    }
+    chars[1][++ints[1]] = '\0';
+    return (chars[1]);
+}
+
+char    *replace_com(char *res_com, char *command, 
+    char **res_var, int *positions)
 {
     int     i;
     int     j;
     int     k;
     int     l;
 
-    i = 0;
-    j = 0;
+    i = -1;
+    j = -1;
     k = 0;
-    printf("replace_com com :%s\n", command);
-    while (command[i])
-    {
-        if (i == positions[k])
-        {
-            l = 0;
-            printf("res_var[k] :%s\n", res_var[k]);
-            i++;
-            printf("R_C command[%d] = %c\n", i, command[i]);
-            if (res_var[k] == NULL)
-                k++;
-            else
-            {
-                while (res_var[k][l] != '\0')
-                {
-                    res_com[j] = res_var[k][l];
-                    printf("%c", res_com[j]);
-                    j++;
-                    l++;
-                }
-                k++;
-            }
-            while (command[i + 1] && command[i + 1] != ' ' && i + 1 != positions[k])
-                i++;
-        }
-        else
-        {
-            res_com[j] = command[i];
-            printf("%c", res_com[j]);
-            j++;
-        }
-        printf("\n");
-        i++;
-        printf("i = %d\n", i);
-    }
-    res_com[j] = '\0';
+    l = 0;
+    res_com = rep_com((char *[2]){command, res_com}, 
+        (int [4]){i, j, k, l}, positions, res_var);
     return (res_com);
 }
 
-void	replace_env_variable(char *command, int *positions, int count, t_shell *shell)
+char    **rep_env_var(char **c, int *i, int *pos, char ***t)
+{
+    while (++i[0] < i[3])
+    {
+        if (pos[i[0]] != 0)
+            i[1] = pos[i[0]];
+        if (c[0][i[1] + 1] == '{')
+            i[1]++;
+        i[2] = 0;
+        while(c[0][i[1] + 1] && c[0][i[1] + 1] != '"' 
+        && c[0][i[1] + 1] != ' ' && c[0][i[1] + 1] != '$' &&
+            c[0][i[1] + 1] != '}' && ++i[2])
+            ++i[1];
+        c[1] = (char *)malloc(sizeof(char) * (i[2] + 1));
+        get_var(c[0], pos[i[0]], c[1], i[2]);
+        i[1] = 0;
+        while (i[1] < i[4] && join_and_cmp(c[1], t[1][i[1]], 
+        ft_strlen(c[1])) != 0)
+            i[1]++;
+        if (i[1] == i[4])
+            t[0][i[0]] = NULL;
+        else
+            t[0][i[0]] = replace_var(t[0][i[0]], c[1], t[1][i[1]]);
+        free(c[1]);
+    }
+    printf("i[0] = %d\n", i[0]);
+    t[0][i[0]] = NULL;
+    return (t[0]);
+}
+
+char	*replace_env_variable(char *command, int *positions, 
+    int count, t_shell *shell)
 {
     char    *var;
     char    **res_var;
-    char    *res_com;
     int     i;
     int     j;
-    int     k; 
+    int     k;
 
-    i = 0;
+    i = -1;
     j = 0;
     res_var = (char **)malloc(sizeof(char *) * (count));
-    while (i < count)
-    {
-        if (positions[i] != 0)
-            j = positions[i];
-        //printf("positions[i] = : %d\n", positions[i]);
-        //printf("j = : %d\n", j);
-        if (command[j + 1] == '{')
-            j++;
-        k = 0;
-        while(command[j + 1] && command[j + 1] != '"' && command[j + 1] != ' ' && command[j + 1] != '$' &&
-            command[j + 1] != '}' && ++k)
-            ++j;
-        //var = (char *)malloc(sizeof(char) * k);
-        //printf("\n");
-        printf("k : %d\n", k);
-        var = (char *)malloc(sizeof(char) * (k + 1));
-        get_var(command, positions[i], var, k);
-        //printf("var post :%s\n", var);
-        //printf("count : %d\n", count);
-        j = 0;
-        //printf("env_y = %d\n", shell->env_y);
-        while (j < shell->env_y && join_and_cmp(var, shell->envp[j], ft_strlen(var)) != 0)
-            j++;
-        if (j == shell->env_y)
-        {
-            res_var[i] = NULL;
-            //printf("NOT FOUND\n");
-        }
-        else
-        {
-            //printf("FOUND\n");
-            res_var[i] = replace_var(res_var[i], var, shell->envp[j]);
-        }
-        printf("res_var[%d] END :%s\n", i, res_var[i]);
-        free(var);
-        //printf("LA i = %d\n", i);
-        i++;
-    }
-    //i++;
-    printf("ICI i = %d\n", i);
-    res_var[i] = NULL;
-    int kl = 0;
-    printf("PRELOOP\n");
-    while (res_var[kl])
-    {
-        printf("res_var[%d] END :%s\n", kl, res_var[kl]);
-        kl++;
-    }
-    res_com = (char *)malloc(sizeof(char) * new_len_com(command, res_var, positions));
-    res_com = replace_com(res_com, command, res_var, positions);
-    printf("FINAL :%s\n", res_com);
-    printf("FINAL LEN :%d\n", (int)ft_strlen(res_com));
+    res_var = rep_env_var((char *[2]){command, var}, (int [5]){i, j, k, count, shell->env_y}, positions, (char **[2]){res_var, shell->envp});
+    shell->res_com = (char *)malloc(sizeof(char) * new_len_com(command, res_var, positions));
+    shell->res_com = replace_com(shell->res_com, command, res_var, positions);
+    /*while (res_var[++i] || !(ft_strcmp(res_var[i], NULL)))
+        free(res_var[i]);
+    printf("i = %d\n", i);*/
+    free(res_var);
+    free(command);
+    return (shell->res_com);
 }
