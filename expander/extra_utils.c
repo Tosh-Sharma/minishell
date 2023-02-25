@@ -155,7 +155,6 @@ char    **rep_env_var(char **c, int *i, int *pos, char ***t)
             t[0][i[0]] = replace_var(t[0][i[0]], c[1], t[1][i[1]]);
         free(c[1]);
     }
-    printf("i[0] = %d\n", i[0]);
     t[0][i[0]] = NULL;
     return (t[0]);
 }
@@ -172,12 +171,16 @@ char	*replace_env_variable(char *command, int *positions,
     i = -1;
     j = 0;
     res_var = (char **)malloc(sizeof(char *) * (count));
-    res_var = rep_env_var((char *[2]){command, var}, (int [5]){i, j, k, count, shell->env_y}, positions, (char **[2]){res_var, shell->envp});
-    shell->res_com = (char *)malloc(sizeof(char) * new_len_com(command, res_var, positions));
+    if (!res_var)
+		perror_and_exit("Could not allocate memory for array.", 1);
+    res_var = rep_env_var((char *[2]){command, var}, 
+        (int [5]){i, j, k, count, shell->env_y}, positions, 
+        (char **[2]){res_var, shell->envp});
+    shell->res_com = (char *)malloc(sizeof(char) 
+        * new_len_com(command, res_var, positions));
+    if (!shell->res_com)
+		perror_and_exit("Could not allocate memory for array.", 1);
     shell->res_com = replace_com(shell->res_com, command, res_var, positions);
-    /*while (res_var[++i] || !(ft_strcmp(res_var[i], NULL)))
-        free(res_var[i]);
-    printf("i = %d\n", i);*/
     free(res_var);
     free(command);
     return (shell->res_com);

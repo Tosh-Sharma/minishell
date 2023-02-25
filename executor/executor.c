@@ -20,22 +20,53 @@
  * function. Namely env, export and unset.
 */
 // TODO: Delete this later. ONLY FOR TESTING.
+
+int get_index(char *command, int i)
+{
+	int	index;
+
+	while (command[i] && command[i] == ' ')
+		i++;
+	if (i == ft_strlen(command))
+		return (0);
+	//printf("command[%d] :%c\n", i, command[i]);
+	index = i;
+	return (index);
+}
+
+int	find_command(char *command, t_shell *shell)
+{
+	int	i;
+
+	i = 0;
+	while (command[i] && command[i] == ' ')
+		i++;
+	//printf("command[%d] :%c\n", i, command[i]);
+	if (command[i] && command[i] == 'e' && command[i + 1] == 'c' &&
+		command[i + 2] == 'h' && command[i + 3] == 'o' && command[i + 4] == ' ')
+		mini_echo(command, get_index(command, i + 4), shell);
+	/*if (command[i] && command[i] == 'c' && command[i + 1] == 'd'
+		&& command[i + 2] == ' ')
+		mini_cd((command), get_index(command, i + 2));*/
+	if (command[i] && command[i] == 'p' && command[i + 1] == 'w'
+		&& command[i + 2] == 'd' && (command[i + 3] == ' ' || !command[i + 3]))
+		mini_pwd((command));
+	if (command[i] && command[i] == 'e' && command[i + 1] == 'n'
+		&& command[i + 2] == 'v' && (command[i + 3] == ' ' || !command[i + 3]))
+		env_command(shell);
+	return (0);
+}
+
 void	execute_commands(t_shell *shell, char **splitted_commands)
 {
-	// env_command(shell);
-	printf("\n\nexport USER2=THOMAS\n\n");
-	export_command(shell, "export USER2=THOMAS");
-	env_command(shell);
-	printf("\n\nexport USER3=THEO TEST=test\n\n");
-	export_command(shell, "export USER3=THEO TEST=test");
-	env_command(shell);
-	printf("\n\nunset USER2\n\n");
-	unset_command(shell, "unset USER2");
-	env_command(shell);
-	printf("\n\nunset USER3 TEST\n\n");
-	unset_command(shell, "unset USER3 TEST");
-	env_command(shell);
-	// printf("\n\nexport TEST1=TEST1\n\n");
-	// export_command(shell, "export TEST1=TEST1");
-	// env_command(shell);
+	int	i;
+	int	com;
+
+	i = -1;
+	while (splitted_commands[++i])
+	{
+		if (splitted_commands[i])
+			com = find_command(splitted_commands[i], shell);
+		//printf("\n");
+	}
 }

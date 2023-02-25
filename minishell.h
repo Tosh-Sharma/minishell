@@ -26,6 +26,7 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <fcntl.h>
+//# include <linux/limits.h>
 
 # define CYAN "\001\033[1;36m\002"
 # define WHITE "\001\033[0m\002"
@@ -41,6 +42,7 @@ typedef struct s_shell
 	int		env_y;
 	char	**env_input;
 	char	*res_com;
+	int		new_line_flag;
 }	t_shell;
 
 void	parser(t_shell *shell);
@@ -48,6 +50,7 @@ void	signal_handling(void);
 void	copy_env_variables(t_shell *shell, char **envp);
 void	check_for_incorrect_syntax(char *input);
 void	perror_and_exit(char *input, int exit_code);
+void	*ft_malloc_checker(int type, int size);
 void	execute_commands(t_shell *shell, char **splitted_commands);
 void	env_command(t_shell *shell);
 void	export_command(t_shell *shell, char *input);
@@ -55,5 +58,6 @@ void	unset_command(t_shell *shell, char *input);
 int		join_and_cmp(const char *s1, const char *s2, size_t n);
 void	expander(char **commands, t_shell *shell);
 char	*replace_env_variable(char *command, int *positions, int count, t_shell *shell);
-
+void    mini_echo(char *command, int index, t_shell *shell);
+void	mini_pwd(char *command);
 #endif

@@ -81,8 +81,5 @@ void	expander(char **commands, t_shell *shell)
 			free(positions);
 		}
 	}
-	/*i = -1;
-	while (commands[++i])
-		printf("commands[%d] : %s\n", i, commands[i]);
-	printf("\n");*/
+	printf("command =%s\n", commands[0]);
 }
