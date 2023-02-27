@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 17:45:46 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/06 22:56:02 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/27 15:26:00 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	get_pipe_count(char *input, char search)
  * This function's responsibility is to traverse the array and 
  * store the position of the pipes.
 */
-void	get_pipe_positions(char *input, int count, int *pipes, char search)
+void	get_pipe_positions(char *input, int *pipes, char search)
 {
 	int	i;
 	int	j;
@@ -78,11 +78,9 @@ void	get_pipe_positions(char *input, int count, int *pipes, char search)
 
 void	split_commands(char *input, int *position, int count, char **commands)
 {
-	int	i;
 	int	j;
 	int	k;
 
-	i = 0;
 	j = 0;
 	k = -1;
 	while (++k < (count + 1))
@@ -126,7 +124,7 @@ void	parser(t_shell *shell)
 	pipe_positions = (int *)malloc(sizeof(int) * pipe_count);
 	if (!pipe_positions)
 		perror_and_exit("Could not allocate memory for pipe_positions", 1);
-	get_pipe_positions(shell->input, pipe_count, pipe_positions, '|');
+	get_pipe_positions(shell->input, pipe_positions, '|');
 	splitted_commands = (char **)malloc(sizeof(char *) * (pipe_count + 2));
 	if (!splitted_commands)
 		perror_and_exit("Could not allocate memory for splitted_commands", 1);

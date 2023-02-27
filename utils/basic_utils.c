@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:41 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/01 20:32:09 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/27 15:25:36 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 */
 void	check_for_incorrect_syntax(char *input)
 {
+	(void)input;
 }
 
 void	perror_and_exit(char *input, int exit_code)

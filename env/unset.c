@@ -6,14 +6,14 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 02:31:42 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/02/09 19:15:30 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/27 15:27:48 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 void	free_and_replace_vars(t_shell *shell, char **new_env_vars,
-	char **strings, int new_count)
+	char **strings)
 {
 	int	i;
 
@@ -60,8 +60,7 @@ void	copy_env_vars_except_marked(t_shell *shell, char **new_env_vars,
 	new_env_vars[++k] = NULL;
 }
 
-void	mark_indexes_for_not_copying(t_shell *shell, char **strings, int count,
-		int *index)
+void	mark_indexes_for_not_copying(t_shell *shell, char **strings, int *index)
 {
 	int	i;
 	int	j;
@@ -131,7 +130,7 @@ void	unset_command(t_shell *shell, char *input)
 	i = -1;
 	while (++i < count)
 		index[i] = -1;
-	mark_indexes_for_not_copying(shell, strings, count, index);
+	mark_indexes_for_not_copying(shell, strings, index);
 	i = -1;
 	while (++i < count)
 	{
@@ -141,5 +140,5 @@ void	unset_command(t_shell *shell, char *input)
 	count = i;
 	new_env_vars = (char **)malloc(sizeof(char *) * (shell->env_count - count));
 	copy_env_vars_except_marked(shell, new_env_vars, index, count);
-	free_and_replace_vars(shell, new_env_vars, strings, count);
+	free_and_replace_vars(shell, new_env_vars, strings);
 }

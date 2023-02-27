@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 23:32:08 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/02/01 12:26:45 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/27 15:28:26 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,7 @@
 */
 void	replace_env_variable(char *command, int *positions, int count)
 {
+	(void)command;
+	(void)positions;
+	(void)count;
 }

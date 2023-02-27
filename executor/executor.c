@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/02/10 16:36:39 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/27 15:28:53 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 // TODO: Delete this later. ONLY FOR TESTING.
 void	execute_commands(t_shell *shell, char **splitted_commands)
 {
+	(void)splitted_commands;
 	// env_command(shell);
 	printf("\n\nexport USER2=THOMAS\n\n");
 	export_command(shell, "export USER2=THOMAS");
