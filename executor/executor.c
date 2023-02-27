@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/02/27 15:28:53 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/27 15:35:48 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
  * Currently, we will only be allowing execution of dummy functions in this
  * function. Namely env, export and unset.
 */
-// TODO: Delete this later. ONLY FOR TESTING.
 void	execute_commands(t_shell *shell, char **splitted_commands)
 {
 	(void)splitted_commands;

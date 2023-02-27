@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/06 23:44:28 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/27 15:35:13 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@ void	print_welcome(void)
 	printf("%s--------------------------------------------------\n\n", CYAN);
 }
 
-/** TODO: Need to write a syntax checker for illegal syntax. You can refuse 
- * to handle all terrible input BUT make sure you don't crash.
- **/
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
