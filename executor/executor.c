@@ -28,7 +28,7 @@ int get_index(char *command, int i)
 	while (command[i] && command[i] == ' ')
 		i++;
 	if (i == ft_strlen(command))
-		return (0);
+		return (-1);
 	//printf("command[%d] :%c\n", i, command[i]);
 	index = i;
 	return (index);
@@ -43,7 +43,7 @@ int	find_command(char *command, t_shell *shell)
 		i++;
 	//printf("command[%d] :%c\n", i, command[i]);
 	if (command[i] && command[i] == 'e' && command[i + 1] == 'c' &&
-		command[i + 2] == 'h' && command[i + 3] == 'o' && command[i + 4] == ' ')
+		command[i + 2] == 'h' && command[i + 3] == 'o' && (command[i + 4] == ' ' || !command[i + 4]))
 		mini_echo(command, get_index(command, i + 4), shell);
 	/*if (command[i] && command[i] == 'c' && command[i + 1] == 'd'
 		&& command[i + 2] == ' ')

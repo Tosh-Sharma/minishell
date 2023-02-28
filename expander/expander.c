@@ -81,5 +81,5 @@ void	expander(char **commands, t_shell *shell)
 			free(positions);
 		}
 	}
-	printf("command =%s\n", commands[0]);
+	//printf("command =%s\n", commands[0]);
 }

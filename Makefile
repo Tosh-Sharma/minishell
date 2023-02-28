@@ -66,7 +66,7 @@ SRCS = 	main.c \
 		expander/expander.c \
 		expander/extra_utils.c \
 		executor/executor.c \
-		echo/echo.c \
+		echo/mini_commands.c \
 		$(LIB_SRC)
 
 OBJS = ${SRCS:.c=.o}
