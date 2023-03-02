@@ -30,9 +30,10 @@ char    *get_var(char *command, int nb, char *var, int len)
     k = 0;
     if (nb != 0)
         j = nb;
+    //printf("ICI = : %s\n", command);
     while (k < len)
     {
-        if (command[j + 1] && (command[j + 1] == '{' 
+        if (command[j + 1] && (command[j + 1] == '{' || command[j + 1] == '\''
             || command[j + 1] == '}' || command[j + 1] == ' '))
             j++;
         else
@@ -75,13 +76,14 @@ int     new_len_com(char *command, char **res_var, int *positions)
             if (res_var[p] != NULL)
                 res += (int)ft_strlen(res_var[p]);
             p++;
-            while (command[i + 1] && command[i + 1] != ' ' && 
-                command[i + 1] != '"' && i + 1 != positions[p])
+            while (command[i + 1] && command[i + 1] != ' ' && command[i + 1] 
+            != '"' && i + 1 != positions[p])
                 i++;
         }
         else
             res++;
     }
+    printf("res = %d\n", res + 1);
     return (res + 1);
 }
 
@@ -102,8 +104,8 @@ char    *rep_com(char **chars, int *ints, int *positions, char **res_var)
                 ints[2]++;
             }
             while (chars[0][ints[0] + 1] && chars[0][ints[0] + 1] != ' '
-                && chars[0][ints[0] + 1] != '"' && 
-                ints[0] + 1 != positions[ints[2]])
+                && chars[0][ints[0] + 1] != '"' && chars[0][ints[0] + 1] != '\''
+                && ints[0] + 1 != positions[ints[2]])
                 ints[0]++;
         }
         else
@@ -141,7 +143,7 @@ char    **rep_env_var(char **c, int *i, int *pos, char ***t)
         i[2] = 0;
         while(c[0][i[1] + 1] && c[0][i[1] + 1] != '"' 
         && c[0][i[1] + 1] != ' ' && c[0][i[1] + 1] != '$' &&
-            c[0][i[1] + 1] != '}' && ++i[2])
+            c[0][i[1] + 1] != '}' && c[0][i[1] + 1] != '\'' && ++i[2])
             ++i[1];
         c[1] = (char *)malloc(sizeof(char) * (i[2] + 1));
         get_var(c[0], pos[i[0]], c[1], i[2]);

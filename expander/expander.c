@@ -16,19 +16,31 @@ int	get_env_variable_count(char *input)
 {
 	int	i;
 	int	count;
-	int	flag_single;
+	int	f_s;
+	int	f_d;
 
 	i = -1;
 	count = 0;
-	flag_single = 0;
+	f_s = 0;
+	f_d = 0;
 	while (input[++i])
 	{
-		if (flag_single == 0 && input[i] == '$' && input[i + 1] && input[i + 1] != ' ')
+		printf("input[%d] = %c\n", i, input[i]);
+		if ((f_d == 0 && input[i] == '$' && input[i + 1] && input[i + 1] != ' ')
+			|| (f_d == 1 && f_s == 1 && input[i] == '$'
+			&& input[i + 1] && input[i + 1] != ' '))
+		{
+			printf("count++\nsingle = %d et double = %d\n", f_s, f_d);
 			count++;
-		if (input[i] == '\'' && flag_single == 0)
-			flag_single = 1;
-		else if (input[i] == '\'' && flag_single == 1)
-			flag_single = 0;
+		}
+		if (input[i] == '"' && f_d == 0)
+			f_d = 1;
+		else if (input[i] == '"' && f_d == 1)
+			f_d = 0;
+		if (input[i] == '\'' && f_s == 0 && f_d == 1)
+			f_s = 1;
+		else if (input[i] == '\'' && f_s == 1)
+			f_s = 0;
 	}
 	return (count);
 }
@@ -37,19 +49,27 @@ void	store_positions(char *input, int *positions)
 {
 	int	i;
 	int	j;
-	int	flag_single;
+	int	f_s;
+	int	f_d;
 
 	i = -1;
 	j = -1;
-	flag_single = 0;
+	f_s= 0;
+	f_d = 0;
 	while (input[++i])
 	{
-		if (flag_single == 0 && input[i] == '$' && input[i + 1] && input[i + 1] != ' ')
+		if  ((f_d == 0 && input[i] == '$' && input[i + 1] && input[i + 1] != ' ')
+			|| (f_d == 1 && f_s == 1 && input[i] == '$'
+			&& input[i + 1] && input[i + 1] != ' '))
 			positions[++j] = i;
-		if (input[i] == '\'' && flag_single == 0)
-			flag_single = 1;
-		else if (input[i] == '\'' && flag_single == 1)
-			flag_single = 0;
+		if (input[i] == '"' && f_d == 0)
+			f_d = 1;
+		else if (input[i] == '"' && f_d == 1)
+			f_d = 0;
+		if (input[i] == '\'' && f_s == 0 && f_d == 1)
+			f_s = 1;
+		else if (input[i] == '\'' && f_s == 1)
+			f_s = 0;
 	}
 }
 

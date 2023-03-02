@@ -43,6 +43,7 @@ typedef struct s_shell
 	char	**env_input;
 	char	*res_com;
 	int		new_line_flag;
+	char	**split_com;
 }	t_shell;
 
 void	parser(t_shell *shell);
@@ -52,12 +53,12 @@ void	check_for_incorrect_syntax(char *input);
 void	perror_and_exit(char *input, int exit_code);
 void	*ft_malloc_checker(int type, int size);
 void	execute_commands(t_shell *shell, char **splitted_commands);
-void	env_command(t_shell *shell);
 void	export_command(t_shell *shell, char *input);
 void	unset_command(t_shell *shell, char *input);
 int		join_and_cmp(const char *s1, const char *s2, size_t n);
 void	expander(char **commands, t_shell *shell);
 char	*replace_env_variable(char *command, int *positions, int count, t_shell *shell);
 void    mini_echo(char *command, int index, t_shell *shell);
-void	mini_pwd(char *command);
+void	mini_pwd(void);
+void	env_command(t_shell *shell);
 #endif
