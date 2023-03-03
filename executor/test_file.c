@@ -6,102 +6,67 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 10:45:10 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/03/01 16:56:47 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/03/03 21:00:51 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <sys/wait.h>
 
-#define MAX_ARGS 20
-//norminette-ignore
-int	main(int argc, char *argv[])
-{
-    char *args[MAX_ARGS];   // array to store command and its arguments
-    int num_pipes = 0;      // number of pipes in command
-    int pipes[2 * MAX_ARGS]; // array to store file descriptors for pipes
-    int cmd_num = 0;        // current command number in pipeline
+#define MAX_CMD_LEN 1024
 
-    // Parse command line arguments
-    for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "|") == 0) {
-            // add null terminator to end of current command's arguments
-            args[num_pipes] = NULL;
-            num_pipes++;
-            cmd_num++;
-        } else {
-            // add argument to current command
-            args[i-num_pipes-1] = argv[i];
-        }
-    }
-    // add null terminator to end of last command's arguments
-    args[argc-num_pipes-1] = NULL;
-    for (int i = 0; i < num_pipes; i++)
-    { /** pipe_count */
-        if (pipe(pipes + i*2) < 0) {
+int main(int argc, char *argv[]) {
+    int prev_read_end = STDIN_FILENO;  // Initialize the read end of the previous pipe to stdin
+
+    for (int i = 0; i < argc; i++) {
+        int pipe_fds[2];
+        if (pipe(pipe_fds) == -1) {
             perror("pipe");
             exit(EXIT_FAILURE);
         }
-    }
 
-    int pid;
-    int fd_in = 0; // file descriptor for input to first command
-    int fd_out = 1; // file descriptor for output from last command
-
-    // run each command in pipeline
-    for (int i = 0; i <= num_pipes; i++) {
-        // redirect input to current command from previous command's output
-        dup2(fd_in, 0);
-
-        // redirect output from current command to next command's input
-        if (i < num_pipes) {
-            dup2(pipes[i*2+1], 1);
-        } else {
-            // last command in pipeline writes output to standard output
-            fd_out = 1;
-        }
-
-        // close unused file descriptors
-        for (int j = 0; j < 2*num_pipes; j++) {
-            if (j != fd_in && j != fd_out && j != pipes[i*2] && j != pipes[i*2+1]) {
-                close(pipes[j]);
-            }
-        }
-
-        // fork child process to run current command
-        if ((pid = fork()) < 0) {
+        pid_t pid = fork();
+        if (pid == -1) {
             perror("fork");
             exit(EXIT_FAILURE);
-        } else if (pid == 0) {
-            // child process runs current command
-            if (execvp(args[cmd_num], args) < 0) {
-                perror("execvp");
-                exit(EXIT_FAILURE);
+        } else if (pid == 0) {  // Child process
+            if (i != 0) {  // Not the first command in the pipeline
+                dup2(prev_read_end, STDIN_FILENO);  // Redirect input to read end of previous pipe
+                close(prev_read_end);  // Close write end of previous pipe
             }
-        }
 
-        // parent process waits for child process to finish
-        if (waitpid(pid, NULL, 0) < 0) {
-            perror("waitpid");
+            if (i != argc - 1) {  // Not the last command in the pipeline
+                dup2(pipe_fds[1], STDOUT_FILENO);  // Redirect output to write end of current pipe
+                close(pipe_fds[0]);  // Close read end of current pipe
+            }
+            // Close all other file descriptors except stdin, stdout, and the pipe file descriptors
+            for (int j = 0; j < argc; j++) {
+                if (j != i && j != i - 1) {
+                    close(pipe_fds[0]);
+                    close(pipe_fds[1]);
+                    close(prev_read_end);
+                }
+            }
+
+            char *cmd = argv[i];
+            char *args[2] = {cmd, NULL};
+            execvp(cmd, args);
+            perror("execvp");
             exit(EXIT_FAILURE);
+        } else {  // Parent process
+            close(pipe_fds[1]);  // Close write end of current pipe (if not the last command in pipeline)
+            prev_read_end = pipe_fds[0];  // Save read end of current pipe as read end of next pipe (if there is a next command)
         }
-
-        // close input file descriptor if it is not standard input
-        if (fd_in != 0) {
-            close(fd_in);
-        }
-
-        // save output file descriptor for next command in pipeline
-        fd_in = pipes[i*2];
     }
 
-    // close output file descriptor if it is not standard output
-    if (fd_out != 1) {
-        close(fd_out);
+    // Wait for all child processes to finish
+    int status;
+    for (int i = 0; i < argc; i++) {
+        wait(&status);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

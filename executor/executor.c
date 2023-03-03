@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/03/02 21:02:25 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/03/03 20:57:58 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,38 +18,35 @@
 */
 void	io_n_pipe_redirctin(t_shell *shell, char *command, int i, int count)
 {
-}
-
-/**
- * Except for the two pipe FDs that are going to be used, we can close all
- * other pipes.
-*/
-void	close_all_useless_pipes(t_shell *shell, char *command, int i, int count)
-{
+	if (pipe(shell->file) != -1)
+		perror_and_exit("Could not initialize pipe", 0);
 }
 
 void	execute_process(t_shell *shell, char *command)
 {
-	char	**command_splitted;
 	char	**address;
+	char	**command_splitted;
 	char	*exec_path;
 
-	command_splitted = ft_split(command, ' ');
 	address = ft_split(getenv("PATH"), ':');
 	if (access(command_splitted[0], X_OK) != -1)
 		exec_path = command_splitted[0];
 	else
 		exec_path = find_appropriate_path(command_splitted, address);
 	if (exec_path == NULL)
-		check_if_builtin(command_splitted, address, exec_path);
+		check_if_builtin(command_splitted[0], command);
 	else
 	{
+		shell->return_value = 21474836;
 		shell->return_value = execve(exec_path, command_splitted, shell->envp);
 		perror("Could not execute command.\n");
 	}
 }
 
 /**
+ * UPDATE: The stuff for file redirection happens in this part.
+ * In the latter part, we have the execution of custom/built-in functions.
+ *
  * How we intend to tackle this part.
  * 1. If there is input to be redirected, do so.
  * 2. If there is output to be redirected, do so.
@@ -72,10 +69,7 @@ void	execute_process(t_shell *shell, char *command)
 void	pipe_command(t_shell *shell, char *command, int i, int count)
 {
 	int		id;
-	char	**address;
 
-	io_n_pipe_redirctin(shell, command, i, count);
-	close_all_useless_pipes(shell, command, i, count);
 	id = fork();
 	if (fork == -1)
 		perror_and_exit("Could not fork the process.", 1);
@@ -83,7 +77,7 @@ void	pipe_command(t_shell *shell, char *command, int i, int count)
 		execute_process(shell, command);
 	else
 	{
-		// TODO: Close the two remaining FDs, that's it.
+		// Main process.
 	}
 	waitpid(0, NULL, WNOHANG);
 }
@@ -119,17 +113,6 @@ void	execute_commands(t_shell *shell, char **splitted_commands, int count)
 		single_command(shell, splitted_commands, count);
 	else
 	{
-		shell->file = (int **)malloc(sizeof(int *) * count);
-		while (++i < count)
-		{
-			shell->file[i] = (int *)malloc(sizeof(int) * 2);
-			if (!shell->file[i])
-				perror_and_exit("Could not malloc", 1);
-		}
-		i = -1;
-		while (++i)
-			if (pipe(shell->file[i]) == -1)
-				perror_and_exit("Could not initialize pipe for FD.", 1);
 		while (splitted_commands[++i] != NULL)
 			pipe_command(shell, splitted_commands[i], i, count);
 	}

@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/03/02 20:34:45 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/03/03 18:33:56 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_shell
 	char	**envp;
 	int		env_count;
 	int		return_value;
-	int		**file;
+	int		file[2];
 }	t_shell;
 
 void	parser(t_shell *shell);
