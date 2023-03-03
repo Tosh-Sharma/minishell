@@ -61,6 +61,10 @@ int	find_command(char *command, t_shell *shell)
 		mini_pwd();
 	else if (!(ft_strcmp(shell->split_com[0], "env")))
 		env_command(shell);
+	else if (!(ft_strcmp(shell->split_com[0], "export")))
+		export_command(shell, command);
+	else if (!(ft_strcmp(shell->split_com[0], "unset")))
+		unset_command(shell, command);
 	//else if (!(ft_strcmp(shell->split_com[0], "cd")))
 		//mini_cd();
 	return (0);

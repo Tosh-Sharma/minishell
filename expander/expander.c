@@ -26,20 +26,19 @@ int	get_env_variable_count(char *input)
 	while (input[++i])
 	{
 		printf("input[%d] = %c\n", i, input[i]);
-		if ((f_d == 0 && input[i] == '$' && input[i + 1] && input[i + 1] != ' ')
-			|| (f_d == 1 && f_s == 1 && input[i] == '$'
+		if (((f_s == 0)  || (f_d == 1)) && (input[i] == '$'
 			&& input[i + 1] && input[i + 1] != ' '))
 		{
 			printf("count++\nsingle = %d et double = %d\n", f_s, f_d);
 			count++;
 		}
-		if (input[i] == '"' && f_d == 0)
+		if (input[i] == '"' && f_d == 0 && f_s == 0)
 			f_d = 1;
-		else if (input[i] == '"' && f_d == 1)
+		else if (input[i] == '"' && f_d == 1 && f_s == 0)
 			f_d = 0;
-		if (input[i] == '\'' && f_s == 0 && f_d == 1)
+		if (input[i] == '\'' && f_d == 0 && f_s == 0)
 			f_s = 1;
-		else if (input[i] == '\'' && f_s == 1)
+		else if (input[i] == '\'' && f_d == 0 && f_s == 1)
 			f_s = 0;
 	}
 	return (count);
@@ -58,17 +57,16 @@ void	store_positions(char *input, int *positions)
 	f_d = 0;
 	while (input[++i])
 	{
-		if  ((f_d == 0 && input[i] == '$' && input[i + 1] && input[i + 1] != ' ')
-			|| (f_d == 1 && f_s == 1 && input[i] == '$'
+		if (((f_s == 0)  || (f_d == 1)) && (input[i] == '$'
 			&& input[i + 1] && input[i + 1] != ' '))
 			positions[++j] = i;
-		if (input[i] == '"' && f_d == 0)
+		if (input[i] == '"' && f_d == 0 && f_s == 0)
 			f_d = 1;
-		else if (input[i] == '"' && f_d == 1)
+		else if (input[i] == '"' && f_d == 1 && f_s == 0)
 			f_d = 0;
-		if (input[i] == '\'' && f_s == 0 && f_d == 1)
+		if (input[i] == '\'' && f_d == 0 && f_s == 0)
 			f_s = 1;
-		else if (input[i] == '\'' && f_s == 1)
+		else if (input[i] == '\'' && f_d == 0 && f_s == 1)
 			f_s = 0;
 	}
 }
