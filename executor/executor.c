@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/03/03 20:57:58 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/03/03 22:04:30 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 */
 void	io_n_pipe_redirctin(t_shell *shell, char *command, int i, int count)
 {
-	if (pipe(shell->file) != -1)
-		perror_and_exit("Could not initialize pipe", 0);
+	// if (pipe(shell->file) != -1)
+	// 	perror_and_exit("Could not initialize pipe", 0);
 }
 
 void	execute_process(t_shell *shell, char *command)
@@ -46,35 +46,22 @@ void	execute_process(t_shell *shell, char *command)
 /**
  * UPDATE: The stuff for file redirection happens in this part.
  * In the latter part, we have the execution of custom/built-in functions.
- *
- * How we intend to tackle this part.
- * 1. If there is input to be redirected, do so.
- * 2. If there is output to be redirected, do so.
- * 3. Close unused file descriptors.
- * 4. Fork.
- * 5. In main process, do nothing but wait and close the remaining FDs.
- * 6. In child process,
- * 		a. Is it a built-in command or our command?
- *  	b. If it is a built-in command,
- *			i.		Retrieve the address of the executable path
- *			ii.		Get variables in place for execve.
- *			iii. 	Handle for return value from execve success/failure.
- *		c. If it is our command,
- *			i. 		Execute function as necessary.
- *			ii. 	Handle for return value from command
- * 7. Free everything that needs to be freed.
- * 8. If finished, (　-_･) ︻デ═一 ▸▸▸ 
- * 9. else (ง'̀-'́)ง
 */
 void	pipe_command(t_shell *shell, char *command, int i, int count)
 {
 	int		id;
+	int		fd[2];
 
+	if (pipe(fd) == -1)
+		perror_and_exit("Could not create pipe.", 1);
 	id = fork();
-	if (fork == -1)
+	//io_n_pipe_redirctin(shell, command, i, count);
+	if (id == -1)
 		perror_and_exit("Could not fork the process.", 1);
 	if (id == 0)
+	{
 		execute_process(shell, command);
+	}
 	else
 	{
 		// Main process.
@@ -109,6 +96,7 @@ void	execute_commands(t_shell *shell, char **splitted_commands, int count)
 	int		i;
 
 	i = -1;
+	shell->pre_pipe_fd = dup(STDIN_FILENO);
 	if (count == 0)
 		single_command(shell, splitted_commands, count);
 	else
