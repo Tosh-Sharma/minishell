@@ -22,14 +22,14 @@ void	free_and_replace_vars(t_shell *shell, char **new_env_vars,
 		free(strings[i]);
 	free(strings);
 	i = -1;
-	while (++i < shell->env_count)
+	while (++i < shell->env_y)
 		free(shell->envp[i]);
 	free(shell->envp);
 	shell->envp = new_env_vars;
 	i = 0;
 	while (shell->envp[i] != NULL)
 		i++;
-	shell->env_count = i;
+	shell->env_y = i;
 }
 
 void	copy_env_vars_except_marked(t_shell *shell, char **new_env_vars,
@@ -139,7 +139,7 @@ void	unset_command(t_shell *shell, char *input)
 			break ;
 	}
 	count = i;
-	new_env_vars = (char **)malloc(sizeof(char *) * (shell->env_count - count));
+	new_env_vars = (char **)malloc(sizeof(char *) * (shell->env_y - count));
 	copy_env_vars_except_marked(shell, new_env_vars, index, count);
 	free_and_replace_vars(shell, new_env_vars, strings, count);
 }

@@ -21,13 +21,13 @@ void	store_latest_variables(t_shell *shell, int count, char **strings)
 	while (++i < count)
 	{
 		len = (ft_strlen(strings[i + 1]) + 1);
-		shell->envp[shell->env_count + i] = (char *)malloc(sizeof(char) * len);
-		ft_strlcpy(shell->envp[shell->env_count + i], strings[i + 1], len);
+		shell->envp[shell->env_y + i] = (char *)malloc(sizeof(char) * len);
+		ft_strlcpy(shell->envp[shell->env_y + i], strings[i + 1], len);
 		free(strings[i + 1]);
 	}
-	shell->envp[shell->env_count + i] = NULL;
+	shell->envp[shell->env_y + i] = NULL;
 	free(strings);
-	shell->env_count = shell->env_count + i;
+	shell->env_y = shell->env_y + i;
 }
 
 char	**realloc_new_and_copy_old(t_shell *shell, int count)
@@ -36,8 +36,8 @@ char	**realloc_new_and_copy_old(t_shell *shell, int count)
 	int		i;
 
 	i = -1;
-	new_envs = (char **)malloc(sizeof(char *) * (shell->env_count + count + 1));
-	while (++i < shell->env_count)
+	new_envs = (char **)malloc(sizeof(char *) * (shell->env_y + count + 1));
+	while (++i < shell->env_y)
 	{
 		new_envs[i] = (char *)malloc(sizeof(char) * (ft_strlen(shell->envp[i])
 					+ 1));
@@ -87,7 +87,7 @@ void	env_command(t_shell *shell)
 	int	i;
 
 	i = -1;
-	while (++i < shell->env_count)
+	while (++i < shell->env_y)
 		printf("%s\n", shell->envp[i]);
 }
 
@@ -101,7 +101,7 @@ void	copy_env_variables(t_shell *shell, char **envp)
 	while (envp[count] != NULL)
 		++count;
 	shell->envp = (char **)malloc(sizeof(char *) * (count + 1));
-	shell->env_count = count;
+	shell->env_y = count;
 	i = 0;
 	while (i < count)
 	{

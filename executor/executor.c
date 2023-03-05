@@ -34,27 +34,15 @@ int get_index(char *command, int i)
 	return (index);
 }
 
-int	find_command(char *command, t_shell *shell)
+void	find_command(char *command, t_shell *shell)
 {
 	int	i;
 
 	i = 0;
 
-	/*while (command[i] && command[i] == ' ')
-		i++;
-	//printf("command[%d] :%c\n", i, command[i]);
-	if (command[i] && command[i] == 'e' && command[i + 1] == 'c' &&
-		command[i + 2] == 'h' && command[i + 3] == 'o' && (command[i + 4] == ' ' || !command[i + 4]))
-		mini_echo(command, get_index(command, i + 4), shell);
-	if (command[i] && command[i] == 'c' && command[i + 1] == 'd'
-		&& command[i + 2] == ' ')
-		mini_cd((command), get_index(command, i + 2));
-	if (command[i] && command[i] == 'p' && command[i + 1] == 'w'
-		&& command[i + 2] == 'd' && (command[i + 3] == ' ' || !command[i + 3]))
-		mini_pwd();
-	if (command[i] && command[i] == 'e' && command[i + 1] == 'n'
-		&& command[i + 2] == 'v' && (command[i + 3] == ' ' || !command[i + 3]))
-		env_command(shell);*/
+	printf("pre_env_y  = %d\n", shell->env_y);
+	env_count_update(shell);
+	printf("post_env_y  = %d\n", shell->env_y);
 	if (!(ft_strcmp(shell->split_com[0], "echo")))
 		mini_echo(command, get_index(command, i + 4), shell);
 	else if (!(ft_strcmp(shell->split_com[0], "pwd")))
@@ -65,10 +53,9 @@ int	find_command(char *command, t_shell *shell)
 		export_command(shell, command);
 	else if (!(ft_strcmp(shell->split_com[0], "unset")))
 		unset_command(shell, command);
-	//else if (!(ft_strcmp(shell->split_com[0], "cd")))
-		//mini_cd();
-	return (0);
-}
+	else if (!(ft_strcmp(shell->split_com[0], "cd")))
+		mini_cd(command, shell);
+	}
 
 void	command_spliter(char *command, t_shell *shell)
 {
@@ -90,9 +77,10 @@ void	execute_commands(t_shell *shell, char **splitted_commands)
 	{
 		if (splitted_commands[i])
 		{
+			printf("HELL\n");
 			shell->split_com = NULL;
 			command_spliter(splitted_commands[i], shell);
-			com = find_command(splitted_commands[i], shell);
+			find_command(splitted_commands[i], shell);
 			free(shell->split_com);
 		}
 		//printf("\n");

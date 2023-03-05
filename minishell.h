@@ -60,5 +60,8 @@ void	expander(char **commands, t_shell *shell);
 char	*replace_env_variable(char *command, int *positions, int count, t_shell *shell);
 void    mini_echo(char *command, int index, t_shell *shell);
 void	mini_pwd(void);
+void	mini_cd(char *command, t_shell *shell);
 void	env_command(t_shell *shell);
+void    env_count_update(t_shell *shell);
+
 #endif
