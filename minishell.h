@@ -55,6 +55,7 @@ void	*ft_malloc_checker(int type, int size);
 void	execute_commands(t_shell *shell, char **splitted_commands);
 void	export_command(t_shell *shell, char *input);
 void	unset_command(t_shell *shell, char *input);
+int		unset_checker(t_shell *shell);
 int		join_and_cmp(const char *s1, const char *s2, size_t n);
 void	expander(char **commands, t_shell *shell);
 char	*replace_env_variable(char *command, int *positions, int count, t_shell *shell);

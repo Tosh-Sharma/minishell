@@ -34,7 +34,7 @@ char    *get_var(char *command, int nb, char *var, int len)
     while (k < len)
     {
         if (command[j + 1] && (command[j + 1] == '{' || command[j + 1] == '\''
-            || command[j + 1] == '}' || command[j + 1] == ' '))
+            || command[j + 1] == '}' || command[j + 1] == ' ' || command[j + 1] == '='))
             j++;
         else
         {
@@ -77,7 +77,7 @@ int     new_len_com(char *command, char **res_var, int *positions)
                 res += (int)ft_strlen(res_var[p]);
             p++;
             while (command[i + 1] && command[i + 1] != ' ' && command[i + 1] 
-            != '"' && i + 1 != positions[p])
+            != '"' && command[i + 1] != '=' && i + 1 != positions[p])
                 i++;
         }
         else
@@ -105,6 +105,7 @@ char    *rep_com(char **chars, int *ints, int *positions, char **res_var)
             }
             while (chars[0][ints[0] + 1] && chars[0][ints[0] + 1] != ' '
                 && chars[0][ints[0] + 1] != '"' && chars[0][ints[0] + 1] != '\''
+                && chars[0][ints[0] + 1] != '=' 
                 && ints[0] + 1 != positions[ints[2]])
                 ints[0]++;
         }
@@ -141,15 +142,15 @@ char    **rep_env_var(char **c, int *i, int *pos, char ***t)
         if (c[0][i[1] + 1] == '{')
             i[1]++;
         i[2] = 0;
-        while(c[0][i[1] + 1] && c[0][i[1] + 1] != '"' 
-        && c[0][i[1] + 1] != ' ' && c[0][i[1] + 1] != '$' &&
-            c[0][i[1] + 1] != '}' && c[0][i[1] + 1] != '\'' && ++i[2])
+        while(c[0][i[1] + 1] && c[0][i[1] + 1] != '"' && c[0][i[1] + 1] != ' ' 
+            && c[0][i[1] + 1] != '$' && c[0][i[1] + 1] != '}' && c[0][i[1] + 1]
+            != '=' && c[0][i[1] + 1] != '\'' && ++i[2])
             ++i[1];
         c[1] = (char *)malloc(sizeof(char) * (i[2] + 1));
         get_var(c[0], pos[i[0]], c[1], i[2]);
         i[1] = 0;
         while (i[1] < i[4] && join_and_cmp(c[1], t[1][i[1]], 
-        ft_strlen(c[1])) != 0)
+            ft_strlen(c[1])) != 0)
             i[1]++;
         if (i[1] == i[4])
             t[0][i[0]] = NULL;

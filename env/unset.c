@@ -110,6 +110,20 @@ int	get_count(t_shell *shell, char **strings)
 	return (definite_count);
 }
 
+int	unset_checker(t_shell *shell)
+{
+	int	i;
+
+	i = 0;
+	while (shell->split_com[++i])
+	{
+		printf("arg[%d] :%s", i, shell->split_com[i]);
+		if (ft_strcmp(shell->split_com[i], "$HOME") == 0)
+			return (1);
+	}
+	return (0);
+}
+
 /**
  * Get count of how many variables to unset.
  * Run loop to calculate how many variables actually match with list.
@@ -117,6 +131,8 @@ int	get_count(t_shell *shell, char **strings)
  * Realloc for new list.
  * Copy into the new list all the variables that are not to be unset.
 */
+//if home exists then unset $env_var
+// => ERR_UNSET unset: `env_var value': not a valid identifier
 void	unset_command(t_shell *shell, char *input)
 {
 	char	**strings;

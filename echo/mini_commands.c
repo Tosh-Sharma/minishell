@@ -122,20 +122,48 @@ void    pwd_refresh(t_shell *shell, char *new_dir)
     while (i < shell->env_y &&
         join_and_cmp("OLDPWD", shell->envp[i], 6) != 0)
         i++;
-    printf("shell->envp[%d] :%s\n", i, shell->envp[i]);
     if (i == shell->env_y)
         create_oldpwd(shell, 0);
     else
         create_oldpwd(shell, 1);
 }
 
+void    get_back_home(t_shell *shell)
+{
+    char    *str;
+    char    *res;
+    int     *pos;
+
+    printf("ICI\n");
+    pos = (int *)malloc(sizeof(int) * 1);
+    pos[0] = 3;
+    str = ft_strdup("cd $HOME");
+    res = replace_env_variable(str, pos, 1, shell);
+    printf("new_str :%s\n", res);
+    free(shell->split_com[0]);
+    free(shell->split_com);
+    shell->split_com = ft_split(res, ' ');
+    mini_cd(res, shell);
+}
+
 void    mini_cd(char *command, t_shell *shell)
 {
-    int new_dir;
-    int i;
+    int     new_dir;
+    int     i;
 
+    i = 0;
     if (!shell->split_com[1])
-        printf("not possible\n");
+    {
+        while (i < shell->env_y &&
+        join_and_cmp("HOME", shell->envp[i], 4) != 0)
+            i++;
+        printf("shell->envp[%d] :%s\n", i, shell->envp[i]);
+        if (i == shell->env_y)
+            printf("HOME not set\n");
+            //errors(shell, ERR_HOME); //cd: HOME not set
+        else
+            get_back_home(shell);
+    }
     else
     {
         env_count_update(shell);
@@ -143,6 +171,7 @@ void    mini_cd(char *command, t_shell *shell)
         if (!(new_dir = chdir(shell->split_com[1])))
             change_pwd(shell);
         else
-            printf("dir not found\n");
+            //errors(shell, ERR_FILEORDIR); 
+            printf("cd: %s: No such file or directory\n", shell->split_com[1]);
     }
 }
