@@ -13,6 +13,7 @@ SRCS = 	main.c \
 		expander/expander.c \
 		expander/extra_utils.c \
 		executor/executor.c \
+		executor/utils.c
 
 OBJS = ${SRCS:.c=.o}
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
+/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/03/03 21:47:14 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/03/09 19:02:26 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ typedef struct s_shell
 {
 	char	*input;
 	char	**envp;
+	char	**split_com;
 	int		env_count;
 	int		return_value;
 	int		file[2];
-	int		pre_pipe_fd;
+	int		temp_fd;
 }	t_shell;
 
 void	parser(t_shell *shell);
@@ -57,5 +58,6 @@ void	unset_command(t_shell *shell, char *input);
 int		join_and_cmp(const char *s1, const char *s2, size_t n);
 char	*find_appropriate_path(char **command, char **address);
 void	single_command(t_shell *shell, char **splitted_commands, int count);
+int		find_command(char *command, t_shell *shell);
 
 #endif

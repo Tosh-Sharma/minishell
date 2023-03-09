@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
+/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/03/03 22:04:30 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/03/09 19:01:01 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,59 +14,84 @@
 
 /**
  * If there is IO redirection needed to be done, it should be done here.
- * Redirection for pipes will also be part of this function.
 */
 void	io_n_pipe_redirctin(t_shell *shell, char *command, int i, int count)
 {
-	// if (pipe(shell->file) != -1)
-	// 	perror_and_exit("Could not initialize pipe", 0);
+	(void)shell;
+	(void)command;
+	(void)i;
+	(void)count;
 }
 
 void	execute_process(t_shell *shell, char *command)
 {
 	char	**address;
-	char	**command_splitted;
 	char	*exec_path;
 
 	address = ft_split(getenv("PATH"), ':');
-	if (access(command_splitted[0], X_OK) != -1)
-		exec_path = command_splitted[0];
-	else
-		exec_path = find_appropriate_path(command_splitted, address);
-	if (exec_path == NULL)
-		check_if_builtin(command_splitted[0], command);
-	else
+	shell->return_value = 0;
+	shell->split_com = ft_split(command, ' ');
+	if (find_command(command, shell) == 0)
 	{
-		shell->return_value = 21474836;
-		shell->return_value = execve(exec_path, command_splitted, shell->envp);
-		perror("Could not execute command.\n");
+		if (access(shell->split_com[0], X_OK) != -1)
+			exec_path = shell->split_com[0];
+		else
+			exec_path = find_appropriate_path(shell->split_com, address);
+		if (exec_path != NULL)
+		{
+			shell->return_value = execve(exec_path, shell->split_com,
+					shell->envp);
+			perror("Something went wrong in code execution.");
+		}
 	}
 }
 
-/**
- * UPDATE: The stuff for file redirection happens in this part.
- * In the latter part, we have the execution of custom/built-in functions.
-*/
-void	pipe_command(t_shell *shell, char *command, int i, int count)
+void	pipe_commands(t_shell *shell, char *command)
 {
-	int		id;
-	int		fd[2];
+	int	id;
+	int	fd[2];
 
 	if (pipe(fd) == -1)
 		perror_and_exit("Could not create pipe.", 1);
 	id = fork();
-	//io_n_pipe_redirctin(shell, command, i, count);
 	if (id == -1)
 		perror_and_exit("Could not fork the process.", 1);
 	if (id == 0)
 	{
+		dup2(fd[1], STDOUT_FILENO);
+		dup2(shell->temp_fd, STDIN_FILENO);
+		close(shell->temp_fd);
+		close(fd[0]);
+		close(fd[1]);
 		execute_process(shell, command);
 	}
 	else
 	{
-		// Main process.
+		close(fd[1]);
+		close(shell->temp_fd);
+		shell->temp_fd = fd[0];
 	}
-	waitpid(0, NULL, WNOHANG);
+}
+
+void	multipipe_last(t_shell *shell, char *command)
+{
+	int	id;
+
+	id = fork();
+	if (id == -1)
+		perror_and_exit("Could not fork the process.", 1);
+	if (id == 0)
+	{
+		dup2(shell->temp_fd, STDIN_FILENO);
+		close(shell->temp_fd);
+		execute_process(shell, command);
+	}
+	else
+	{
+		close(shell->temp_fd);
+		while (waitpid(-1, NULL, 0) != -1)
+			;
+	}
 }
 
 /**
@@ -96,12 +121,13 @@ void	execute_commands(t_shell *shell, char **splitted_commands, int count)
 	int		i;
 
 	i = -1;
-	shell->pre_pipe_fd = dup(STDIN_FILENO);
+	shell->temp_fd = dup(STDIN_FILENO);
 	if (count == 0)
 		single_command(shell, splitted_commands, count);
 	else
 	{
-		while (splitted_commands[++i] != NULL)
-			pipe_command(shell, splitted_commands[i], i, count);
+		while (++i < (count - 1))
+			pipe_commands(shell, splitted_commands[i]);
+		multipipe_last(shell, splitted_commands[i]);
 	}
 }
