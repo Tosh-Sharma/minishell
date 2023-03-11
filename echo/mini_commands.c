@@ -84,17 +84,19 @@ void    create_oldpwd(t_shell *shell, int flag)
     size = 100;
     pwd = NULL;
     pwd = getcwd(pwd, size);
-    printf("flag = %d\n", flag);
+    //printf("flag = %d\n", flag);
     if (flag)
     {
-        printf("FLAG\n");
-        str = "unset OLDPWD";
+       //printf("FLAG\n");
+        str = ft_strdup("unset OLDPWD");
         unset_command(shell, str);
+        free(str);
     }
-    printf("pwd =%s\n", pwd);
-    str = "export OLDPWD=";
+    //printf("pwd =%s\n", pwd);
+    str = ft_strdup("export OLDPWD=");
     str = ft_strjoin(str, pwd);
     export_command(shell, str);
+    free(str);
 }
 
 void    change_pwd(t_shell *shell)
@@ -106,12 +108,14 @@ void    change_pwd(t_shell *shell)
     size = 100;
     pwd = NULL;
     pwd = getcwd(pwd, size);
-    str = "unset PWD";
+    str = ft_strdup("unset PWD");
+    free(str);
     unset_command(shell, str);
-    printf("pwd =%s\n", pwd);
-    str = "export PWD=";
+    //printf("pwd =%s\n", pwd);
+    str = ft_strdup("export PWD=");
     str = ft_strjoin(str, pwd);
     export_command(shell, str);
+    free(str);
 }
 
 void    pwd_refresh(t_shell *shell, char *new_dir)
@@ -134,12 +138,12 @@ void    get_back_home(t_shell *shell)
     char    *res;
     int     *pos;
 
-    printf("ICI\n");
+    //printf("ICI\n");
     pos = (int *)malloc(sizeof(int) * 1);
     pos[0] = 3;
     str = ft_strdup("cd $HOME");
     res = replace_env_variable(str, pos, 1, shell);
-    printf("new_str :%s\n", res);
+    //printf("new_str :%s\n", res);
     free(shell->split_com[0]);
     free(shell->split_com);
     shell->split_com = ft_split(res, ' ');
@@ -157,7 +161,7 @@ void    mini_cd(char *command, t_shell *shell)
         while (i < shell->env_y &&
         join_and_cmp("HOME", shell->envp[i], 4) != 0)
             i++;
-        printf("shell->envp[%d] :%s\n", i, shell->envp[i]);
+        //printf("shell->envp[%d] :%s\n", i, shell->envp[i]);
         if (i == shell->env_y)
             printf("HOME not set\n");
             //errors(shell, ERR_HOME); //cd: HOME not set

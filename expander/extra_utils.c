@@ -73,7 +73,7 @@ int     new_len_com(char *command, char **res_var, int *positions)
         if (i == positions[p])
         {
             i++;
-            if (res_var[p] != NULL)
+            if (res_var[p] && ft_strcmp(res_var[p], "\""))
                 res += (int)ft_strlen(res_var[p]);
             p++;
             while (command[i + 1] && command[i + 1] != ' ' && command[i + 1] 
@@ -83,7 +83,7 @@ int     new_len_com(char *command, char **res_var, int *positions)
         else
             res++;
     }
-    printf("res = %d\n", res + 1);
+    //printf("res = %d\n", res + 1);
     return (res + 1);
 }
 
@@ -95,7 +95,7 @@ char    *rep_com(char **chars, int *ints, int *positions, char **res_var)
         {
             ints[3] = -1;
             ints[0]++;
-            if (res_var[ints[2]] == NULL)
+            if (ft_strcmp(res_var[ints[2]], "\"") == 0)
                 ints[2]++;
             else
             {
@@ -130,6 +130,12 @@ char    *replace_com(char *res_com, char *command,
     l = 0;
     res_com = rep_com((char *[2]){command, res_com}, 
         (int [4]){i, j, k, l}, positions, res_var);
+    while (res_var[++i] != NULL)
+    {
+        //printf("postres_var :%s\n", res_var[i]);
+        free(res_var[i]);
+    }
+    free(res_var);
     return (res_com);
 }
 
@@ -153,7 +159,7 @@ char    **rep_env_var(char **c, int *i, int *pos, char ***t)
             ft_strlen(c[1])) != 0)
             i[1]++;
         if (i[1] == i[4])
-            t[0][i[0]] = NULL;
+            t[0][i[0]] = ft_strdup("\"");
         else
             t[0][i[0]] = replace_var(t[0][i[0]], c[1], t[1][i[1]]);
         free(c[1]);
@@ -184,7 +190,6 @@ char	*replace_env_variable(char *command, int *positions,
     if (!shell->res_com)
 		perror_and_exit("Could not allocate memory for array.", 1);
     shell->res_com = replace_com(shell->res_com, command, res_var, positions);
-    free(res_var);
     free(command);
     return (shell->res_com);
 }

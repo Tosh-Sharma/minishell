@@ -91,7 +91,7 @@ void	expander(char **commands, t_shell *shell)
 			if (!positions)
 				perror_and_exit("Could not allocate memory for array.", 1);
 			store_positions(commands[i], positions);
-			printf("command :%s\npositions = %d\ncpositions1 = %d\ncount = %d\n", commands[0], positions[0], positions[1], count);
+			//printf("command :%s\npositions = %d\ncpositions1 = %d\ncount = %d\n", commands[0], positions[0], positions[1], count);
 			commands[i] = replace_env_variable(commands[i], positions, count, shell);
 			free(positions);
 		}
