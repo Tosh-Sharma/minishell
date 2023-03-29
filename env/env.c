@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:26:45 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/10 16:33:03 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/27 15:26:15 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	export_command(t_shell *shell, char *input)
 {
 	char	**split_string;
 	int		count;
-	int		i;
 
 	split_string = ft_split(input, ' ');
 	i = 1;

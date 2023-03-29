@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:41 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/01 20:32:09 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/02/27 15:36:27 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,11 @@
  * 3. Environment variable names get expanded irrespective of anything
  * but if they are stuck with another thing without spaces, that should be
  * illegal or command not found. This is worth noting.
- * 4. There are a bunch of $ signals we can potentially tackle, the list 
- * is too long but IT IS WHAT IT IS.
- * TODO: Keep looking for more and more illegal stuff.
+ * 4. There are a bunch of $ signals we can potentially tackle.
 */
 void	check_for_incorrect_syntax(char *input)
 {
+	(void)input;
 }
 
 void	perror_and_exit(char *input, int exit_code)
