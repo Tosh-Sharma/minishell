@@ -30,43 +30,7 @@
 */
 // TODO: Delete this later. ONLY FOR TESTING.
 
-int get_index(char *command, int i)
-{
-	int	index;
-
-	while (command[i] && command[i] == ' ')
-		i++;
-	if (i == ft_strlen(command))
-		return (-1);
-	//printf("command[%d] :%c\n", i, command[i]);
-	index = i;
-	return (index);
-}
-
-void	find_command(char *command, t_shell *shell)
-{
-	int	i;
-	int	flag;
-
-	i = 0;
-	//printf("hello\n");
-	env_count_update(shell);
-	if (!(ft_strcmp(shell->split_com[0], "echo")))
-		mini_echo(command, get_index(command, i + 4), shell);
-	else if (!(ft_strcmp(shell->split_com[0], "pwd")))
-		mini_pwd();
-	else if (!(ft_strcmp(shell->split_com[0], "env")))
-		env_command(shell);
-	else if (!(ft_strcmp(shell->split_com[0], "export")))
-		export_command(shell, command);
-	else if (!(ft_strcmp(shell->split_com[0], "unset")))
-		unset_command(shell, command);
-	else if (!(ft_strcmp(shell->split_com[0], "cd")))
-		mini_cd(command, shell);
-	//printf("fin\n");
-}
-
-void	command_spliter(char *command, t_shell *shell)
+/*void	command_spliter(char *command, t_shell *shell)
 {
 	int	i;
 
@@ -89,7 +53,7 @@ void	execute_commands(t_shell *shell, char **splitted_commands)
 			//printf("HELL\n");
 			shell->split_com = NULL;
 			command_spliter(splitted_commands[i], shell);
-			find_command(splitted_commands[i], shell);
+			find_command(shell);
 			j = -1;
 			while (shell->split_com[++j])
 				free(shell->split_com[j]);
@@ -100,3 +64,4 @@ void	execute_commands(t_shell *shell, char **splitted_commands)
 		//printf("\n");
 	}
 }
+*/

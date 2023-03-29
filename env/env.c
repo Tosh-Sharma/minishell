@@ -100,6 +100,7 @@ void	export_command(t_shell *shell, char *input)
 {
 	char	**split_string;
 	int		count;
+	int		i;
 
 	split_string = ft_split(input, ' ');
 	i = 1;

@@ -60,7 +60,6 @@ char	*replace_var(char *new_var, char *var, char *env_row)
 int     new_len_com(char *command, char **res_var, int *positions)
 {
 	int	i;
-	int	j;
 	int	p;
 	int	res;
 
@@ -176,6 +175,9 @@ char	*replace_env_variable(char *command, int *positions,
 
 	i = -1;
 	j = 0;
+	var = NULL;
+	k = 0;
+	printf("command received in expander %s\n", command);
 	res_var = (char **)malloc(sizeof(char *) * (count));
 	if (!res_var)
 		perror_and_exit("Could not allocate memory for array.", 1);

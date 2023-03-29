@@ -66,10 +66,12 @@ char	*replace_env_variable(char *command, int *positions, int count,
 			t_shell *shell);
 void	mini_echo(char *command, int index, t_shell *shell);
 void	mini_pwd(void);
-void	mini_cd(char *command, t_shell *shell);
+void	mini_cd(t_shell *shell);
 void	env_count_update(t_shell *shell);
 char	*find_appropriate_path(char **command, char **address);
 void	single_command(t_shell *shell, char **splitted_commands, int count);
-int		find_command(char *command, t_shell *shell);
+void	find_command(char *command, t_shell *shell);
+int		find_command_checker(t_shell *shell);
+int		get_index(char *command, int i);
 
 #endif

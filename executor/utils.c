@@ -49,32 +49,56 @@ void	single_command(t_shell *shell, char **splitted_commands, int count)
 	(void)count;
 }
 
-int	get_index(char *command, int i)
+int	find_command_checker(t_shell *shell)
+{
+	//printf("hello\n");
+	if (!(ft_strcmp(shell->split_com[0], "echo")))
+		return (1);
+	else if (!(ft_strcmp(shell->split_com[0], "pwd")))
+		return (1);
+	else if (!(ft_strcmp(shell->split_com[0], "env")))
+		return (1);
+	else if (!(ft_strcmp(shell->split_com[0], "export")))
+		return (1);
+	else if (!(ft_strcmp(shell->split_com[0], "unset")))
+		return (1);
+	else if (!(ft_strcmp(shell->split_com[0], "cd")))
+		return (1);
+	return (0);
+	//printf("fin\n");
+}
+
+int get_index(char *command, int i)
 {
 	int	index;
 
 	while (command[i] && command[i] == ' ')
 		i++;
-	if ((size_t)i == ft_strlen(command))
+	if (i == (int)ft_strlen(command))
 		return (-1);
+	//printf("command[%d] :%c\n", i, command[i]);
 	index = i;
 	return (index);
 }
 
-int	find_command(char *command, t_shell *shell)
+void	find_command(char *command, t_shell *shell)
 {
-	// if (ft_strcmp(shell->split_com[0], "echo") == 0)
-	// 	mini_echo(command, get_index(command, i + 4), shell);
-	// else if (ft_strcmp(shell->split_com[0], "pwd") == 0)
-	// 	mini_pwd();
-	// else
-	if (ft_strcmp(shell->split_com[0], "env") == 0)
+	int	i;
+
+	i = 0;
+	//printf("hello\n");
+	env_count_update(shell);
+	if (!(ft_strcmp(shell->split_com[0], "echo")))
+		mini_echo(command, get_index(command, i + 4), shell);
+	else if (!(ft_strcmp(shell->split_com[0], "pwd")))
+		mini_pwd();
+	else if (!(ft_strcmp(shell->split_com[0], "env")))
 		env_command(shell);
-	else if (ft_strcmp(shell->split_com[0], "export") == 0)
+	else if (!(ft_strcmp(shell->split_com[0], "export")))
 		export_command(shell, command);
-	else if (ft_strcmp(shell->split_com[0], "unset") == 0)
+	else if (!(ft_strcmp(shell->split_com[0], "unset")))
 		unset_command(shell, command);
-	// else if (ft_strcmp(shell->split_com[0], "cd") == 0)
-	// 	mini_cd(command, shell);
-	return (0);
+	else if (!(ft_strcmp(shell->split_com[0], "cd")))
+		mini_cd(shell);
+	//printf("fin\n");
 }

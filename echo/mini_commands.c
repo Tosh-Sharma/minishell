@@ -118,7 +118,7 @@ void    change_pwd(t_shell *shell)
 	free(str);
 }
 
-void    pwd_refresh(t_shell *shell, char *new_dir)
+void    pwd_refresh(t_shell *shell)
 {
 	int i;
 
@@ -147,10 +147,10 @@ void    get_back_home(t_shell *shell)
 	free(shell->split_com[0]);
 	free(shell->split_com);
 	shell->split_com = ft_split(res, ' ');
-	mini_cd(res, shell);
+	mini_cd(shell);
 }
 
-void    mini_cd(char *command, t_shell *shell)
+void    mini_cd(t_shell *shell)
 {
 	int     new_dir;
 	int     i;
@@ -171,7 +171,8 @@ void    mini_cd(char *command, t_shell *shell)
 	else
 	{
 		env_count_update(shell);
-		pwd_refresh(shell, shell->split_com[1]);
+		printf("split_com :%s\n", shell->split_com[1]);
+		pwd_refresh(shell);
 		if (!(new_dir = chdir(shell->split_com[1])))
 			change_pwd(shell);
 		else
