@@ -52,6 +52,6 @@ void	*ft_malloc_checker(int type, int size)
 		s = (char *)malloc(sizeof(char) * size);
 		if (!s)
 			perror_and_exit("Could not allocate memory", 1);
-		return (s);	
+		return (s);
 	}
 }

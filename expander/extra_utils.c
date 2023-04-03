@@ -21,43 +21,7 @@
  * echo $USER${USER} ==> echo nameOfUsernameOfUser
 */
 
-char    *get_var(char *command, int nb, char *var, int len)
-{
-	int	j;
-	int	k;
-
-	j = 0;
-	k = 0;
-	if (nb != 0)
-		j = nb;
-	while (k < len)
-	{
-		if (command[j + 1] && (command[j + 1] == '{' || command[j + 1] == '\''
-			|| command[j + 1] == '}' || command[j + 1] == ' ' || command[j + 1] == '='))
-			j++;
-		else
-		{
-			var[k] = command[j + 1];
-			j++;
-			k++;
-		}
-	}
-	var[k] = '\0';
-	return (var);
-}
-
-char	*replace_var(char *new_var, char *var, char *env_row)
-{
-	int	i;
-
-	i = ft_strlen(var) + 1;
-	new_var = (char *)malloc(sizeof(char) * ((ft_strlen(env_row)) + 1 - i));
-	ft_strlcpy(new_var, &env_row[ft_strlen(var) + 1],
-		ft_strlen(env_row) + 1 - i);
-	return (new_var);
-}
-
-int     new_len_com(char *command, char **res_var, int *positions)
+int	new_len_com(char *command, char **res_var, int *positions)
 {
 	int	i;
 	int	p;
@@ -154,10 +118,10 @@ char	**rep_env_var(char **c, int *i, int *pos, char ***t)
 		while (i[1] < i[4] && join_and_cmp(c[1], t[1][i[1]],
 			ft_strlen(c[1])) != 0)
 			i[1]++;
-		if (i[1] == i[4])
+		if (i[1] == i[4] && (ft_strcmp(c[1], "\?")) != 0)
 			t[0][i[0]] = ft_strdup("\"");
 		else
-			t[0][i[0]] = replace_var(t[0][i[0]], c[1], t[1][i[1]]);
+			t[0][i[0]] = replace_var(t[0][i[0]], c[1], t[1][i[1]], i[5]);
 		free(c[1]);
 	}
 	t[0][i[0]] = NULL;
@@ -181,9 +145,10 @@ char	*replace_env_variable(char *command, int *positions,
 	res_var = (char **)malloc(sizeof(char *) * (count));
 	if (!res_var)
 		perror_and_exit("Could not allocate memory for array.", 1);
-	res_var = rep_env_var((char *[2]){command, var},
-			(int [5]){i, j, k, count, shell->env_y}, positions,
-			(char **[2]){res_var, shell->envp});
+	res_var = rep_env_var((char *[3]){command, var, shell->input},
+			(int [6]){i, j, k, count, shell->env_y, shell->return_value},
+			positions, (char **[2]){res_var, shell->envp});
+	printf("shell->ret expander = %d\n", shell->return_value);
 	shell->res_com = (char *)malloc(sizeof(char)
 			* new_len_com(command, res_var, positions));
 	if (!shell->res_com)

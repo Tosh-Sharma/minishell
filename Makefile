@@ -7,14 +7,14 @@ SRCS = 	main.c \
 		signal_handling.c \
 		utils/parsing_utils.c \
 		utils/basic_utils.c \
-		env/env.c \
+		env/env.c env/env_bis.c\
 		env/unset.c \
 		env/unset_utilities.c \
 		expander/expander.c \
-		expander/extra_utils.c \
+		expander/extra_utils.c expander/extra_utils_bis.c \
 		executor/executor.c \
-		echo/mini_commands.c \
-		executor/utils.c
+		echo/mini_commands.c echo/mini_commannds_utils.c\
+		executor/utils.c executor/utils_bis.c
 
 OBJS = ${SRCS:.c=.o}
 

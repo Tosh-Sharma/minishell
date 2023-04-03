@@ -41,7 +41,6 @@ char	*find_appropriate_path(char **command, char **address)
 	return (path);
 }
 
-//TODO: Single command execution (i.e. when there are no pipes)
 void	single_command(t_shell *shell, char **splitted_commands, int count)
 {
 	(void)shell;
@@ -51,7 +50,6 @@ void	single_command(t_shell *shell, char **splitted_commands, int count)
 
 int	find_command_checker(t_shell *shell)
 {
-	//printf("hello\n");
 	if (!(ft_strcmp(shell->split_com[0], "echo")))
 		return (1);
 	else if (!(ft_strcmp(shell->split_com[0], "pwd")))
@@ -64,21 +62,31 @@ int	find_command_checker(t_shell *shell)
 		return (1);
 	else if (!(ft_strcmp(shell->split_com[0], "cd")))
 		return (1);
+	else if (!(ft_strcmp(shell->input, "$?")))
+		return (1);
+	else if (!(ft_strcmp(shell->split_com[0], "exit")))
+		return (1);
 	return (0);
-	//printf("fin\n");
 }
 
-int get_index(char *command, int i)
+void	mini_exit(t_shell *shell)
 {
-	int	index;
+	int	i;
 
-	while (command[i] && command[i] == ' ')
+	i = 0;
+	printf("in exit\n");
+	while (shell->split_com[i])
+	{
+		printf("mini exit string[%d] :%s\n", i, shell->split_com[i]);
 		i++;
-	if (i == (int)ft_strlen(command))
-		return (-1);
-	//printf("command[%d] :%c\n", i, command[i]);
-	index = i;
-	return (index);
+	}
+	printf("exit i = %d\n", i);
+	if (i == 1)
+		shell->return_value = 0;
+	else if (i == 2)
+		exit_one(shell);
+	else
+		exit_multiple(shell, i);
 }
 
 void	find_command(char *command, t_shell *shell)
@@ -86,9 +94,12 @@ void	find_command(char *command, t_shell *shell)
 	int	i;
 
 	i = 0;
-	//printf("hello\n");
 	env_count_update(shell);
-	if (!(ft_strcmp(shell->split_com[0], "echo")))
+	printf("input :%s\n", shell->input);
+	printf("split_com :%s\n", shell->split_com[0]);
+	if (!(ft_strcmp(shell->input, "$?")))
+		mini_return_value(shell);
+	else if (!(ft_strcmp(shell->split_com[0], "echo")))
 		mini_echo(command, get_index(command, i + 4), shell);
 	else if (!(ft_strcmp(shell->split_com[0], "pwd")))
 		mini_pwd();
@@ -100,5 +111,6 @@ void	find_command(char *command, t_shell *shell)
 		unset_command(shell, command);
 	else if (!(ft_strcmp(shell->split_com[0], "cd")))
 		mini_cd(shell);
-	//printf("fin\n");
+	else if (!(ft_strcmp(shell->split_com[0], "exit")))
+		mini_exit(shell);
 }

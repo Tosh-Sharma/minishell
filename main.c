@@ -24,7 +24,6 @@ void	new_prompt(t_shell *shell)
 	else
 	{
 		shell->input = readline("$>:");
-		//write(1, "\n", 1);
 	}
 }
 
@@ -51,7 +50,6 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		new_prompt(&shell);
-		//shell.input = readline("$>:");
 		check_for_incorrect_syntax(shell.input);
 		if (shell.input[0])
 		{
