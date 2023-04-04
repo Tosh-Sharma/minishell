@@ -16,19 +16,26 @@ int	get_env_variable_count(char *input)
 {
 	int	i;
 	int	count;
-	int	flag_single;
+	int	f_s;
+	int	f_d;
 
 	i = -1;
 	count = 0;
-	flag_single = 0;
+	f_s = 0;
+	f_d = 0;
 	while (input[++i])
 	{
-		if (flag_single == 0 && input[i] == '$')
+		if (((f_s == 0) || (f_d == 1)) && (input[i] == '$'
+				&& input[i + 1] && input[i + 1] != ' '))
 			count++;
-		if (input[i] == '\'' && flag_single == 0)
-			flag_single = 1;
-		else if (input[i] == '\'' && flag_single == 1)
-			flag_single = 0;
+		if (input[i] == '"' && f_d == 0 && f_s == 0)
+			f_d = 1;
+		else if (input[i] == '"' && f_d == 1 && f_s == 0)
+			f_d = 0;
+		if (input[i] == '\'' && f_d == 0 && f_s == 0)
+			f_s = 1;
+		else if (input[i] == '\'' && f_d == 0 && f_s == 1)
+			f_s = 0;
 	}
 	return (count);
 }
@@ -37,19 +44,26 @@ void	store_positions(char *input, int *positions)
 {
 	int	i;
 	int	j;
-	int	flag_single;
+	int	f_s;
+	int	f_d;
 
 	i = -1;
 	j = -1;
-	flag_single = 0;
+	f_s = 0;
+	f_d = 0;
 	while (input[++i])
 	{
-		if (flag_single == 0 && input[i] == '$')
+		if (((f_s == 0) || (f_d == 1)) && (input[i] == '$'
+				&& input[i + 1] && input[i + 1] != ' '))
 			positions[++j] = i;
-		if (input[i] == '\'' && flag_single == 0)
-			flag_single = 1;
-		else if (input[i] == '\'' && flag_single == 1)
-			flag_single = 0;
+		if (input[i] == '"' && f_d == 0 && f_s == 0)
+			f_d = 1;
+		else if (input[i] == '"' && f_d == 1 && f_s == 0)
+			f_d = 0;
+		if (input[i] == '\'' && f_d == 0 && f_s == 0)
+			f_s = 1;
+		else if (input[i] == '\'' && f_d == 0 && f_s == 1)
+			f_s = 0;
 	}
 }
 
@@ -60,7 +74,7 @@ void	store_positions(char *input, int *positions)
  * For single quotes, no need to expand the variable.
 */
 // FYI: The positions array has one last extra space. It can be NULL.
-void	expander(char **commands)
+void	expander(char **commands, t_shell *shell)
 {
 	int	i;
 	int	count;
@@ -77,8 +91,11 @@ void	expander(char **commands)
 			if (!positions)
 				perror_and_exit("Could not allocate memory for array.", 1);
 			store_positions(commands[i], positions);
-			replace_env_variable(commands[i], positions, count);
+			//printf("command :%s\npositions = %d\ncpositions1 = %d\ncount = %d\n", commands[0], positions[0], positions[1], count);
+			commands[i] = replace_env_variable(commands[i], positions, count,
+					shell);
 			free(positions);
 		}
 	}
+	printf("command :%s\n", commands[0]);
 }

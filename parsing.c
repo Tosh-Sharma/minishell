@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 17:45:46 by tsharma           #+#    #+#             */
-/*   Updated: 2023/03/09 13:42:40 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/03/29 16:37:33 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,6 @@ void	parser(t_shell *shell)
 	if (!splitted_commands)
 		perror_and_exit("Could not allocate memory for splitted_commands", 1);
 	split_commands(shell->input, pipe_positions, pipe_count, splitted_commands);
-	expander(splitted_commands);
+	expander(splitted_commands, shell);
 	execute_commands(shell, splitted_commands, pipe_count + 1);
 }

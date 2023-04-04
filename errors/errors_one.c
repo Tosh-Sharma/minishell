@@ -1,26 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   errors_one.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
+/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/26 16:54:32 by tsharma           #+#    #+#             */
-/*   Updated: 2022/05/04 16:12:36 by tsharma          ###   ########.fr       */
+/*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
+/*   Updated: 2023/03/29 16:49:05 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*res;
-
-	if (size && ((size_t) - 1 / size) < count)
-		return (NULL);
-	res = malloc(count * size);
-	if (!res)
-		return (NULL);
-	ft_bzero(res, count * size);
-	return (res);
-}
+#include "../minishell.h"

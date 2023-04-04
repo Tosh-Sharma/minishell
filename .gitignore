@@ -1,3 +1,6 @@
 *.o
 .vscode
 libft.a
+minishell.dYSM
+Info.plist
+.DS_Store

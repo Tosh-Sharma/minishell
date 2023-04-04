@@ -14,6 +14,19 @@
 
 t_shell	shell;
 
+void	new_prompt(t_shell *shell)
+{
+	if (shell->new_line_flag == 0)
+	{
+		shell->input = readline("$>:");
+		shell->new_line_flag = 1;
+	}
+	else
+	{
+		shell->input = readline("$>:");
+	}
+}
+
 void	print_welcome(void)
 {
 	printf("\n%s--------------------------------------------------\n", CYAN);
@@ -28,6 +41,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	shell.input = NULL;
+	shell.new_line_flag = 1;
 	if (!envp || envp[0] == 0)
 		return (0);
 	copy_env_variables(&shell, envp);
@@ -35,7 +49,7 @@ int	main(int argc, char **argv, char **envp)
 	signal_handling();
 	while (1)
 	{
-		shell.input = readline("$>:");
+		new_prompt(&shell);
 		check_for_incorrect_syntax(shell.input);
 		if (shell.input[0])
 		{

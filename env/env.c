@@ -12,44 +12,6 @@
 
 #include "../minishell.h"
 
-void	store_latest_variables(t_shell *shell, int count, char **strings)
-{
-	int	i;
-	int	len;
-
-	i = -1;
-	while (++i < count)
-	{
-		len = (ft_strlen(strings[i + 1]) + 1);
-		shell->envp[shell->env_count + i] = (char *)malloc(sizeof(char) * len);
-		ft_strlcpy(shell->envp[shell->env_count + i], strings[i + 1], len);
-		free(strings[i + 1]);
-	}
-	shell->envp[shell->env_count + i] = NULL;
-	free(strings);
-	shell->env_count = shell->env_count + i;
-}
-
-char	**realloc_new_and_copy_old(t_shell *shell, int count)
-{
-	char	**new_envs;
-	int		i;
-
-	i = -1;
-	new_envs = (char **)malloc(sizeof(char *) * (shell->env_count + count + 1));
-	while (++i < shell->env_count)
-	{
-		new_envs[i] = (char *)malloc(sizeof(char) * (ft_strlen(shell->envp[i])
-					+ 1));
-		ft_strlcpy(new_envs[i], shell->envp[i],
-			ft_strlen(shell->envp[i]) + 1);
-		free(shell->envp[i]);
-	}
-	new_envs[i] = NULL;
-	free(shell->envp);
-	return (new_envs);
-}
-
 /**
  * How below code works:
  * 1. Split the input up.
@@ -71,12 +33,17 @@ void	export_command(t_shell *shell, char *input)
 {
 	char	**split_string;
 	int		count;
+	int		i;
 
 	split_string = ft_split(input, ' ');
+	i = 1;
 	count = 0;
-	while (split_string[count] != NULL)
-		count++;
-	--count;
+	while (split_string[i] != NULL)
+	{
+		if (env_var_exists(split_string[i], shell) == 0)
+			count++;
+		i++;
+	}
 	shell->envp = realloc_new_and_copy_old(shell, count);
 	store_latest_variables(shell, count, split_string);
 }
@@ -86,7 +53,7 @@ void	env_command(t_shell *shell)
 	int	i;
 
 	i = -1;
-	while (++i < shell->env_count)
+	while (++i < shell->env_y)
 		printf("%s\n", shell->envp[i]);
 }
 
@@ -100,7 +67,7 @@ void	copy_env_variables(t_shell *shell, char **envp)
 	while (envp[count] != NULL)
 		++count;
 	shell->envp = (char **)malloc(sizeof(char *) * (count + 1));
-	shell->env_count = count;
+	shell->env_y = count;
 	i = 0;
 	while (i < count)
 	{
@@ -115,4 +82,5 @@ void	copy_env_variables(t_shell *shell, char **envp)
 			ft_strlcpy(shell->envp[i], envp[i], length + 1);
 		i++;
 	}
+	shell->env_y = i;
 }

@@ -41,7 +41,6 @@ char	*find_appropriate_path(char **command, char **address)
 	return (path);
 }
 
-//TODO: Single command execution (i.e. when there are no pipes)
 void	single_command(t_shell *shell, char **splitted_commands, int count)
 {
 	(void)shell;
@@ -49,32 +48,69 @@ void	single_command(t_shell *shell, char **splitted_commands, int count)
 	(void)count;
 }
 
-int	get_index(char *command, int i)
+int	find_command_checker(t_shell *shell)
 {
-	int	index;
-
-	while (command[i] && command[i] == ' ')
-		i++;
-	if ((size_t)i == ft_strlen(command))
-		return (-1);
-	index = i;
-	return (index);
+	if (!(ft_strcmp(shell->split_com[0], "echo")))
+		return (1);
+	else if (!(ft_strcmp(shell->split_com[0], "pwd")))
+		return (1);
+	else if (!(ft_strcmp(shell->split_com[0], "env")))
+		return (1);
+	else if (!(ft_strcmp(shell->split_com[0], "export")))
+		return (1);
+	else if (!(ft_strcmp(shell->split_com[0], "unset")))
+		return (1);
+	else if (!(ft_strcmp(shell->split_com[0], "cd")))
+		return (1);
+	else if (!(ft_strcmp(shell->input, "$?")))
+		return (1);
+	else if (!(ft_strcmp(shell->split_com[0], "exit")))
+		return (1);
+	return (0);
 }
 
-int	find_command(char *command, t_shell *shell)
+void	mini_exit(t_shell *shell)
 {
-	// if (ft_strcmp(shell->split_com[0], "echo") == 0)
-	// 	mini_echo(command, get_index(command, i + 4), shell);
-	// else if (ft_strcmp(shell->split_com[0], "pwd") == 0)
-	// 	mini_pwd();
-	// else
-	if (ft_strcmp(shell->split_com[0], "env") == 0)
+	int	i;
+
+	i = 0;
+	printf("in exit\n");
+	while (shell->split_com[i])
+	{
+		printf("mini exit string[%d] :%s\n", i, shell->split_com[i]);
+		i++;
+	}
+	printf("exit i = %d\n", i);
+	if (i == 1)
+		shell->return_value = 0;
+	else if (i == 2)
+		exit_one(shell);
+	else
+		exit_multiple(shell, i);
+}
+
+void	find_command(char *command, t_shell *shell)
+{
+	int	i;
+
+	i = 0;
+	env_count_update(shell);
+	printf("input :%s\n", shell->input);
+	printf("split_com :%s\n", shell->split_com[0]);
+	if (!(ft_strcmp(shell->input, "$?")))
+		mini_return_value(shell);
+	else if (!(ft_strcmp(shell->split_com[0], "echo")))
+		mini_echo(command, get_index(command, i + 4), shell);
+	else if (!(ft_strcmp(shell->split_com[0], "pwd")))
+		mini_pwd();
+	else if (!(ft_strcmp(shell->split_com[0], "env")))
 		env_command(shell);
-	else if (ft_strcmp(shell->split_com[0], "export") == 0)
+	else if (!(ft_strcmp(shell->split_com[0], "export")))
 		export_command(shell, command);
-	else if (ft_strcmp(shell->split_com[0], "unset") == 0)
+	else if (!(ft_strcmp(shell->split_com[0], "unset")))
 		unset_command(shell, command);
-	// else if (ft_strcmp(shell->split_com[0], "cd") == 0)
-	// 	mini_cd(command, shell);
-	return (0);
+	else if (!(ft_strcmp(shell->split_com[0], "cd")))
+		mini_cd(shell);
+	else if (!(ft_strcmp(shell->split_com[0], "exit")))
+		mini_exit(shell);
 }

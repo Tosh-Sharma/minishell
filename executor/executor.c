@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/03/09 19:01:01 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/03/29 16:49:09 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ void	execute_process(t_shell *shell, char *command)
 
 	address = ft_split(getenv("PATH"), ':');
 	shell->return_value = 0;
+	printf("command is :%s\n", command);
 	shell->split_com = ft_split(command, ' ');
-	if (find_command(command, shell) == 0)
+	if (find_command_checker(shell) == 0)
 	{
 		if (access(shell->split_com[0], X_OK) != -1)
 			exec_path = shell->split_com[0];
@@ -43,6 +44,11 @@ void	execute_process(t_shell *shell, char *command)
 					shell->envp);
 			perror("Something went wrong in code execution.");
 		}
+	}
+	else
+	{
+		printf("command in the real find_command :%s\n", command);
+		find_command(command, shell);
 	}
 }
 

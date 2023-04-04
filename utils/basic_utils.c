@@ -34,3 +34,24 @@ void	perror_and_exit(char *input, int exit_code)
 	perror(input);
 	exit(exit_code);
 }
+
+void	*ft_malloc_checker(int type, int size)
+{
+	int		*n;
+	char	*s;
+
+	if (type == 0)
+	{
+		n = (int *)malloc(sizeof(int) * size);
+		if (!n)
+			perror_and_exit("Could not allocate memory", 1);
+		return (n);
+	}
+	else
+	{
+		s = (char *)malloc(sizeof(char) * size);
+		if (!s)
+			perror_and_exit("Could not allocate memory", 1);
+		return (s);
+	}
+}
