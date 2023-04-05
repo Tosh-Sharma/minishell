@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/04 16:36:29 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/05 15:40:21 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,6 @@ void	get_back_home(t_shell *shell);
 void	exit_one(t_shell *shell);
 void	exit_multiple(t_shell *shell, int i);
 void	mini_return_value(t_shell *shell);
-void	execute_process(t_shell *shell);
+void	execute_process(t_shell *shell, char *command);
 
 #endif
