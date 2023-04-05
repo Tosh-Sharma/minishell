@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/05 15:40:21 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/05 19:33:00 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_shell
 {
 	char	*input;
 	char	**envp;
-	int		env_count;
 	int		return_value;
 	int		env_y;
 	char	**env_input;

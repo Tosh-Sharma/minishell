@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/05 15:40:42 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/05 19:45:54 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	execute_commands(t_shell *shell, char **splitted_commands, int count)
 
 	i = -1;
 	shell->temp_fd = dup(STDIN_FILENO);
-	if (count == 0)
+	if (count == 1)
 		single_command_execution(shell, splitted_commands);
 	else
 	{
