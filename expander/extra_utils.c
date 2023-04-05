@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 23:32:08 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/03/29 16:42:00 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/04 12:27:50 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,14 +141,12 @@ char	*replace_env_variable(char *command, int *positions,
 	j = 0;
 	var = NULL;
 	k = 0;
-	printf("command received in expander %s\n", command);
 	res_var = (char **)malloc(sizeof(char *) * (count));
 	if (!res_var)
 		perror_and_exit("Could not allocate memory for array.", 1);
 	res_var = rep_env_var((char *[3]){command, var, shell->input},
 			(int [6]){i, j, k, count, shell->env_y, shell->return_value},
 			positions, (char **[2]){res_var, shell->envp});
-	printf("shell->ret expander = %d\n", shell->return_value);
 	shell->res_com = (char *)malloc(sizeof(char)
 			* new_len_com(command, res_var, positions));
 	if (!shell->res_com)

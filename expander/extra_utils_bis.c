@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 23:32:08 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/03/29 16:42:00 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/04 12:28:46 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,9 @@ char	*replace_var(char *new_var, char *var, char *env_row, int return_value)
 	int		i;
 	char	*retv_var;
 
-	printf("var :%s\n", var);
-	printf("return val = %d\n", return_value);
 	if (!(ft_strcmp(var, "\?")))
 	{
 		retv_var = ft_itoa(return_value);
-		printf("var itoa :%s\n", retv_var);
 		return (retv_var);
 	}
 	else

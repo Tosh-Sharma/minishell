@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:44:57 by tsharma           #+#    #+#             */
-/*   Updated: 2023/03/05 23:46:22 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/04 12:28:24 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int	ft_isnumber(char *num)
 		i++;
 	while (num[i] && ft_isdigit(num[i]))
 		i++;
-	printf("isnumber i = %d\n", i);
-	printf("isnumber ftstrlen = %d\n", (int)ft_strlen(num));
 	if (i == (int)ft_strlen(num))
 		return (0);
 	return (1);
@@ -51,9 +49,7 @@ void	exit_one(t_shell *shell)
 
 	if (!(ft_isnumber(shell->split_com[1])))
 		shell->return_value = 255;
-	printf("shell split 1 :%s\n", shell->split_com[1]);
 	num = ft_atoi(shell->split_com[1]);
-	printf("shell split 1 = %d\n", num);
 	if (num >= 0)
 		shell->return_value = num % 256;
 	else
