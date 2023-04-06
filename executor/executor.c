@@ -29,8 +29,7 @@ void	execute_process(t_shell *shell, char *command)
 	char	*exec_path;
 
 	address = ft_split(getenv("PATH"), ':');
-	shell->return_value = 0;
-	printf("command is :%s\n", command);
+	//shell->return_value = 0;
 	shell->split_com = ft_split(command, ' ');
 	if (find_command_checker(shell) == 0)
 	{
@@ -128,8 +127,8 @@ void	execute_commands(t_shell *shell, char **splitted_commands, int count)
 
 	i = -1;
 	shell->temp_fd = dup(STDIN_FILENO);
-	if (count == 0)
-		single_command(shell, splitted_commands, count);
+	if (count == 1)
+        single_command_execution(shell, splitted_commands);
 	else
 	{
 		while (++i < (count - 1))

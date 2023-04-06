@@ -73,5 +73,19 @@ void	single_command(t_shell *shell, char **splitted_commands, int count);
 void	find_command(char *command, t_shell *shell);
 int		find_command_checker(t_shell *shell);
 int		get_index(char *command, int i);
+char	**realloc_new_and_copy_old(t_shell *shell, int count);
+void	store_latest_variables(t_shell *shell, int count, char **strings);
+int		env_var_exists(char *env_var, t_shell *shell);
+char	*get_var(char *command, int nb, char *var, int len);
+char	*replace_var(char *new_var, char *var, char *env_row, int return_value);
+void	mini_return_value(t_shell *shell);
+int		ft_isnumber(char *num);
+void	exit_one(t_shell *shell);
+void	exit_multiple(t_shell *shell, int i);
+void	create_oldpwd(t_shell *shell, int flag);
+void	change_pwd(t_shell *shell);
+void	pwd_refresh(t_shell *shell);
+void	get_back_home(t_shell *shell);
+void	single_command_execution(t_shell *shell, char **splitted_commands);
 
 #endif

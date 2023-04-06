@@ -27,6 +27,7 @@ int	new_len_com(char *command, char **res_var, int *positions)
 	int	p;
 	int	res;
 
+	printf("ICI\n");
 	p = 0;
 	res = 0;
 	i = -1;
@@ -34,9 +35,13 @@ int	new_len_com(char *command, char **res_var, int *positions)
 	{
 		if (i == positions[p])
 		{
+			printf("LA\n");
 			i++;
 			if (res_var[p] && ft_strcmp(res_var[p], "\""))
+			{
+				printf("res_var[%d] :%s\n", p, res_var[p]);
 				res += (int)ft_strlen(res_var[p]);
+			}
 			p++;
 			while (command[i + 1] && command[i + 1] != ' ' && command[i + 1]
 				!= '"' && command[i + 1] != '=' && i + 1 != positions[p])
@@ -45,6 +50,7 @@ int	new_len_com(char *command, char **res_var, int *positions)
 		else
 			res++;
 	}
+	printf("res = %d\n", res + 1);
 	return (res + 1);
 }
 
@@ -91,6 +97,7 @@ char	*replace_com(char *res_com, char *command,
 	l = 0;
 	res_com = rep_com((char *[2]){command, res_com},
 			(int [4]){i, j, k, l}, positions, res_var);
+	printf("res_com :%s\n",res_com);
 	while (res_var[++i] != NULL)
 	{
 		free(res_var[i]);
@@ -141,19 +148,21 @@ char	*replace_env_variable(char *command, int *positions,
 	j = 0;
 	var = NULL;
 	k = 0;
-	printf("command received in expander %s\n", command);
+	//printf("command received in expander %s\n", command);
 	res_var = (char **)malloc(sizeof(char *) * (count));
 	if (!res_var)
 		perror_and_exit("Could not allocate memory for array.", 1);
 	res_var = rep_env_var((char *[3]){command, var, shell->input},
 			(int [6]){i, j, k, count, shell->env_y, shell->return_value},
 			positions, (char **[2]){res_var, shell->envp});
-	printf("shell->ret expander = %d\n", shell->return_value);
+	//printf("shell->ret expander = %d\n", shell->return_value);
 	shell->res_com = (char *)malloc(sizeof(char)
 			* new_len_com(command, res_var, positions));
+	//printf("helloworld\n");
 	if (!shell->res_com)
 		perror_and_exit("Could not allocate memory for array.", 1);
 	shell->res_com = replace_com(shell->res_com, command, res_var, positions);
+	//printf("helloworld\n");
 	free(command);
 	return (shell->res_com);
 }
