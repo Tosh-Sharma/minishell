@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:44:57 by tsharma           #+#    #+#             */
-/*   Updated: 2023/03/05 23:46:22 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/04 15:55:49 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,7 @@ char	*find_appropriate_path(char **command, char **address)
 	return (path);
 }
 
-void	single_command(t_shell *shell, char **splitted_commands, int count)
-{
-	(void)shell;
-	(void)splitted_commands;
-	(void)count;
-}
-
-int	find_command_checker(t_shell *shell)
+int	is_builtin_command(t_shell *shell)
 {
 	if (!(ft_strcmp(shell->split_com[0], "echo")))
 		return (1);
@@ -85,7 +78,7 @@ void	mini_exit(t_shell *shell)
 		exit_multiple(shell, i);
 }
 
-void	find_command(char *command, t_shell *shell)
+void	execute_builtin(char *command, t_shell *shell)
 {
 	int	i;
 

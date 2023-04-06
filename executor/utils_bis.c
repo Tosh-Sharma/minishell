@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:44:57 by tsharma           #+#    #+#             */
-/*   Updated: 2023/03/05 23:46:22 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/04 12:28:24 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int	ft_isnumber(char *num)
 		i++;
 	while (num[i] && ft_isdigit(num[i]))
 		i++;
-	//printf("isnumber i = %d\n", i);
-	//printf("isnumber ftstrlen = %d\n", (int)ft_strlen(num));
 	if (i == (int)ft_strlen(num))
 		return (1);
 	return (0);

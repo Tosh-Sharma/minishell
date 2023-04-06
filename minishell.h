@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/03/29 16:50:32 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/05 19:33:00 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <fcntl.h>
-//# include <linux/limits.h>
 
 # define CYAN "\001\033[1;36m\002"
 # define WHITE "\001\033[0m\002"
@@ -38,7 +37,6 @@ typedef struct s_shell
 {
 	char	*input;
 	char	**envp;
-	int		env_count;
 	int		return_value;
 	int		env_y;
 	char	**env_input;
@@ -69,23 +67,22 @@ void	mini_pwd(void);
 void	mini_cd(t_shell *shell);
 void	env_count_update(t_shell *shell);
 char	*find_appropriate_path(char **command, char **address);
-void	single_command(t_shell *shell, char **splitted_commands, int count);
-void	find_command(char *command, t_shell *shell);
-int		find_command_checker(t_shell *shell);
+void	execute_builtin(char *command, t_shell *shell);
+int		is_builtin_command(t_shell *shell);
 int		get_index(char *command, int i);
-char	**realloc_new_and_copy_old(t_shell *shell, int count);
+void	single_command_execution(t_shell *shell, char **splitted_commands);
 void	store_latest_variables(t_shell *shell, int count, char **strings);
+char	**realloc_new_and_copy_old(t_shell *shell, int count);
 int		env_var_exists(char *env_var, t_shell *shell);
 char	*get_var(char *command, int nb, char *var, int len);
 char	*replace_var(char *new_var, char *var, char *env_row, int return_value);
-void	mini_return_value(t_shell *shell);
-int		ft_isnumber(char *num);
-void	exit_one(t_shell *shell);
-void	exit_multiple(t_shell *shell, int i);
-void	create_oldpwd(t_shell *shell, int flag);
 void	change_pwd(t_shell *shell);
 void	pwd_refresh(t_shell *shell);
 void	get_back_home(t_shell *shell);
-void	single_command_execution(t_shell *shell, char **splitted_commands);
+void	exit_one(t_shell *shell);
+void	exit_multiple(t_shell *shell, int i);
+void	mini_return_value(t_shell *shell);
+void	execute_process(t_shell *shell, char *command);
+int		ft_isnumber(char *num);
 
 #endif
