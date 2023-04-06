@@ -21,3 +21,7 @@
 
 - Wait for all child processes to finish
 - Note that with only 3 file descriptors, we have to use dup or dup2 to redirect input and output to the appropriate file descriptor. The key difference with the 3-file-descriptor implementation is that we need to be careful to close all file descriptors except for the ones we're using, so that we don't run out of file descriptors
+
+
+Cases not working:
+1. If builtin is not last, it gives problems.

@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:44:30 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/02/01 12:26:38 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/04 12:16:53 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,9 @@ void	expander(char **commands, t_shell *shell)
 			if (!positions)
 				perror_and_exit("Could not allocate memory for array.", 1);
 			store_positions(commands[i], positions);
-			//printf("command :%s\npositions = %d\ncpositions1 = %d\ncount = %d\n", commands[0], positions[0], positions[1], count);
 			commands[i] = replace_env_variable(commands[i], positions, count,
 					shell);
 			free(positions);
 		}
 	}
-	printf("command :%s\n", commands[0]);
 }

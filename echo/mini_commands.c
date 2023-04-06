@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:26:45 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/27 15:26:15 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/04 12:31:00 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void	mini_cd(t_shell *shell)
 	else
 	{
 		env_count_update(shell);
-		printf("split_com :%s\n", shell->split_com[1]);
 		pwd_refresh(shell);
 		new_dir = chdir(shell->split_com[1]);
 		if (!(new_dir))
