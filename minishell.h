@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/05 19:33:00 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/09 18:56:23 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,13 @@ void	exit_one(t_shell *shell);
 void	exit_multiple(t_shell *shell, int i);
 void	mini_return_value(t_shell *shell);
 void	execute_process(t_shell *shell, char *command);
+void	io_redirection(t_shell *shell, int is_piped, int redirect_fd);
+void	append_to_file(t_shell *shell, char *file_name);
+void	write_to_file(t_shell *shell, char *file_name);
+void	read_with_delimiter(t_shell *shell, char *delimiter, int is_piped);
+void	read_from_file(t_shell *shell, char *file_name);
+int		get_list_size(char **input);
+int		get_new_list_size(char **input, int old_size, char *in_1, char *in_2);
+void	create_new_string(t_shell *shell, int old_size, int new_size);
 
 #endif

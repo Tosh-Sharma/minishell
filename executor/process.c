@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 16:03:55 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/05 19:43:58 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/06 19:55:22 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	execute_process(t_shell *shell, char *command)
 
 	address = ft_split(getenv("PATH"), ':');
 	shell->return_value = 0;
-	shell->split_com = ft_split(command, ' ');
 	if (is_builtin_command(shell) == 1)
 		execute_builtin_command(command, shell);
 	else

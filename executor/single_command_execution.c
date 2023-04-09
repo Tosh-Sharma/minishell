@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/05 19:48:14 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/07 16:21:13 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 	char	*exec_path;
 
 	shell->split_com = ft_split(splitted_commands[0], ' ');
+	io_redirection(shell, 0, -1);
 	if (is_builtin_command(shell) == 1)
 		execute_builtin(splitted_commands[0], shell);
 	else

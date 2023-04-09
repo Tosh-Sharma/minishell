@@ -1,6 +1,6 @@
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror
 LIB = libft.a
 SRCS = 	main.c \
 		parsing.c \
@@ -10,10 +10,13 @@ SRCS = 	main.c \
 		env/unset.c \
 		env/unset_utilities.c \
 		expander/expander.c expander/extra_utils.c expander/extra_utils_bis.c \
-		executor/executor.c  executor/process.c \
+		executor/executor.c executor/process.c \
 		executor/single_command_execution.c \
 		executor/utils.c executor/utils_bis.c \
-		echo/mini_commands.c echo/mini_commands_utils.c
+		echo/mini_commands.c echo/mini_commands_utils.c \
+		redirection/io_redirection.c redirection/input_redirection.c \
+		redirection/input_utils.c \
+		redirection/output_redirection.c \
 
 OBJS = ${SRCS:.c=.o}
 
