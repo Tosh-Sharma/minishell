@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/09 18:56:23 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/11 14:34:39 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	execute_commands(t_shell *shell, char **splitted_commands, int count);
 void	env_command(t_shell *shell);
 void	export_command(t_shell *shell, char *input);
 void	unset_command(t_shell *shell, char *input);
-int		unset_checker(t_shell *shell);
 int		join_and_cmp(const char *s1, const char *s2, size_t n);
 void	expander(char **commands, t_shell *shell);
 char	*replace_env_variable(char *command, int *positions, int count,
@@ -86,7 +85,7 @@ void	execute_process(t_shell *shell, char *command);
 void	io_redirection(t_shell *shell, int is_piped, int redirect_fd);
 void	append_to_file(t_shell *shell, char *file_name);
 void	write_to_file(t_shell *shell, char *file_name);
-void	read_with_delimiter(t_shell *shell, char *delimiter, int is_piped);
+void	heredoc(t_shell *shell, char *delimiter);
 void	read_from_file(t_shell *shell, char *file_name);
 int		get_list_size(char **input);
 int		get_new_list_size(char **input, int old_size, char *in_1, char *in_2);

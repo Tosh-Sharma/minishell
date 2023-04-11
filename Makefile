@@ -1,6 +1,6 @@
 NAME = minishell
 CC = gcc
-# CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 LIB = libft.a
 SRCS = 	main.c \
 		parsing.c \
