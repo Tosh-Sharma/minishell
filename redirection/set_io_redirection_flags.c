@@ -1,35 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   output_redirection.c                               :+:      :+:    :+:   */
+/*   set_io_redirection_flags.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/06 17:13:57 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/15 11:36:47 by toshsharma       ###   ########.fr       */
+/*   Created: 2023/04/14 19:01:29 by toshsharma        #+#    #+#             */
+/*   Updated: 2023/04/14 19:08:55 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	append_to_file(char *file_name)
+void	set_io_redirection_flags(t_shell *shell)
 {
-	int	fd;
+	int	i;
 
-	fd = open(file_name, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	if (fd == -1)
-		perror_and_exit("Could not open the file.", 1);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-}
-
-void	write_to_file(char *file_name)
-{
-	int	fd;
-
-	fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd == -1)
-		perror_and_exit("Could not open the file.", 1);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	i = -1;
+	while (shell->split_com[++i])
+	{
+		if (ft_strcmp(shell->split_com[i], "<<") == 0)
+			shell->is_heredoc_active = 1;
+		if (ft_strcmp(shell->split_com[i], "<") == 0)
+			shell->is_file_input = 1;
+		if (ft_strcmp(shell->split_com[i], ">") == 0)
+			shell->output_write = 1;
+		if (ft_strcmp(shell->split_com[i], ">>") == 0)
+			shell->output_append = 1;
+	}
 }

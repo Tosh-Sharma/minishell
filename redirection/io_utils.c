@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 15:20:19 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/09 18:41:27 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/14 20:39:38 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	get_new_list_size(char **input, int old_size, char *in1, char *in2)
 	return (new_size + 2);
 }
 
-void	create_new_string(t_shell *shell, int old_size, int new_size)
+void	create_new_string(t_shell *shell, int new_size, char *in1, char *in2)
 {
 	int		i;
 	int		j;
@@ -50,8 +50,8 @@ void	create_new_string(t_shell *shell, int old_size, int new_size)
 	j = -1;
 	while (shell->split_com[++i])
 	{
-		if (ft_strcmp(shell->split_com[i], "<<") == 0
-			|| ft_strcmp(shell->split_com[i], "<") == 0)
+		if (ft_strcmp(shell->split_com[i], in1) == 0
+			|| ft_strcmp(shell->split_com[i], in2) == 0)
 		{
 			free(shell->split_com[i]);
 			if (shell->split_com[++i])
@@ -63,4 +63,17 @@ void	create_new_string(t_shell *shell, int old_size, int new_size)
 	res[++j] = NULL;
 	free(shell->split_com);
 	shell->split_com = res;
+}
+
+void	io_redirection(t_shell *shell, int is_piped, int redirect_fd)
+{
+	int	input_routed;
+	int	output_routed;
+
+	input_routed = input_redirection(shell);
+	output_routed = output_redirection(shell);
+	if (is_piped == 1 && input_routed == 0)
+		dup2(shell->temp_fd, STDIN_FILENO);
+	if (is_piped == 1 && output_routed == 0 && redirect_fd != -1)
+		dup2(redirect_fd, STDOUT_FILENO);
 }

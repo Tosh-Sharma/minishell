@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/07 16:21:13 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/14 18:59:08 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 	int		id;
 
 	id = fork();
+	set_io_redirection_flags(shell);
 	if (id == -1)
 		perror_and_exit("Could not fork the process.", 1);
 	if (id == 0)
 	{
+		io_redirection(shell, 0, -1);
 		shell->return_value = 0;
 		if (exec_path != NULL)
 		{
@@ -30,6 +32,11 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 		}
 	}
 	waitpid(-1, NULL, 0);
+	if (shell->is_heredoc_active == 1)
+	{
+		unlink("input.txt");
+		shell->is_heredoc_active = 0;
+	}
 }
 
 /**
@@ -45,7 +52,6 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 	char	*exec_path;
 
 	shell->split_com = ft_split(splitted_commands[0], ' ');
-	io_redirection(shell, 0, -1);
 	if (is_builtin_command(shell) == 1)
 		execute_builtin(splitted_commands[0], shell);
 	else
