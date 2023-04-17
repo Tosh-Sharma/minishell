@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/07 16:19:02 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/17 19:03:42 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,12 @@ void	pipe_commands(t_shell *shell, char *command)
 		perror_and_exit("Could not fork the process.", 1);
 	if (id == 0)
 	{
-		// Can removed these two lines as they are present
-		// inside of the IO redirection.
+		// // Can removed these two lines as they are present
+		// // inside of the IO redirection.
 		dup2(fd[1], STDOUT_FILENO);
 		dup2(shell->temp_fd, STDIN_FILENO);
-		io_redirection(shell, 1, fd[1]);
+		// set_io_redirection_flags(shell);
+		// io_redirection(shell, 1, fd[1]);
 		close(shell->temp_fd);
 		close(fd[0]);
 		close(fd[1]);
@@ -55,6 +56,7 @@ void	multipipe_last(t_shell *shell, char *command)
 		// Can remove this line as it is handled inside
 		// the IO redirection file.
 		dup2(shell->temp_fd, STDIN_FILENO);
+		set_io_redirection_flags(shell);
 		io_redirection(shell, 0, -1);
 		close(shell->temp_fd);
 		execute_process(shell, command);
