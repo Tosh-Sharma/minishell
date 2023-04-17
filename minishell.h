@@ -37,7 +37,10 @@ typedef struct s_shell
 {
 	char	*input;
 	char	**envp;
+	char	**exp_values;
+	// char	**exp;
 	int		return_value;
+	// int		exp_y;
 	int		env_y;
 	char	**env_input;
 	char	*res_com;
@@ -54,7 +57,7 @@ void	check_for_incorrect_syntax(char *input);
 void	perror_and_exit(char *input, int exit_code);
 void	*ft_malloc_checker(int type, int size);
 void	execute_commands(t_shell *shell, char **splitted_commands, int count);
-void	env_command(t_shell *shell);
+void	env_command(t_shell *shell, int flag);
 void	export_command(t_shell *shell, char *input);
 void	unset_command(t_shell *shell, char *input);
 int		unset_checker(t_shell *shell);
@@ -84,5 +87,6 @@ void	exit_multiple(t_shell *shell, int i);
 void	mini_return_value(t_shell *shell);
 void	execute_process(t_shell *shell, char *command);
 int		ft_isnumber(char *num);
+int		equal_checker(char *envp);
 
 #endif

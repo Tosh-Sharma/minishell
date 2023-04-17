@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_bis.c                                          :+:      :+:    :+:   */
+/*   env_bis.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,6 +11,84 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	equal_checker(char *envp)
+{
+	int	i;
+	i = -1;
+	while (envp[++i])
+	{
+		if (envp[i] == '=' && envp[i + 1])
+			return (1);
+		else if (envp[i] == '=' && !envp[i + 1])
+			return (2);
+	}
+	return (0);
+}
+
+/*char	*get_envp_value(int index, char *env_var)// t_shell *shell)
+{
+	int		i;
+	int		j;
+	char	*env_value;
+
+	if (!index)
+		return (ft_strdup("\""));
+	i = 0;
+	while (env_var[++index])
+		i++;
+	env_value = ft_malloc_checker(1, i + 3);
+	i = -1;
+	j = -1;
+	while (env_var[++i])
+	{
+		if (env_var[i] == '=')
+		{
+			while (env_var[++i])
+				env_value[++j] = env_var[i];
+		}
+	}
+	env_value[++j] = '\0';
+	printf("env_value :%s\n", env_value);
+	printf("j is = %d\n", j);
+	return (env_value);
+}
+
+void	export_values(t_shell *shell)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	env_count_update(shell);
+	shell->exp_values = (char **)malloc(sizeof(char *) * (shell->env_y + 1));
+	while (shell->envp[++i])
+	{
+		j = -1;
+		if (!equal_checker(shell->envp[i]))
+			shell->exp_values[i] = get_envp_value(0, shell->envp[i]);
+		else
+		{
+			while (shell->envp[i][++j])
+			{
+				if (shell->envp[i][j] == '=')
+					shell->exp_values[i] = get_envp_value(j, shell->envp[i]);
+			}
+			printf("exp_values[%d] :%s\n", i, shell->exp_values[i]);
+		}
+	}
+}
+
+void	table_free(char **table)
+{
+	int	i;
+	
+	i = 0;
+	while (table[i])
+		free(table[i]);
+	free(table);
+}
+*/
 
 void	store_latest_variables(t_shell *shell, int count, char **strings)
 {
@@ -36,6 +114,7 @@ char	**realloc_new_and_copy_old(t_shell *shell, int count)
 	int		i;
 
 	i = -1;
+	 env_count_update(shell);
 	new_envs = (char **)malloc(sizeof(char *) * (shell->env_y + count + 1));
 	while (++i < shell->env_y)
 	{
@@ -48,6 +127,21 @@ char	**realloc_new_and_copy_old(t_shell *shell, int count)
 	new_envs[i] = NULL;
 	free(shell->envp);
 	return (new_envs);
+}
+
+void	else_env_var_exists(char *env_var, t_shell *shell, int i)
+{
+	printf("shell->envp[%d] :%s\n", i, shell->envp[i]);
+	printf("env_var :%s\n", env_var);
+
+	if ((!equal_checker(shell->envp[i]) && equal_checker(env_var))
+		|| (equal_checker(shell->envp[i]) && equal_checker(env_var)))
+	{
+		printf("ici\n");
+		free(shell->envp[i]);
+		shell->envp[i] = ft_malloc_checker(1, ft_strlen(env_var) + 1);
+		shell->envp[i] = env_var;
+	}
 }
 
 int	env_var_exists(char *env_var, t_shell *shell)
@@ -65,16 +159,27 @@ int	env_var_exists(char *env_var, t_shell *shell)
 		var_name[i] = env_var[i];
 	var_name[++i] = '\0';
 	i = 0;
+	env_count_update(shell);
+	printf("env_y = %d\n", shell->env_y);
+	printf("var_name :%s\n", var_name);
+	printf("env_var :%s\n", env_var);	
+	printf("len = %d\n", len);
 	while (i < shell->env_y
-		&& join_and_cmp(var_name, shell->envp[i], len) != 0)
+		&& join_and_cmp(var_name, shell->envp[i], len) != 0
+		&& ft_strncmp( var_name, shell->envp[i], len) != 0)
+	{
+		printf("%s in ligne %d :%s\n", var_name, i, shell->envp[i]);
 		i++;
+	}
+	printf("ligne %d :%s\n", i, shell->envp[i]);
 	if (i == shell->env_y)
+	{
+		printf("la\n");
 		return (0);
+	}
 	else
 	{
-		free(shell->envp[i]);
-		shell->envp[i] = ft_malloc_checker(1, ft_strlen(env_var) + 1);
-		shell->envp[i] = env_var;
+		else_env_var_exists(env_var, shell, i);
 		return (1);
 	}
 }

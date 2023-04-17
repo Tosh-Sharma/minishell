@@ -126,6 +126,7 @@ void	unset_command(t_shell *shell, char *input)
 	int		*index;
 	int		i;
 
+	env_count_update(shell);
 	strings = ft_split(input, ' ');
 	count = get_count(shell, strings);
 	index = (int *)malloc(sizeof(int) * count);

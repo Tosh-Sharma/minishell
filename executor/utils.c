@@ -92,7 +92,7 @@ void	execute_builtin(char *command, t_shell *shell)
 	else if (!(ft_strcmp(shell->split_com[0], "pwd")))
 		mini_pwd();
 	else if (!(ft_strcmp(shell->split_com[0], "env")))
-		env_command(shell);
+		env_command(shell, 0);
 	else if (!(ft_strcmp(shell->split_com[0], "export")))
 		export_command(shell, command);
 	else if (!(ft_strcmp(shell->split_com[0], "unset")))

@@ -56,7 +56,7 @@ void	exit_one(t_shell *shell)
 		shell->return_value = 255;
 	else
 	{	
-		num = ft_atoi_long_long(shell->split_com[1]); //ft_atoi_long_long
+		num = ft_atoi_long_long(shell->split_com[1]);
 		shell->return_value = num % 256;
 		printf("shell split 1 = %lld\n", num);
 	}

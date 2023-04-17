@@ -160,5 +160,6 @@ char	*replace_env_variable(char *command, int *positions,
 		perror_and_exit("Could not allocate memory for array.", 1);
 	shell->res_com = replace_com(shell->res_com, command, res_var, positions);
 	free(command);
+	printf("res_com :%s\n", shell->res_com);
 	return (shell->res_com);
 }

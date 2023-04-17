@@ -35,27 +35,86 @@ void	mini_echo_loop(char *command, int i)
 		{
 			if ((command[i] == ' ' && command[i + 1] == ' '))
 				i++;
-			else if (command[i] == '\'')
-			{
-				while (command[++i] && command[i] != '\'')
-					ft_putchar_fd(command[i], 1);
-			}
 			else
-				ft_putchar_fd(command[i], 1);
-			i++;
+			{
+				if (command[i] == '\'')
+				{
+					while (command[++i] && command[i] != '\'')
+						ft_putchar_fd(command[i], 1);
+				}
+				else
+					ft_putchar_fd(command[i], 1);
+				i++;
+			}
 		}
 		if (command[i] == '"')
 		{
 			while (command[++i] && command[i] != '"')
 				ft_putchar_fd(command[i], 1);
 		}
-		i++;
+		if (command[i] && command[i + 1])
+			i++;
 	}
+}
+
+int	mini_echo_loop_checker(char *command, int i, int flag)
+{
+	while (command[i])
+	{
+		while (command[i] && command[i] != '"')
+		{
+			// printf("TOP command[%d] :%c\n", i, command[i]);
+			if ((command[i] == ' ' && command[i + 1] == ' '))
+				i++;
+			else
+			{
+				// printf("MID command[%d] :%c\n", i, command[i]);
+				if (command[i] == '\'' && command[i + 1] 
+					&& command[i + 1] != '\'')
+				{
+					// printf("single\n");
+					flag = 1;
+					while (command[++i])
+					{
+						// printf("BOT command[%d] :%c\n", i, command[i]);
+						if (command[i] == '\'' && flag)
+							flag = 0;
+						else if (command[i] == '\'' && !flag)
+							flag = 1;
+					}
+					if (flag)
+						return (1);
+				}
+				i++;
+			}
+		}
+		if (command[i] == '"' && command[i + 1] != '"')
+		{
+			// printf("double\n");
+			flag = 2;
+			while (command[++i])
+			{
+				// printf("command[%d] :%c\n", i, command[i]);
+				if (command[i] == '"' && flag)
+					flag = 0;
+				else if (command[i] == '"' && !flag)
+					flag = 1;
+			}
+			if (flag)
+				return (1);
+		}
+		if (command[i] && command[i + 1])
+			i++;
+	}
+	// printf("i = %d\nres = %d\n", i, (int)ft_strlen(command));
+	// printf("flag = %d\n", flag);
+	return (0);
 }
 
 void	mini_echo(char *command, int index, t_shell *shell)
 {
 	int	i;
+	int	flag;
 
 	if (index < 0)
 		write(1, "\n", 1);
@@ -71,9 +130,15 @@ void	mini_echo(char *command, int index, t_shell *shell)
 			i -= 1;
 		while (command[i] == ' ')
 				++i;
-		mini_echo_loop(command, i);
-		if (shell->new_line_flag == 1)
-			write(1, "\n", 1);
+		flag = 0;
+		if ((mini_echo_loop_checker(command, i, flag)))
+			printf("not good\n");
+		else
+		{
+			mini_echo_loop(command, i);
+			if (shell->new_line_flag == 1)
+				write(1, "\n", 1);
+		}
 	}
 }
 
