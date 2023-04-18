@@ -46,23 +46,23 @@ int	var_in_input(char *var, char **split_string, int index)
 	char	*env_var;
 
 	i = 0;
-	while (var[i] && var[i] != '=')
-		i++;
-	env_var = ft_malloc_checker(1, i + 1);
-	i = -1;
-	while (var[++i] && var[i] != '=')
-		env_var[i] = var[i];
-	printf("env_var_in_input :%s\n", env_var);
+	if (!equal_checker(var))
+		env_var = ft_strdup(var);
+	else
+	{
+		while (var[i] && var[i] != '=')
+			i++;
+		env_var = ft_malloc_checker(1, i + 1);
+		i = -1;
+		while (var[++i] && var[i] != '=')
+			env_var[i] = var[i];
+	}
 	while (split_string[++index])
 	{
-		printf("var_in_input split_string[%d] :%s\n", index, split_string[index]);
-		printf("ft_strncmp = %d\n", ft_strncmp(env_var, split_string[index], ft_strlen(env_var)));
-		printf("equal_check = %d\n", equal_checker(split_string[index]));
 		if (equal_checker(split_string[index])
 			&& ft_strncmp(env_var, split_string[index], ft_strlen(env_var)) == 0)
 			return (1);
 	}
-	printf("RETURN\n");
 	return (0);
 }
 
@@ -137,7 +137,6 @@ void	export_command(t_shell *shell, char *input)
 void	env_command(t_shell *shell, int flag)
 {
 	int		i;
-	char	*str;
 
 	i = -1;
 	env_count_update(shell);
@@ -150,11 +149,7 @@ void	env_command(t_shell *shell, int flag)
 		}
 	}
 	else
-	{
-		str = ft_strdup("declare -x ");
-		export_printer(str, shell);
-		free(str);
-	}
+		export_printer("declare -x ", shell);
 }
 
 void	copy_env_variables(t_shell *shell, char **envp)
