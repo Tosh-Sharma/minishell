@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 16:03:55 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/06 19:55:22 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/17 20:07:44 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,14 @@ void	execute_builtin_command(char *command, t_shell *shell)
 	shell->return_value = 0;
 	execute_builtin(command, shell);
 	exit(shell->return_value);
+}
+
+void	command_not_found(char *str)
+{
+	ft_putstr_fd("Command: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(" not found.\n", 2);
+	exit(1);
 }
 
 void	execute_process(t_shell *shell, char *command)
@@ -40,9 +48,6 @@ void	execute_process(t_shell *shell, char *command)
 					shell->envp);
 		}
 		else
-		{
-			printf("Command: %s not found\n", shell->split_com[0]);
-			exit(1);
-		}
+			command_not_found(shell->split_com[0]);
 	}
 }
