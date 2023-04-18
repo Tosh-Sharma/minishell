@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/05 19:48:14 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/18 18:03:35 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 		perror_and_exit("Could not fork the process.", 1);
 	if (id == 0)
 	{
+		io_redirection(shell, 0, -1);
 		shell->return_value = 0;
 		if (exec_path != NULL)
 		{
@@ -45,6 +46,7 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 	char	*exec_path;
 
 	shell->split_com = ft_split(splitted_commands[0], ' ');
+	set_io_redirection_flags(shell);
 	if (is_builtin_command(shell) == 1)
 		execute_builtin(splitted_commands[0], shell);
 	else
@@ -59,4 +61,7 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 		else
 			printf("Command: %s not found\n", shell->split_com[0]);
 	}
+	free_strings(shell->split_com);
+	if (access("input.txt", F_OK) == 0)
+		unlink("input.txt");
 }
