@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:44:30 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/04 12:16:53 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/18 17:49:14 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	expander(char **commands, t_shell *shell)
 	i = -1;
 	while (commands[++i] != NULL)
 	{
-		positions = NULL;
 		count = get_env_variable_count(commands[i]);
 		if (count > 0)
 		{

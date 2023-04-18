@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/14 20:41:48 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/18 17:58:38 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,6 @@ int		get_list_size(char **input);
 int		get_new_list_size(char **input, int old_size, char *in_1, char *in_2);
 void	create_new_string(t_shell *shell, int new_size, char *in1, char *in2);
 void	set_io_redirection_flags(t_shell *shell);
+void	free_strings(char **str);
 
 #endif
