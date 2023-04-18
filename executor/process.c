@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 16:03:55 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/05 19:43:58 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/17 20:07:44 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@ void	execute_builtin_command(char *command, t_shell *shell)
 	exit(shell->return_value);
 }
 
+void	command_not_found(char *str)
+{
+	ft_putstr_fd("Command: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(" not found.\n", 2);
+	exit(1);
+}
+
 void	execute_process(t_shell *shell, char *command)
 {
 	char	**address;
@@ -26,7 +34,6 @@ void	execute_process(t_shell *shell, char *command)
 
 	address = ft_split(getenv("PATH"), ':');
 	shell->return_value = 0;
-	shell->split_com = ft_split(command, ' ');
 	if (is_builtin_command(shell) == 1)
 		execute_builtin_command(command, shell);
 	else
@@ -41,9 +48,6 @@ void	execute_process(t_shell *shell, char *command)
 					shell->envp);
 		}
 		else
-		{
-			printf("Command: %s not found\n", shell->split_com[0]);
-			exit(1);
-		}
+			command_not_found(shell->split_com[0]);
 	}
 }
