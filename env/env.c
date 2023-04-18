@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:26:45 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/18 18:23:00 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/18 19:10:09 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	export_printer(char *str, t_shell *shell)
 	int	j;
 
 	i = -1;
-	env_count_update(shell);
 	while (++i < shell->env_y)
 	{
 		j = -1;
@@ -137,7 +136,6 @@ void	export_command(t_shell *shell, char *input)
 void	env_command(t_shell *shell, int flag)
 {
 	int		i;
-	char	*str;
 
 	i = -1;
 	env_count_update(shell);
@@ -150,11 +148,7 @@ void	env_command(t_shell *shell, int flag)
 		}
 	}
 	else
-	{
-		str = ft_strdup("declare -x ");
-		export_printer(str, shell);
-		free(str);
-	}
+		export_printer("declare -x ", shell);
 }
 
 void	copy_env_variables(t_shell *shell, char **envp)
