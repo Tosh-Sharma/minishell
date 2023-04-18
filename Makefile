@@ -25,7 +25,7 @@ all: ${NAME}
 ${NAME}: ${OBJS}
 	make -C ./libft
 	mv libft/${LIB} .
-	${CC} ${CFLAGS} $(OBJS) $(LIB) -lreadline ./vendor/readline/lib/libreadline.a -lcurses -o $(NAME)
+	${CC} ${CFLAGS} $(OBJS) $(LIB) -lreadline ./vendor/readline/lib/libreadline.a -I ./vendor/readline/include/readline -lncurses -o $(NAME)
 
 %.o: %.c
 	${CC} ${CFLAGS} -o ${@} -c ${@:.o=.c}

@@ -46,15 +46,24 @@ int	main(int argc, char **argv, char **envp)
 		return (0);
 	copy_env_variables(&g_shell, envp);
 	print_welcome();
-	signal_handling();
 	while (1)
 	{
+		signal_handling();
 		new_prompt(&g_shell);
 		check_for_incorrect_syntax(g_shell.input);
-		if (g_shell.input[0])
+		if (g_shell.input && g_shell.input[0])
 		{
+			printf("INPUT is %s\n", g_shell.input);
 			add_history(g_shell.input);
 			parser(&g_shell);
+		}
+		else
+		{
+			if (g_shell.input == NULL)
+			{
+				ft_putstr_fd("exit\n", 1);
+				exit(0);
+			}
 		}
 	}
 	return (0);

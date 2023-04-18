@@ -95,17 +95,22 @@ void	store_latest_variables(t_shell *shell, int count, char **strings)
 	int	i;
 	int	len;
 
-	i = -1;
-	while (++i < count)
+	i = 0;
+	printf("count is = %d\n", count);
+	printf("env_y is = %d\n", shell->env_y);
+	while (i < count)
 	{
-		len = (ft_strlen(strings[i + 1]) + 1);
+		len = ft_strlen(strings[i]) + 1;
+		printf("last :%s\n",shell->envp[shell->env_y + i]);
 		shell->envp[shell->env_y + i] = (char *)malloc(sizeof(char) * len);
-		ft_strlcpy(shell->envp[shell->env_y + i], strings[i + 1], len);
-		free(strings[i + 1]);
+		ft_strlcpy(shell->envp[shell->env_y + i], strings[i], len);
+		free(strings[i]);
+		i++;
 	}
 	shell->envp[shell->env_y + i] = NULL;
 	free(strings);
 	shell->env_y = shell->env_y + i;
+	printf("env_y is = %d\n", shell->env_y);
 }
 
 char	**realloc_new_and_copy_old(t_shell *shell, int count)
@@ -114,7 +119,6 @@ char	**realloc_new_and_copy_old(t_shell *shell, int count)
 	int		i;
 
 	i = -1;
-	 env_count_update(shell);
 	new_envs = (char **)malloc(sizeof(char *) * (shell->env_y + count + 1));
 	while (++i < shell->env_y)
 	{
@@ -165,13 +169,12 @@ int	env_var_exists(char *env_var, t_shell *shell)
 	printf("env_var :%s\n", env_var);	
 	printf("len = %d\n", len);
 	while (i < shell->env_y
-		&& join_and_cmp(var_name, shell->envp[i], len) != 0
-		&& ft_strncmp( var_name, shell->envp[i], len) != 0)
+		&& join_and_cmp(var_name, shell->envp[i], len) != 0)
 	{
-		printf("%s in ligne %d :%s\n", var_name, i, shell->envp[i]);
+		//printf("%s in ligne %d :%s\n", var_name, i, shell->envp[i]);
 		i++;
 	}
-	printf("ligne %d :%s\n", i, shell->envp[i]);
+	//printf("ligne %d :%s\n", i, shell->envp[i]);
 	if (i == shell->env_y)
 	{
 		printf("la\n");

@@ -55,7 +55,7 @@ int	var_in_input(char *var, char **split_string, int index)
 	printf("env_var_in_input :%s\n", env_var);
 	while (split_string[++index])
 	{
-		printf("split_string[%d] :%s\n", index, split_string[index]);
+		printf("var_in_input split_string[%d] :%s\n", index, split_string[index]);
 		printf("ft_strncmp = %d\n", ft_strncmp(env_var, split_string[index], ft_strlen(env_var)));
 		printf("equal_check = %d\n", equal_checker(split_string[index]));
 		if (equal_checker(split_string[index])
@@ -64,6 +64,49 @@ int	var_in_input(char *var, char **split_string, int index)
 	}
 	printf("RETURN\n");
 	return (0);
+}
+
+int	get_count_export(t_shell *shell, char **split_string)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (split_string[++i] != NULL)
+		{
+			if (!var_in_input(split_string[i], split_string, i))
+			{
+				if (env_var_exists(split_string[i], shell) == 0)
+					count++;
+			}
+		}
+	return (count);
+}
+
+char	*var_to_add(char *split_string)
+{
+	char	*var;
+
+	var = ft_malloc_checker(1, ft_strlen(split_string) + 1);
+	var = split_string;
+	return (var);
+}
+
+void	export_command_extra(t_shell *shell, char **split_string, int count, int i)
+{
+	while (split_string[++i] != NULL)
+	{
+		if (!var_in_input(split_string[i], split_string, i))
+		{
+			if (env_var_exists(split_string[i], shell) == 0)
+			{
+				shell->vars_to_add[count] = var_to_add(split_string[i]);
+				count++;
+			}
+		}
+	}
+	shell->vars_to_add[count] = NULL;
 }
 
 void	export_command(t_shell *shell, char *input)
@@ -76,32 +119,19 @@ void	export_command(t_shell *shell, char *input)
 	i = 0;
 	while (split_string[i] != NULL)
 		i++;
-	printf("i = %d\n", i);
 	if (i == 1)
 		env_command(shell, 1);
 	else
 	{
-		i = 1;
+		i = 0;
 		count = 0;
-		printf("split_string[%d] :%s\n", i, split_string[i]);
-		while (split_string[i] != NULL)
-		{
-			printf("var_in = %d\n", var_in_input(split_string[i], split_string, i));
-			if (!var_in_input(split_string[i], split_string, i))
-			{
-				if (env_var_exists(split_string[i], shell) == 0)
-					count++;
-			}
-			i++;
-		}
-		shell->envp = realloc_new_and_copy_old(shell, count); //need to find a way to update shell->envp while the loop is running because 
-		// export tosh tosh=sharma needs to produce tosh=sharma in shell->envp
-		store_latest_variables(shell, count, split_string);
-		printf("count = %d\n", count);
+		shell->vars_to_add = (char **)malloc(sizeof(char *) 
+			* (get_count_export(shell, split_string) + 1));
+		export_command_extra(shell, split_string, count, i);
+		count = get_count_export(shell, split_string);
+		shell->envp = realloc_new_and_copy_old(shell, count);
+		store_latest_variables(shell, count, shell->vars_to_add);
 	}
-	// if (shell->exp_values)
-		// table_free(shell->exp_values);
-	// export_values(shell);
 }
 
 void	env_command(t_shell *shell, int flag)

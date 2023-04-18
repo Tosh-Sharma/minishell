@@ -37,10 +37,9 @@ typedef struct s_shell
 {
 	char	*input;
 	char	**envp;
+	char	**vars_to_add;
 	char	**exp_values;
-	// char	**exp;
 	int		return_value;
-	// int		exp_y;
 	int		env_y;
 	char	**env_input;
 	char	*res_com;
@@ -48,6 +47,7 @@ typedef struct s_shell
 	char	**split_com;
 	int		file[2];
 	int		temp_fd;
+	int		sigint;
 }	t_shell;
 
 void	parser(t_shell *shell);
@@ -88,5 +88,6 @@ void	mini_return_value(t_shell *shell);
 void	execute_process(t_shell *shell, char *command);
 int		ft_isnumber(char *num);
 int		equal_checker(char *envp);
+void	new_prompt(t_shell *shell);
 
 #endif

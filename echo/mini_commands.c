@@ -88,7 +88,7 @@ int	mini_echo_loop_checker(char *command, int i, int flag)
 				i++;
 			}
 		}
-		if (command[i] == '"' && command[i + 1] != '"')
+		if (command[i] == '"' && command[i + 1] != '"') // TODO: needs to understand when there are no ending " 
 		{
 			// printf("double\n");
 			flag = 2;
