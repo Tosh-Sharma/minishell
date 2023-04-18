@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 17:45:43 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/01 20:27:24 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/18 19:50:12 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,6 @@ void	handle_signal(int signo)
 	//signal_return_value(status);
 }
 
-/**
- * SIGINT = CTRL + C
- * SIGQUIT = CTRL + \
- * TODO: SIGINT is just SIGQUIT right now. We need to implement SIGINT.
- * Thomas has some code that he has written for this. This uses the readline
- * library functions. REFERENCE: new_prompt().
- * TODO: Figure out how to handle CTRL + D as it is not a signal input
- * but a EOF input and it cannot be handled in the same way as our other inputs.
-*/
 void	signal_handling(void)
 {
 	signal(SIGINT, handle_signal);

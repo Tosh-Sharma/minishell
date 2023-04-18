@@ -6,20 +6,11 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 23:32:08 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/04 12:27:50 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/18 19:50:17 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-/**
- * TODO: For Thomas,
- * Your job in replace env variable is to replace all environment
- * variables given as input with their value.
- * For example:
- * echo $USER ==> echo nameOfUser
- * echo $USER${USER} ==> echo nameOfUsernameOfUser
-*/
 
 int	new_len_com(char *command, char **res_var, int *positions)
 {
