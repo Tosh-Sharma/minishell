@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/17 19:13:06 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/18 18:03:35 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,7 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 		else
 			printf("Command: %s not found\n", shell->split_com[0]);
 	}
+	free_strings(shell->split_com);
+	if (access("input.txt", F_OK) == 0)
+		unlink("input.txt");
 }

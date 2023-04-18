@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 17:45:46 by tsharma           #+#    #+#             */
-/*   Updated: 2023/03/29 16:37:33 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/18 17:52:36 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,4 +131,7 @@ void	parser(t_shell *shell)
 	split_commands(shell->input, pipe_positions, pipe_count, splitted_commands);
 	expander(splitted_commands, shell);
 	execute_commands(shell, splitted_commands, pipe_count + 1);
+	free(pipe_positions);
+	free(shell->input);
+	free_strings(splitted_commands);
 }

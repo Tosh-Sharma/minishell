@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:41 by tsharma           #+#    #+#             */
-/*   Updated: 2023/02/27 15:36:27 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/18 16:56:08 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,14 @@ void	*ft_malloc_checker(int type, int size)
 			perror_and_exit("Could not allocate memory", 1);
 		return (s);
 	}
+}
+
+void	free_strings(char **str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i] != NULL)
+		free(str[i]);
+	free(str);
 }
