@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/05 19:33:00 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/14 20:41:48 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ typedef struct s_shell
 	int		new_line_flag;
 	char	**split_com;
 	int		file[2];
+	int		is_file_input;
+	int		is_heredoc_active;
+	int		output_write;
+	int		output_append;
 	int		temp_fd;
 }	t_shell;
 
@@ -57,7 +61,6 @@ void	execute_commands(t_shell *shell, char **splitted_commands, int count);
 void	env_command(t_shell *shell);
 void	export_command(t_shell *shell, char *input);
 void	unset_command(t_shell *shell, char *input);
-int		unset_checker(t_shell *shell);
 int		join_and_cmp(const char *s1, const char *s2, size_t n);
 void	expander(char **commands, t_shell *shell);
 char	*replace_env_variable(char *command, int *positions, int count,
@@ -83,5 +86,16 @@ void	exit_one(t_shell *shell);
 void	exit_multiple(t_shell *shell, int i);
 void	mini_return_value(t_shell *shell);
 void	execute_process(t_shell *shell, char *command);
+void	io_redirection(t_shell *shell, int is_piped, int redirect_fd);
+int		input_redirection(t_shell *shell);
+int		output_redirection(t_shell *shell);
+void	append_to_file(char *file_name);
+void	write_to_file(char *file_name);
+void	heredoc(char *delimiter);
+void	read_from_file(char *file_name);
+int		get_list_size(char **input);
+int		get_new_list_size(char **input, int old_size, char *in_1, char *in_2);
+void	create_new_string(t_shell *shell, int new_size, char *in1, char *in2);
+void	set_io_redirection_flags(t_shell *shell);
 
 #endif

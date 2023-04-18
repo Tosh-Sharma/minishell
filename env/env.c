@@ -6,12 +6,13 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:26:45 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/05 19:09:31 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/06 16:36:11 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+// TODO: Do the new export stuff of handling empty variables.
 void	export_command(t_shell *shell, char *input)
 {
 	char	**split_string;
