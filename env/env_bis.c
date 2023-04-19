@@ -29,7 +29,7 @@ int	equal_checker(char *envp)
 
 int	is_env_var(char *str, t_shell *shell)
 {
-	int	i;
+	int		i;
 	int		len;
 	char	*var_name;
 

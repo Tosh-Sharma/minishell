@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isspace_long_long(char i)
+#include "libft.h"
+
+int	ft_isspace_super(char i)
 {
 	if (i == ' ' || i == '\t' || i == '\n'
 		|| i == '\v' || i == '\f' || i == '\r')
@@ -18,7 +20,7 @@ int	ft_isspace_long_long(char i)
 	return (0);
 }
 
-long long	flip_if_negative_long_long(char str, long long is_neg)
+int	flip_if_negative_super(char str, int is_neg)
 {
 	if (str == 45)
 	{
@@ -29,37 +31,48 @@ long long	flip_if_negative_long_long(char str, long long is_neg)
 	return (is_neg);
 }
 
-long long   calculate_number_long_long(const char *str, long long is_neg)
+long long	calculate_number_super(const char *str, int is_neg)
 {
-    int         i;
+	int			i;
 	long long	num;
 
 	i = 0;
 	num = 0;
-	while (str[i] >= 48 && str[i] <= 57)
+	// if (str[i] == 0)
+	// 	exit(255);
+	while (str[i] >= 48 && str[i] <= 57 && str[i] != '\0')
 	{
 		num = (num * 10) + (str[i] - 48);
+		if ((num > 922337203685477580 && str[i + 1] != '\0') || (num == 922337203685477580
+				&& ((is_neg && str[i + 1] > 56)
+					|| (!(is_neg) && str[i + 1] > 55))))
+		{
+			exit(255);
+		}
 		i++;
+
 	}
+	if ((str[i] < 48 || str[i] > 57) && str[i] != 0)
+		exit(255);
 	if (is_neg)
 		return (num * -1);
 	else
 		return (num);
 }
 
-long long	ft_atoi_long_long(const char *str)
+long long	ft_superatoi(const char *str)
 {
-    long long   i;
-	long long   is_neg;
+	int		i;
+	int		is_neg;
 
 	i = 0;
 	is_neg = 0;
-	while (ft_isspace_long_long(str[i]))
+	while (ft_isspace_super(str[i]))
 		i++;
 	if (str[i] == 45 || str[i] == 43)
 	{
-		is_neg = flip_if_negative_long_long(str[i], is_neg);
+		is_neg = flip_if_negative_super(str[i], is_neg);
 		i++;
 	}
-	return (calculate_number_long_long(&str[i], is_neg));
+	return (calculate_number_super(&str[i], is_neg));
 }

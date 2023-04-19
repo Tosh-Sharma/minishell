@@ -65,13 +65,13 @@ void	mini_exit(t_shell *shell)
 	int	i;
 
 	i = 0;
-	//printf("in exit\n");
 	while (shell->split_com[i])
-		//printf("mini exit string[%d] :%s\n", i, shell->split_com[i]);
 		i++;
-	//printf("exit i = %d\n", i);
 	if (i == 1)
+	{
+		shell->return_value = 0;
 		exit(shell->return_value);
+	}
 	else if (i == 2)
 		exit_one(shell);
 	else

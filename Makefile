@@ -15,7 +15,7 @@ SRCS = 	main.c \
 		executor/utils.c executor/utils_bis.c \
 		echo/mini_commands.c echo/mini_commands_utils.c \
 		redirection/io_redirection.c redirection/input_redirection.c \
-		redirection/io_utils.c redirection/output_utils.c \
+		redirection/io_utils.c \
 		redirection/set_io_redirection_flags.c \
 		redirection/output_redirection.c \
  

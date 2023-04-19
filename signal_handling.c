@@ -26,23 +26,6 @@ void	handle_interrupt(int signum)
 	exit(1);
 }
 
-
-/* void		handle_signal(int signo)
-{
-	if (signo == SIGINT)
-	{
-		//ft_putchar_fd('\n', 1);
-		new_prompt(&g_shell);
-	}
-	else if (signo == SIGQUIT)
-	{
-		printf("input :%s\n", g_shell.input);
-		ft_putstr_fd("Quit: 3\n", 1);
-		new_prompt(&g_shell);
-		g_shell.return_value = 131;
-	}
-}*/
-
 void	signal_return_value(int status)
 {
 	if (WIFSIGNALED(status))
@@ -66,11 +49,15 @@ void	handle_signal(int signo)
 	{
 		if (pid == -1)
 		{
-			ft_putstr_fd("LA", 1);
-			rl_on_new_line();
-			rl_line_buffer[0] = '\0';
-			free(g_shell.input);
-			rl_redisplay();
+			if (g_shell.input == NULL || g_shell.input[0] == '\0')
+			{
+				ft_putchar_fd('\n', 1);
+				//new_prompt(&g_shell);
+			}
+			// rl_on_new_line();
+			// rl_line_buffer[0] = '\0';
+			// free(g_shell.input);
+			// rl_redisplay();
 		}
 		else
 		{
@@ -88,7 +75,6 @@ void	handle_signal(int signo)
 			g_shell.return_value = 131;
 		}
 	}
-	//signal_return_value(status);
 }
 
 void	signal_handling(void)

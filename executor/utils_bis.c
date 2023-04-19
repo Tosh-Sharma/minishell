@@ -48,28 +48,27 @@ void	exit_one(t_shell *shell)
 	long long	num;
 
 	if (!(ft_isnumber(shell->split_com[1]))
-		|| ((ft_atoi_long_long(shell->split_com[1])) > 9223372036854775806
-		&& (ft_atoi_long_long(shell->split_com[1])) < -9223372036854775807
-		&& (ft_atoi_long_long(shell->split_com[1])) != 9223372036854775807
-		&& (ft_atoi_long_long(shell->split_com[1]))
-		!= (-9223372036854775807 - 1)))
+		|| ((ft_superatoi(shell->split_com[1])) > 9223372036854775806
+			&& (ft_superatoi(shell->split_com[1])) < -9223372036854775807
+			&& (ft_superatoi(shell->split_com[1])) != 9223372036854775807
+			&& (ft_superatoi(shell->split_com[1]))
+			!= (-9223372036854775807 - 1)))
 		shell->return_value = 255;
 	else
 	{	
-		num = ft_atoi_long_long(shell->split_com[1]);
+		num = ft_superatoi(shell->split_com[1]);
 		shell->return_value = num % 256;
-		printf("shell split 1 = %lld\n", num);
 	}
 	exit(shell->return_value);
 }
 
 void	exit_multiple(t_shell *shell, int i)
 {
-	//printf("multiple\n");
 	if (i > 2 && !(ft_isnumber(shell->split_com[1])))
 	{
 		shell->return_value = 255;
-		printf("bash: exit: %s: numeric argument required\n", shell->split_com[1]);
+		printf("bash: exit: %s: numeric argument required\n",
+			shell->split_com[1]);
 		exit(shell->return_value);
 	}
 	else

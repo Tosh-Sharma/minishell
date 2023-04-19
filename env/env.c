@@ -59,7 +59,7 @@ void	export_command(t_shell *shell, char *input)
 		{
 			if (is_env_var(split_string[i], shell) == 0)
 				add_env_var(split_string[i], shell);
-			else if (is_env_var(split_string[i], shell) == 1 
+			else if (is_env_var(split_string[i], shell) == 1
 				&& equal_checker(split_string[i]) == 1)
 				update_env_var(split_string[i], shell);
 		}
