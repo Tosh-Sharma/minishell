@@ -78,7 +78,6 @@ int		get_index(char *command, int i);
 void	single_command_execution(t_shell *shell, char **splitted_commands);
 void	store_latest_variables(t_shell *shell, char *str);
 char	**realloc_new_and_copy_old(t_shell *shell, int count);
-int		env_var_exists(char *env_var, t_shell *shell);
 char	*get_var(char *command, int nb, char *var, int len);
 char	*replace_var(char *new_var, char *var, char *env_row, int return_value);
 void	change_pwd(t_shell *shell);
