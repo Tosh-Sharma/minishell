@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 02:31:42 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/02/27 15:27:48 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/18 20:39:01 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,10 @@
 void	free_and_replace_vars(t_shell *shell, char **new_env_vars,
 	char **strings)
 {
-	int	i;
-
-	i = -1;
-	while (strings[++i] != NULL)
-		free(strings[i]);
-	free(strings);
-	i = -1;
-	while (++i < shell->env_y)
-		free(shell->envp[i]);
-	free(shell->envp);
+	free_strings(strings);
+	free_strings(shell->envp);
 	shell->envp = new_env_vars;
-	i = 0;
-	while (shell->envp[i] != NULL)
-		i++;
-	shell->env_y = i;
+	env_count_update(shell);
 }
 
 void	copy_env_vars_except_marked(t_shell *shell, char **new_env_vars,
@@ -73,7 +62,7 @@ void	mark_indexes_for_not_copying(t_shell *shell, char **strings, int *index)
 		j = -1;
 		while (strings[++j] != NULL)
 		{
-			if (join_and_cmp(strings[j], shell->envp[i],
+			if (ft_strncmp(strings[j], shell->envp[i],
 					ft_strlen(strings[j])) == 0)
 			{
 				index[++index_counter] = i;
@@ -86,14 +75,9 @@ void	mark_indexes_for_not_copying(t_shell *shell, char **strings, int *index)
 int	get_count(t_shell *shell, char **strings)
 {
 	int		definite_count;
-	int		initial_count;
 	int		i;
 	int		j;
 
-	initial_count = 0;
-	while (strings[initial_count] != NULL)
-		++initial_count;
-	--initial_count;
 	definite_count = 0;
 	i = -1;
 	while (shell->envp[++i] != NULL)
@@ -101,7 +85,7 @@ int	get_count(t_shell *shell, char **strings)
 		j = -1;
 		while (strings[++j] != NULL)
 		{
-			if (join_and_cmp(strings[j], shell->envp[i],
+			if (ft_strncmp(strings[j], shell->envp[i],
 					ft_strlen(strings[j])) == 0)
 			definite_count++;
 		}
@@ -118,6 +102,9 @@ int	get_count(t_shell *shell, char **strings)
 */
 //if env_var exists then unset $env_var
 // => ERR_UNSET unset: `env_var value': not a valid identifier
+// Variables with no value and are in shell->envp
+// These variables are currently not being unset correctly
+// No value means no equal sign.
 void	unset_command(t_shell *shell, char *input)
 {
 	char	**strings;
@@ -126,6 +113,7 @@ void	unset_command(t_shell *shell, char *input)
 	int		*index;
 	int		i;
 
+	env_count_update(shell);
 	strings = ft_split(input, ' ');
 	count = get_count(shell, strings);
 	index = (int *)malloc(sizeof(int) * count);

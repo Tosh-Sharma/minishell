@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/18 17:58:38 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/18 19:49:51 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 # define WHITE "\001\033[0m\002"
 # define GREEN "\001\033[1;32m\002"
 
-// TODO: Return_value is in place for $? handling. Check its requirement
 typedef struct s_shell
 {
 	char	*input;
@@ -43,12 +42,12 @@ typedef struct s_shell
 	char	*res_com;
 	int		new_line_flag;
 	char	**split_com;
-	int		file[2];
 	int		is_file_input;
 	int		is_heredoc_active;
 	int		output_write;
 	int		output_append;
 	int		temp_fd;
+	int		sigint;
 }	t_shell;
 
 void	parser(t_shell *shell);
@@ -58,7 +57,7 @@ void	check_for_incorrect_syntax(char *input);
 void	perror_and_exit(char *input, int exit_code);
 void	*ft_malloc_checker(int type, int size);
 void	execute_commands(t_shell *shell, char **splitted_commands, int count);
-void	env_command(t_shell *shell);
+void	env_command(t_shell *shell, int flag);
 void	export_command(t_shell *shell, char *input);
 void	unset_command(t_shell *shell, char *input);
 int		join_and_cmp(const char *s1, const char *s2, size_t n);
@@ -74,9 +73,8 @@ void	execute_builtin(char *command, t_shell *shell);
 int		is_builtin_command(t_shell *shell);
 int		get_index(char *command, int i);
 void	single_command_execution(t_shell *shell, char **splitted_commands);
-void	store_latest_variables(t_shell *shell, int count, char **strings);
+void	store_latest_variables(t_shell *shell, char *str);
 char	**realloc_new_and_copy_old(t_shell *shell, int count);
-int		env_var_exists(char *env_var, t_shell *shell);
 char	*get_var(char *command, int nb, char *var, int len);
 char	*replace_var(char *new_var, char *var, char *env_row, int return_value);
 void	change_pwd(t_shell *shell);
@@ -86,6 +84,9 @@ void	exit_one(t_shell *shell);
 void	exit_multiple(t_shell *shell, int i);
 void	mini_return_value(t_shell *shell);
 void	execute_process(t_shell *shell, char *command);
+int		ft_isnumber(char *num);
+int		equal_checker(char *envp);
+void	new_prompt(t_shell *shell);
 void	io_redirection(t_shell *shell, int is_piped, int redirect_fd);
 int		input_redirection(t_shell *shell);
 int		output_redirection(t_shell *shell);
@@ -98,5 +99,9 @@ int		get_new_list_size(char **input, int old_size, char *in_1, char *in_2);
 void	create_new_string(t_shell *shell, int new_size, char *in1, char *in2);
 void	set_io_redirection_flags(t_shell *shell);
 void	free_strings(char **str);
+int		is_env_var(char *str, t_shell *shell);
+void	add_env_var(char *str, t_shell *shell);
+void	update_env_var(char *str, t_shell *shell);
+void	command_not_found(char *str, int flag);
 
 #endif

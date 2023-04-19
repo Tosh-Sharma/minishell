@@ -67,13 +67,6 @@ void	store_positions(char *input, int *positions)
 	}
 }
 
-/**
- * This function is responsible for expanding variables passed
- * and replacing them with their values.
- * Fun fact: If its double quotes, we need to expand the variable.
- * For single quotes, no need to expand the variable.
-*/
-// FYI: The positions array has one last extra space. It can be NULL.
 void	expander(char **commands, t_shell *shell)
 {
 	int	i;

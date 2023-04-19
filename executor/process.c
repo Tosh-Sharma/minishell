@@ -19,12 +19,13 @@ void	execute_builtin_command(char *command, t_shell *shell)
 	exit(shell->return_value);
 }
 
-void	command_not_found(char *str)
+void	command_not_found(char *str, int flag)
 {
 	ft_putstr_fd("Command: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(" not found.\n", 2);
-	exit(1);
+	if (flag == 1)
+		exit(1);
 }
 
 void	execute_process(t_shell *shell, char *command)
@@ -48,6 +49,6 @@ void	execute_process(t_shell *shell, char *command)
 					shell->envp);
 		}
 		else
-			command_not_found(shell->split_com[0]);
+			command_not_found(shell->split_com[0], 1);
 	}
 }

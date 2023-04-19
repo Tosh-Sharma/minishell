@@ -6,7 +6,7 @@ SRCS = 	main.c \
 		parsing.c \
 		signal_handling.c \
 		utils/basic_utils.c \
-		env/env.c env/env_bis.c\
+		env/env.c env/env_bis.c \
 		env/unset.c \
 		env/unset_utilities.c \
 		expander/expander.c expander/extra_utils.c expander/extra_utils_bis.c \
@@ -15,7 +15,7 @@ SRCS = 	main.c \
 		executor/utils.c executor/utils_bis.c \
 		echo/mini_commands.c echo/mini_commands_utils.c \
 		redirection/io_redirection.c redirection/input_redirection.c \
-		redirection/io_utils.c redirection/output_utils.c \
+		redirection/io_utils.c \
 		redirection/set_io_redirection_flags.c \
 		redirection/output_redirection.c \
  
@@ -29,7 +29,7 @@ all: ${NAME}
 ${NAME}: ${OBJS}
 	make -C ./libft
 	mv libft/${LIB} .
-	${CC} ${CFLAGS} $(OBJS) $(LIB) -lreadline ./vendor/readline/lib/libreadline.a -lcurses -o $(NAME)
+	${CC} ${CFLAGS} $(OBJS) $(LIB) -lreadline ./vendor/readline/lib/libreadline.a -I ./vendor/readline/include/readline -lncurses -o $(NAME)
 
 %.o: %.c
 	${CC} ${CFLAGS} -o ${@} -c ${@:.o=.c}

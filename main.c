@@ -36,6 +36,13 @@ void	print_welcome(void)
 	printf("%s--------------------------------------------------\n\n", CYAN);
 }
 
+void	initialize(t_shell *shell)
+{
+	signal_handling();
+	new_prompt(shell);
+	check_for_incorrect_syntax(shell->input);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
@@ -46,15 +53,19 @@ int	main(int argc, char **argv, char **envp)
 		return (0);
 	copy_env_variables(&g_shell, envp);
 	print_welcome();
-	signal_handling();
 	while (1)
 	{
-		new_prompt(&g_shell);
-		check_for_incorrect_syntax(g_shell.input);
-		if (g_shell.input[0])
+		initialize(&g_shell);
+		if (g_shell.input && g_shell.input[0])
 		{
 			add_history(g_shell.input);
 			parser(&g_shell);
+		}
+		else if (g_shell.input == NULL)
+		{
+			//ft_putstr_fd("\b\b", 1);
+			ft_putstr_fd("\nexit\n", 1);
+			exit(0);
 		}
 	}
 	return (0);

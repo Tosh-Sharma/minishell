@@ -55,8 +55,6 @@ int	is_builtin_command(t_shell *shell)
 		return (1);
 	else if (!(ft_strcmp(shell->split_com[0], "cd")))
 		return (1);
-	else if (!(ft_strcmp(shell->input, "$?")))
-		return (1);
 	else if (!(ft_strcmp(shell->split_com[0], "exit")))
 		return (1);
 	return (0);
@@ -68,11 +66,12 @@ void	mini_exit(t_shell *shell)
 
 	i = 0;
 	while (shell->split_com[i])
-	{
 		i++;
-	}
 	if (i == 1)
+	{
 		shell->return_value = 0;
+		exit(shell->return_value);
+	}
 	else if (i == 2)
 		exit_one(shell);
 	else
@@ -81,18 +80,13 @@ void	mini_exit(t_shell *shell)
 
 void	execute_builtin(char *command, t_shell *shell)
 {
-	int	i;
-
-	i = 0;
 	env_count_update(shell);
-	if (!(ft_strcmp(shell->input, "$?")))
-		mini_return_value(shell);
-	else if (!(ft_strcmp(shell->split_com[0], "echo")))
-		mini_echo(command, get_index(command, i + 4), shell);
+	if (!(ft_strcmp(shell->split_com[0], "echo")))
+		mini_echo(command, get_index(command, 4), shell);
 	else if (!(ft_strcmp(shell->split_com[0], "pwd")))
 		mini_pwd();
 	else if (!(ft_strcmp(shell->split_com[0], "env")))
-		env_command(shell);
+		env_command(shell, 0);
 	else if (!(ft_strcmp(shell->split_com[0], "export")))
 		export_command(shell, command);
 	else if (!(ft_strcmp(shell->split_com[0], "unset")))
