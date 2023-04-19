@@ -59,7 +59,7 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 		if (exec_path != NULL)
 			execute_single_process(shell, exec_path);
 		else
-			printf("Command: %s not found\n", shell->split_com[0]);
+			command_not_found(shell->split_com[0], 0);
 	}
 	free_strings(shell->split_com);
 	if (access("input.txt", F_OK) == 0)

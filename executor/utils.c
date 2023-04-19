@@ -80,15 +80,9 @@ void	mini_exit(t_shell *shell)
 
 void	execute_builtin(char *command, t_shell *shell)
 {
-	int	i;
-
-	i = 0;
 	env_count_update(shell);
-	/*printf("input :%s\n", shell->input);
-	printf("split_com :%s\n", shell->split_com[0]);
-	printf("find com ret_value = %d\n", shell->return_value);*/
 	if (!(ft_strcmp(shell->split_com[0], "echo")))
-		mini_echo(command, get_index(command, i + 4), shell);
+		mini_echo(command, get_index(command, 4), shell);
 	else if (!(ft_strcmp(shell->split_com[0], "pwd")))
 		mini_pwd();
 	else if (!(ft_strcmp(shell->split_com[0], "env")))

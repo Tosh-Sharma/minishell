@@ -52,8 +52,7 @@ char	*replace_var(char *new_var, char *var, char *env_row, int return_value)
 	{
 		i = ft_strlen(var) + 1;
 		new_var = (char *)malloc(sizeof(char) * ((ft_strlen(env_row)) + 1 - i));
-		ft_strlcpy(new_var, &env_row[ft_strlen(var) + 1],
-			ft_strlen(env_row) + 1 - i);
+		ft_strlcpy(new_var, &env_row[i], ft_strlen(env_row) + 1 - i);
 		return (new_var);
 	}
 }

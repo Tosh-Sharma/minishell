@@ -36,15 +36,12 @@ typedef struct s_shell
 {
 	char	*input;
 	char	**envp;
-	char	**vars_to_add;
-	char	**exp_values;
 	int		return_value;
 	int		env_y;
 	char	**env_input;
 	char	*res_com;
 	int		new_line_flag;
 	char	**split_com;
-	int		file[2];
 	int		is_file_input;
 	int		is_heredoc_active;
 	int		output_write;
@@ -105,5 +102,6 @@ void	free_strings(char **str);
 int		is_env_var(char *str, t_shell *shell);
 void	add_env_var(char *str, t_shell *shell);
 void	update_env_var(char *str, t_shell *shell);
+void	command_not_found(char *str, int flag);
 
 #endif
