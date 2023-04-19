@@ -77,7 +77,7 @@ void	execute_builtin(char *command, t_shell *shell);
 int		is_builtin_command(t_shell *shell);
 int		get_index(char *command, int i);
 void	single_command_execution(t_shell *shell, char **splitted_commands);
-void	store_latest_variables(t_shell *shell, int count, char **strings);
+void	store_latest_variables(t_shell *shell, char *str);
 char	**realloc_new_and_copy_old(t_shell *shell, int count);
 int		env_var_exists(char *env_var, t_shell *shell);
 char	*get_var(char *command, int nb, char *var, int len);
@@ -104,5 +104,8 @@ int		get_new_list_size(char **input, int old_size, char *in_1, char *in_2);
 void	create_new_string(t_shell *shell, int new_size, char *in1, char *in2);
 void	set_io_redirection_flags(t_shell *shell);
 void	free_strings(char **str);
+int		is_env_var(char *str, t_shell *shell);
+void	add_env_var(char *str, t_shell *shell);
+void	update_env_var(char *str, t_shell *shell);
 
 #endif

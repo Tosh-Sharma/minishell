@@ -32,6 +32,7 @@ void	export_printer(char *str, t_shell *shell)
 				while (shell->envp[i][++j])
 					ft_putchar_fd(shell->envp[i][j], 1);
 				ft_putchar_fd('\"', 1);
+				break ;
 			}
 			else
 				ft_putchar_fd(shell->envp[i][j], 1);
@@ -111,27 +112,29 @@ void	export_command_extra(t_shell *shell, char **split_string, int count, int i)
 
 void	export_command(t_shell *shell, char *input)
 {
-	char	**split_string;
 	int		count;
 	int		i;
+	char	**split_string;
 
 	split_string = ft_split(input, ' ');
-	i = 0;
-	while (split_string[i] != NULL)
-		i++;
-	if (i == 1)
+	count = 0;
+	while (split_string[count] != NULL)
+		++count;
+	if (count == 1)
 		env_command(shell, 1);
 	else
 	{
 		i = 0;
-		count = 0;
-		shell->vars_to_add = (char **)malloc(sizeof(char *) 
-			* (get_count_export(shell, split_string) + 1));
-		export_command_extra(shell, split_string, count, i);
-		count = get_count_export(shell, split_string);
-		shell->envp = realloc_new_and_copy_old(shell, count);
-		store_latest_variables(shell, count, shell->vars_to_add);
+		while (split_string[++i] != NULL)
+		{
+			if (is_env_var(split_string[i], shell) == 0)
+				add_env_var(split_string[i], shell);
+			else if (is_env_var(split_string[i], shell) == 1 
+				&& equal_checker(split_string[i]) == 1)
+				update_env_var(split_string[i], shell);
+		}
 	}
+	free_strings(split_string);
 }
 
 void	env_command(t_shell *shell, int flag)
@@ -177,5 +180,6 @@ void	copy_env_variables(t_shell *shell, char **envp)
 			ft_strlcpy(shell->envp[i], envp[i], length + 1);
 		i++;
 	}
+	shell->envp[i] = NULL;
 	shell->env_y = i;
 }

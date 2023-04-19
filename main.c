@@ -53,7 +53,6 @@ int	main(int argc, char **argv, char **envp)
 		check_for_incorrect_syntax(g_shell.input);
 		if (g_shell.input && g_shell.input[0])
 		{
-			printf("INPUT is %s\n", g_shell.input);
 			add_history(g_shell.input);
 			parser(&g_shell);
 		}
@@ -61,7 +60,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (g_shell.input == NULL)
 			{
-				ft_putstr_fd("exit\n", 1);
+				ft_putstr_fd("\nexit\n", 1);
 				exit(0);
 			}
 		}
