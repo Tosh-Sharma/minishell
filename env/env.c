@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:26:45 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/06 16:36:11 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/18 19:10:09 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	export_printer(char *str, t_shell *shell)
 	int	j;
 
 	i = -1;
-	env_count_update(shell);
 	while (++i < shell->env_y)
 	{
 		j = -1;
