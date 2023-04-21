@@ -29,7 +29,7 @@ all: ${NAME}
 ${NAME}: ${OBJS}
 	make -C ./libft
 	mv libft/${LIB} .
-	${CC} ${CFLAGS} $(OBJS) $(LIB) -lreadline ./vendor/readline/lib/libreadline.a -I ./vendor/readline/include/readline -lncurses -o $(NAME)
+	${CC} ${CFLAGS} $(OBJS) $(LIB) -lreadline -L ./vendor/readline/lib/ -I ./vendor/readline/include/readline -lncurses -o $(NAME)
 
 %.o: %.c
 	${CC} ${CFLAGS} -o ${@} -c ${@:.o=.c}
@@ -40,6 +40,7 @@ fclean: clean
 	rm -f ${NAME}
 
 clean:
+	make -C ./libft clean
 	rm -f ${OBJS} $(LIB) file*
 
 .PHONY: clean fclean re all

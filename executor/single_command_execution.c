@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_command_execution.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/21 15:03:11 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/21 17:52:23 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 		perror_and_exit("Could not fork the process.", 1);
 	if (id == 0)
 	{
-		// signal(SIGINT, SIG_DFL);
 		io_redirection(shell, 0, -1);
 		shell->return_value = 0;
 		if (exec_path != NULL)

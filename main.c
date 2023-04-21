@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/21 15:11:26 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/21 18:35:15 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,20 @@ void	new_prompt(t_shell *shell)
 		shell->new_line_flag = 1;
 	}
 	else
-	{
 		shell->input = readline("$>:");
-	}
 }
 
-void	print_welcome(void)
+void	print_welcome(int argc, char **argv, t_shell *shell)
 {
+	(void)argc;
+	(void)argv;
 	printf("\n%s--------------------------------------------------\n", CYAN);
 	printf("%s¦                                                ¦\n", CYAN);
 	printf("%s¦        Welcome Chapri, to T&T Minishell        ¦\n", WHITE);
 	printf("%s¦                                                ¦\n", CYAN);
 	printf("%s--------------------------------------------------\n\n", CYAN);
+	shell->input = NULL;
+	shell->new_line_flag = 1;
 }
 
 void	initialize(t_shell *shell)
@@ -45,14 +47,10 @@ void	initialize(t_shell *shell)
 
 int	main(int argc, char **argv, char **envp)
 {
-	(void)argc;
-	(void)argv;
-	g_shell.input = NULL;
-	g_shell.new_line_flag = 1;
 	if (!envp || envp[0] == 0)
 		return (0);
 	copy_env_variables(&g_shell, envp);
-	print_welcome();
+	print_welcome(argc, argv, &g_shell);
 	while (1)
 	{
 		initialize(&g_shell);
@@ -60,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 			parser(&g_shell);
 		else if (g_shell.input == NULL)
 		{
-			ft_putstr_fd("\nexit\n", 1);
+			ft_putstr_fd("exit", 1);
 			exit(0);
 		}
 	}

@@ -1,4 +1,4 @@
-prefix=/Users/tvincile/Desktop/CURSUS/minishell/vendor/readline
+prefix=/Users/tsharma/Documents/42cursus/minishell/vendor/readline
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include

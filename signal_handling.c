@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 17:45:43 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/21 15:06:55 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/21 19:05:03 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,15 @@ void	handle_quit(int signum)
 
 void	handle_interrupt(int signum)
 {
+	pid_t	pid;
+
 	(void)signum;
+	pid = waitpid(-1, 0, 0);
 	write(1, "\n", 1);
 	rl_on_new_line();
-	rl_line_buffer[0] = '\0';
-	rl_redisplay();
-	// printf("signum is %d\n", signum);
-	// printf("WIFEXITED is %d\n", WIFEXITED(signum));
-	// if (WIFEXITED(signum))
-	// {
-	// 	printf("WEXITSTATUS is %d\n", WEXITSTATUS(signum));
-	// 	g_shell.return_value = WEXITSTATUS(signum) + 128;
-	// }
+	rl_replace_line("\0", 0);
+	if (pid == -1)
+		rl_redisplay();
 }
 
 void	signal_return_value(int status)
@@ -55,6 +52,6 @@ void	signal_return_value(int status)
 
 void	main_signal_handling(void)
 {
-	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, handle_interrupt);
 	signal(SIGQUIT, SIG_IGN);
 }

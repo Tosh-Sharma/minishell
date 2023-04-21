@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/21 14:30:45 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/21 19:31:32 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,13 @@ typedef struct s_shell
 	char	*res_com;
 	int		new_line_flag;
 	char	**split_com;
-	int		is_file_input;
 	int		is_heredoc_active;
-	int		output_write;
-	int		output_append;
+	int		heredoc_fd;
 	int		temp_fd;
-	int		sigint;
 }	t_shell;
 
 void	parser(t_shell *shell);
+void	rl_replace_line(const char *input, int number);
 void	main_signal_handling(void);
 void	copy_env_variables(t_shell *shell, char **envp);
 void	check_for_incorrect_syntax(char *input);
@@ -103,5 +101,6 @@ int		is_env_var(char *str, t_shell *shell);
 void	add_env_var(char *str, t_shell *shell);
 void	update_env_var(char *str, t_shell *shell);
 void	command_not_found(char *str, int flag);
+void	handle_interrupt(int signum);
 
 #endif
