@@ -25,7 +25,7 @@ char	*handle_num(int n, int is_neg, int i)
 		n = n / 10;
 	}
 	s[i] = '\0';
-	res = (char *)malloc(sizeof(char) * (i + is_neg));
+	res = (char *)malloc(sizeof(char) * (i + is_neg + 1));
 	if (!res)
 		return (NULL);
 	j = is_neg;
