@@ -83,7 +83,6 @@ void		pwd_refresh(t_shell *shell);
 void		get_back_home(t_shell *shell);
 void		exit_one(t_shell *shell);
 void		exit_multiple(t_shell *shell, int i);
-void		mini_return_value(t_shell *shell);
 void		execute_process(t_shell *shell, char *command);
 int			ft_isnumber(char *num);
 int			equal_checker(char *envp);
@@ -105,7 +104,9 @@ void		add_env_var(char *str, t_shell *shell);
 void		update_env_var(char *str, t_shell *shell);
 void		command_not_found(char *str, int flag, t_shell *shell);
 void		my_exit(int exit_num);
-long long	ft_atoi_long_long(const char *str);
+void		exit_num_arg(t_shell *shell);
+long long	ft_atoill(const char *str, t_shell *shell);
 void		signal_return_value(int status);
+char		*remove_quotes(char *command);
 
 #endif

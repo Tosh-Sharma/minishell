@@ -30,7 +30,7 @@ void	signal_return_value(int status)
 {
 	if (WIFEXITED(status))
 		g_shell.return_value = WEXITSTATUS(status);
-	if (WIFSIGNALED(status))
+	/*if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == 13)
 			g_shell.return_value = 0;
@@ -38,7 +38,7 @@ void	signal_return_value(int status)
 	else if (WIFEXITED(status))
 		g_shell.return_value = WEXITSTATUS(status) + 128;
 	else if (WIFSTOPPED(status))
-		g_shell.return_value = WSTOPSIG(status) + 128;
+		g_shell.return_value = WSTOPSIG(status) + 128;*/
 }
 
 void	handle_signal(int signo)

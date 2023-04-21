@@ -167,7 +167,9 @@ void	mini_cd(t_shell *shell)
 			change_pwd(shell);
 		else
 		{
-			printf("cd: %s: No such file or directory\n", shell->split_com[1]);
+			ft_putstr_fd("bash: cd: ", 2);
+			ft_putstr_fd(shell->split_com[1], 2);
+			ft_putstr_fd(": No such directory or not a directory\n", 2);
 			shell->return_value = 1;
 		}
 	}

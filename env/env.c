@@ -72,17 +72,27 @@ void	env_command(t_shell *shell, int flag)
 	int		i;
 
 	i = -1;
-	env_count_update(shell);
-	if (flag == 0)
+	if (shell->split_com[1])
 	{
-		while (++i < shell->env_y)
-		{
-			if (equal_checker(shell->envp[i]))
-				printf("%s\n", shell->envp[i]);
-		}
+		ft_putstr_fd("env: ", 2);
+		ft_putstr_fd(shell->split_com[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		shell->return_value = 127;
 	}
 	else
-		export_printer("declare -x ", shell);
+	{
+		env_count_update(shell);
+		if (flag == 0)
+		{
+			while (++i < shell->env_y)
+			{
+				if (equal_checker(shell->envp[i]))
+					printf("%s\n", shell->envp[i]);
+			}
+		}
+		else
+			export_printer("declare -x ", shell);
+	}
 }
 
 void	copy_env_variables(t_shell *shell, char **envp)

@@ -63,7 +63,6 @@ void		ft_putnbr_16_caps(int num, int fd);
 char		*ft_revstr(char *str);
 char		*ft_straddchar(char const *s1, char c);
 int			*ft_cpyarray(int *dst, int *src, int n);
-long long	ft_superatoi(const char *str);
 t_list		*ft_lstnew(void *content);
 void		ft_lstadd_front(t_list **lst, t_list *new);
 int			ft_lstsize(t_list *lst);
