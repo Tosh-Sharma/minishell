@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
 int	ft_isspace_super(char i)
 {
@@ -47,13 +47,13 @@ long long	calculate_number_super(const char *str, int is_neg)
 				&& ((is_neg && str[i + 1] > 56)
 					|| (!(is_neg) && str[i + 1] > 55))))
 		{
-			exit(255);
+			my_exit(255);
 		}
 		i++;
 
 	}
 	if ((str[i] < 48 || str[i] > 57) && str[i] != 0)
-		exit(255);
+		my_exit(255);
 	if (is_neg)
 		return (num * -1);
 	else

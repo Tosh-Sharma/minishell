@@ -14,6 +14,17 @@
 
 t_shell	g_shell;
 
+void	my_exit(int	exit_num)
+{
+	free_strings(g_shell.envp);
+	if (g_shell.input != NULL)
+		free(g_shell.input);
+	if (g_shell.splitted_commands != NULL)
+		free_strings(g_shell.splitted_commands);
+	//system("leaks minishell");
+	exit(exit_num);
+}
+
 void	new_prompt(t_shell *shell)
 {
 	if (shell->new_line_flag == 0)
@@ -34,10 +45,12 @@ void	print_welcome(void)
 	printf("%s¦        Welcome Chapri, to T&T Minishell        ¦\n", WHITE);
 	printf("%s¦                                                ¦\n", CYAN);
 	printf("%s--------------------------------------------------\n\n", CYAN);
+	g_shell.return_value = 0;
 }
 
 void	initialize(t_shell *shell)
 {
+	shell->splitted_commands = NULL;
 	signal_handling();
 	new_prompt(shell);
 	check_for_incorrect_syntax(shell->input);
@@ -63,9 +76,8 @@ int	main(int argc, char **argv, char **envp)
 		}
 		else if (g_shell.input == NULL)
 		{
-			//ft_putstr_fd("\b\b", 1);
 			ft_putstr_fd("\nexit\n", 1);
-			exit(0);
+			my_exit(g_shell.return_value);
 		}
 	}
 	return (0);

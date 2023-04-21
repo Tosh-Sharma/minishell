@@ -76,7 +76,7 @@ void	get_pipe_positions(char *input, int *pipes, char search)
 	}
 }
 
-void	split_commands(char *input, int *position, int count, char **commands)
+char	**split_commands(char *input, int *position, int count, char **commands)
 {
 	int	j;
 	int	k;
@@ -101,6 +101,7 @@ void	split_commands(char *input, int *position, int count, char **commands)
 		j = position[k] + 1;
 	}
 	commands[k] = NULL;
+	return (commands);
 }
 
 /**
@@ -116,7 +117,6 @@ void	split_commands(char *input, int *position, int count, char **commands)
 */
 void	parser(t_shell *shell)
 {
-	char	**splitted_commands;
 	int		pipe_count;
 	int		*pipe_positions;
 
@@ -125,13 +125,14 @@ void	parser(t_shell *shell)
 	if (!pipe_positions)
 		perror_and_exit("Could not allocate memory for pipe_positions", 1);
 	get_pipe_positions(shell->input, pipe_positions, '|');
-	splitted_commands = (char **)malloc(sizeof(char *) * (pipe_count + 2));
-	if (!splitted_commands)
+	shell->splitted_commands = (char **)malloc(sizeof(char *) * (pipe_count + 2));
+	if (!shell->splitted_commands)
 		perror_and_exit("Could not allocate memory for splitted_commands", 1);
-	split_commands(shell->input, pipe_positions, pipe_count, splitted_commands);
-	expander(splitted_commands, shell);
-	execute_commands(shell, splitted_commands, pipe_count + 1);
+	shell->splitted_commands = split_commands(shell->input, pipe_positions,
+		pipe_count, shell->splitted_commands);
+	expander(shell->splitted_commands, shell);
+	execute_commands(shell, shell->splitted_commands, pipe_count + 1);
 	free(pipe_positions);
 	free(shell->input);
-	free_strings(splitted_commands);
+	free_strings(shell->splitted_commands);
 }

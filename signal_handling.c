@@ -12,22 +12,24 @@
 
 #include "minishell.h"
 
-t_shell	g_shell;
+extern t_shell	g_shell;
 
 void	handle_quit(int signum)
 {
 	printf("We got a signal %d\n", signum);
-	exit(1);
+	my_exit(1);
 }
 
 void	handle_interrupt(int signum)
 {
 	printf("We got a signal %d\n", signum);
-	exit(1);
+	my_exit(1);
 }
 
 void	signal_return_value(int status)
 {
+	if (WIFEXITED(status))
+		g_shell.return_value = WEXITSTATUS(status);
 	if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == 13)

@@ -132,7 +132,7 @@ void	mini_echo(char *command, int index, t_shell *shell)
 				++i;
 		flag = 0;
 		if ((mini_echo_loop_checker(command, i, flag)))
-			printf("not good\n");
+			shell->return_value = 1;
 		else
 		{
 			mini_echo_loop(command, i);
@@ -154,7 +154,7 @@ void	mini_cd(t_shell *shell)
 			&& join_and_cmp("HOME", shell->envp[i], 4) != 0)
 			i++;
 		if (i == shell->env_y)
-			printf("HOME not set\n"); //error
+			printf("HOME not set\n");
 		else
 			get_back_home(shell);
 	}
@@ -166,6 +166,9 @@ void	mini_cd(t_shell *shell)
 		if (!(new_dir))
 			change_pwd(shell);
 		else
-			printf("cd: %s: No such file or directory\n", shell->split_com[1]); //error
+		{
+			printf("cd: %s: No such file or directory\n", shell->split_com[1]);
+			shell->return_value = 1;
+		}
 	}
 }

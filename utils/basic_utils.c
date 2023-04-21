@@ -12,6 +12,8 @@
 
 #include "../minishell.h"
 
+extern	t_shell	g_shell;
+
 /** TODO: Need to write a syntax checker for illegal syntax. You can refuse 
  * to handle all terrible input BUT make sure you don't crash.
  * There are a few things that we need to check for.
@@ -61,7 +63,8 @@ void	free_strings(char **str)
 	int	i;
 
 	i = -1;
-	while (str[++i] != NULL)
+	while (str != NULL && str[++i] != NULL)
 		free(str[i]);
 	free(str);
+	str = NULL;
 }

@@ -5,7 +5,7 @@ LIB = libft.a
 SRCS = 	main.c \
 		parsing.c \
 		signal_handling.c \
-		utils/basic_utils.c \
+		utils/basic_utils.c utils/ft_atoi_long_long.c \
 		env/env.c env/env_bis.c \
 		env/unset.c \
 		env/unset_utilities.c \

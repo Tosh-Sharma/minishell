@@ -70,7 +70,7 @@ void	mini_exit(t_shell *shell)
 	if (i == 1)
 	{
 		shell->return_value = 0;
-		exit(shell->return_value);
+		my_exit(shell->return_value);
 	}
 	else if (i == 2)
 		exit_one(shell);

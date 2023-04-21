@@ -59,7 +59,7 @@ void	exit_one(t_shell *shell)
 		num = ft_superatoi(shell->split_com[1]);
 		shell->return_value = num % 256;
 	}
-	exit(shell->return_value);
+	my_exit(shell->return_value);
 }
 
 void	exit_multiple(t_shell *shell, int i)
@@ -69,7 +69,7 @@ void	exit_multiple(t_shell *shell, int i)
 		shell->return_value = 255;
 		printf("bash: exit: %s: numeric argument required\n",
 			shell->split_com[1]);
-		exit(shell->return_value);
+		my_exit(shell->return_value);
 	}
 	else
 	{

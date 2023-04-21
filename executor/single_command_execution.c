@@ -15,6 +15,7 @@
 void	execute_single_process(t_shell *shell, char *exec_path)
 {
 	int		id;
+	int		signal;
 
 	id = fork();
 	if (id == -1)
@@ -30,7 +31,8 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 			perror("Something went wrong in code execution.");
 		}
 	}
-	waitpid(-1, NULL, 0);
+	waitpid(-1, &signal, 0);
+	signal_return_value(signal);
 }
 
 /**
@@ -59,7 +61,7 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 		if (exec_path != NULL)
 			execute_single_process(shell, exec_path);
 		else
-			command_not_found(shell->split_com[0], 0);
+			command_not_found(shell->split_com[0], 0, shell);
 	}
 	free_strings(shell->split_com);
 	if (access("input.txt", F_OK) == 0)
