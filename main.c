@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/04 11:58:17 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/21 15:11:26 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	print_welcome(void)
 
 void	initialize(t_shell *shell)
 {
-	signal_handling();
+	main_signal_handling();
 	new_prompt(shell);
 	check_for_incorrect_syntax(shell->input);
 }
@@ -57,13 +57,9 @@ int	main(int argc, char **argv, char **envp)
 	{
 		initialize(&g_shell);
 		if (g_shell.input && g_shell.input[0])
-		{
-			add_history(g_shell.input);
 			parser(&g_shell);
-		}
 		else if (g_shell.input == NULL)
 		{
-			//ft_putstr_fd("\b\b", 1);
 			ft_putstr_fd("\nexit\n", 1);
 			exit(0);
 		}

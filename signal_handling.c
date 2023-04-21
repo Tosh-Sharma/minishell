@@ -6,79 +6,55 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 17:45:43 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/18 19:50:12 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/21 15:06:55 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_shell	g_shell;
+extern t_shell	g_shell;
 
 void	handle_quit(int signum)
 {
-	printf("We got a signal %d\n", signum);
-	exit(1);
+	pid_t	pid;
+
+	(void)signum;
+	pid = waitpid(-1, NULL, WNOHANG);
+	if (pid != -1 && g_shell.is_heredoc_active == 0)
+	{
+		ft_putstr_fd("Quit: 3\n", 1);
+		g_shell.return_value = 131;
+	}
 }
 
 void	handle_interrupt(int signum)
 {
-	printf("We got a signal %d\n", signum);
-	exit(1);
+	(void)signum;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_line_buffer[0] = '\0';
+	rl_redisplay();
+	// printf("signum is %d\n", signum);
+	// printf("WIFEXITED is %d\n", WIFEXITED(signum));
+	// if (WIFEXITED(signum))
+	// {
+	// 	printf("WEXITSTATUS is %d\n", WEXITSTATUS(signum));
+	// 	g_shell.return_value = WEXITSTATUS(signum) + 128;
+	// }
 }
 
 void	signal_return_value(int status)
 {
-	if (WIFSIGNALED(status))
-	{
-		if (WTERMSIG(status) == 13)
-			g_shell.return_value = 0;
-	}
+	if (WIFSIGNALED(status) && WTERMSIG(status) == 13)
+		g_shell.return_value = 0;
 	else if (WIFEXITED(status))
 		g_shell.return_value = WEXITSTATUS(status) + 128;
 	else if (WIFSTOPPED(status))
 		g_shell.return_value = WSTOPSIG(status) + 128;
 }
 
-void	handle_signal(int signo)
+void	main_signal_handling(void)
 {
-	pid_t	pid;
-	int		status;
-
-	pid = waitpid(-1, &status, WNOHANG);
-	if (signo == SIGINT)
-	{
-		if (pid == -1)
-		{
-			if (g_shell.input == NULL || g_shell.input[0] == '\0')
-			{
-				ft_putchar_fd('\n', 1);
-				//new_prompt(&g_shell);
-			}
-			// rl_on_new_line();
-			// rl_line_buffer[0] = '\0';
-			// free(g_shell.input);
-			// rl_redisplay();
-		}
-		else
-		{
-			ft_putchar_fd('\n', 1);
-			g_shell.return_value = 130;
-		}
-	}
-	else if (signo == SIGQUIT)
-	{
-		if (pid == -1)
-			ft_putchar_fd('\n', 1);
-		else
-		{
-			ft_putstr_fd("Quit: 3\n", 1);
-			g_shell.return_value = 131;
-		}
-	}
-}
-
-void	signal_handling(void)
-{
-	signal(SIGINT, handle_signal);
-	signal(SIGQUIT, handle_signal);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }
