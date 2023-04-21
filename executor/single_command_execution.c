@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/21 15:03:11 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/21 16:27:29 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 		else
 			command_not_found(shell->split_com[0], 0);
 	}
+	set_up_terminal(1);
 	free_strings(shell->split_com);
 	if (access("input.txt", F_OK) == 0)
 		unlink("input.txt");

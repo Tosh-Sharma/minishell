@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/18 18:01:15 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/21 16:24:10 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	multipipe_last(t_shell *shell, char *command)
 		close(shell->temp_fd);
 		while (waitpid(-1, NULL, 0) != -1)
 			;
+		set_up_terminal(1);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/21 15:11:26 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/21 16:22:14 by toshsharma       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,26 @@ void	print_welcome(void)
 
 void	initialize(t_shell *shell)
 {
+	set_up_terminal(0);
 	main_signal_handling();
 	new_prompt(shell);
 	check_for_incorrect_syntax(shell->input);
+}
+
+void	set_up_terminal(int flag)
+{
+	struct termios	new;
+	struct termios	old;
+
+	tcgetattr(STDIN_FILENO, &old);
+	new = old;
+	printf("old.c_lflag is %lu and ECHOCTL is %d\n", new.c_lflag, ECHOCTL);	
+	if (flag)
+		new.c_lflag |= ECHOCTL;
+	else
+		new.c_lflag &= ~ECHOCTL;
+	printf("new.c_lflag is %lu and ECHOCTL is %d\n", new.c_lflag, ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSANOW, &new);
 }
 
 int	main(int argc, char **argv, char **envp)
