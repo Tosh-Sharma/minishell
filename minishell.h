@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/21 19:31:32 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/21 20:23:54 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <termios.h>
 # include "libft/libft.h"
 # include <stdbool.h>
 # include <readline/readline.h>
@@ -102,5 +103,6 @@ void	add_env_var(char *str, t_shell *shell);
 void	update_env_var(char *str, t_shell *shell);
 void	command_not_found(char *str, int flag);
 void	handle_interrupt(int signum);
+void	set_up_terminal(int flag);
 
 #endif
