@@ -17,8 +17,6 @@ void	pipe_commands(t_shell *shell, char *command)
 	int	id;
 	int	fd[2];
 
-	shell->split_com = ft_split(command, ' ');
-	//, shell);
 	if (pipe(fd) == -1)
 		perror_and_exit("Could not create pipe.", 1);
 	id = fork();

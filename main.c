@@ -14,14 +14,14 @@
 
 t_shell	g_shell;
 
-void	my_exit(int	exit_num)
+void	my_exit(int exit_num)
 {
-	free_strings(g_shell.envp);
 	if (g_shell.input != NULL)
 		free(g_shell.input);
 	if (g_shell.splitted_commands != NULL)
 		free_strings(g_shell.splitted_commands);
-	//system("leaks minishell");
+	if (g_shell.envp != NULL)
+		free_strings(g_shell.envp);
 	exit(exit_num);
 }
 

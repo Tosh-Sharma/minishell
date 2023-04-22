@@ -57,14 +57,15 @@ void		copy_env_variables(t_shell *shell, char **envp);
 void		check_for_incorrect_syntax(char *input);
 void		perror_and_exit(char *input, int exit_code);
 void		*ft_malloc_checker(int type, int size);
-void		execute_commands(t_shell *shell, char **splitted_commands, int count);
+void		execute_commands(t_shell *shell,
+				char **splitted_commands, int count);
 void		env_command(t_shell *shell, int flag);
 void		export_command(t_shell *shell, char *input);
 void		unset_command(t_shell *shell, char *input);
 int			join_and_cmp(const char *s1, const char *s2, size_t n);
 void		expander(char **commands, t_shell *shell);
 char		*replace_env_variable(char *command, int *positions, int count,
-			t_shell *shell);
+				t_shell *shell);
 void		mini_echo(char *command, int index, t_shell *shell);
 void		mini_pwd(void);
 void		mini_cd(t_shell *shell);
@@ -77,7 +78,8 @@ void		single_command_execution(t_shell *shell, char **splitted_commands);
 void		store_latest_variables(t_shell *shell, char *str);
 char		**realloc_new_and_copy_old(t_shell *shell, int count);
 char		*get_var(char *command, int nb, char *var, int len);
-char		*replace_var(char *new_var, char *var, char *env_row, int return_value);
+char		*replace_var(char *new_var, char *var, char *env_row,
+				int return_value);
 void		change_pwd(t_shell *shell);
 void		pwd_refresh(t_shell *shell);
 void		get_back_home(t_shell *shell);
@@ -95,8 +97,10 @@ void		write_to_file(char *file_name);
 void		heredoc(char *delimiter);
 void		read_from_file(char *file_name);
 int			get_list_size(char **input);
-int			get_new_list_size(char **input, int old_size, char *in_1, char *in_2);
-void		create_new_string(t_shell *shell, int new_size, char *in1, char *in2);
+int			get_new_list_size(char **input, int old_size, char *in_1,
+				char *in_2);
+void		create_new_string(t_shell *shell, int new_size, char *in1,
+				char *in2);
 void		set_io_redirection_flags(t_shell *shell);
 void		free_strings(char **str);
 int			is_env_var(char *str, t_shell *shell);

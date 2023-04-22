@@ -87,17 +87,12 @@ char	**split_commands(char *input, int *position, int count, char **commands)
 	{
 		if (k == (count))
 		{
-			commands[k] = (char *)malloc(sizeof(char)
-					* (ft_strlen(input) - j + 1));
-			printf("malloc size = %lu\n", (ft_strlen(input) - j + 1));
-			if (!commands[k])
-				perror_and_exit("Could not allocate commands", 1);
+			commands[k] = ft_malloc_checker(1, (ft_strlen(input) - j + 1));
 			ft_strlcpy(commands[k], &input[j], (ft_strlen(input) - j + 1));
 		}
 		else
 		{
-			commands[k] = (char *)malloc(sizeof(char) * (position[k] - j + 1));
-			printf("malloc size else= %d\n", (position[k] - j + 1));
+			commands[k] = ft_malloc_checker(1, (position[k] - j + 1));
 			ft_strlcpy(commands[k], &input[j], (position[k] - j + 1));
 		}
 		j = position[k] + 1;
@@ -127,11 +122,12 @@ void	parser(t_shell *shell)
 	if (!pipe_positions)
 		perror_and_exit("Could not allocate memory for pipe_positions", 1);
 	get_pipe_positions(shell->input, pipe_positions, '|');
-	shell->splitted_commands = (char **)malloc(sizeof(char *) * (pipe_count + 2));
+	shell->splitted_commands = (char **)malloc(sizeof(char *)
+			* (pipe_count + 2));
 	if (!shell->splitted_commands)
 		perror_and_exit("Could not allocate memory for splitted_commands", 1);
 	shell->splitted_commands = split_commands(shell->input, pipe_positions,
-		pipe_count, shell->splitted_commands);
+			pipe_count, shell->splitted_commands);
 	free(pipe_positions);
 	expander(shell->splitted_commands, shell);
 	execute_commands(shell, shell->splitted_commands, pipe_count + 1);

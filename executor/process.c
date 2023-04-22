@@ -26,7 +26,7 @@ void	command_not_found(char *str, int flag, t_shell *shell)
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(" not found.\n", 2);
 	if (flag == 1)
-		exit(shell->return_value);
+		my_exit(shell->return_value);
 }
 
 void	execute_process(t_shell *shell, char *command)

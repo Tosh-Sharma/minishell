@@ -32,6 +32,7 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 		}
 	}
 	waitpid(-1, &signal, 0);
+	free(exec_path);
 	signal_return_value(signal);
 }
 
@@ -50,7 +51,10 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 	shell->split_com = ft_split(splitted_commands[0], ' ');
 	set_io_redirection_flags(shell);
 	if (is_builtin_command(shell) == 1)
+	{
+		io_redirection(shell, 0, -1);
 		execute_builtin(splitted_commands[0], shell);
+	}
 	else
 	{
 		address = ft_split(getenv("PATH"), ':');

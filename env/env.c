@@ -95,6 +95,17 @@ void	env_command(t_shell *shell, int flag)
 	}
 }
 
+char	*return_shell_level(char *input)
+{
+	char	*str;
+	char	*temp_level;
+
+	temp_level = ft_itoa(ft_atoi(input + 6) + 1);
+	str = ft_strjoin("SHLVL=", temp_level);
+	free(temp_level);
+	return (str);
+}
+
 void	copy_env_variables(t_shell *shell, char **envp)
 {
 	int	count;
@@ -110,14 +121,13 @@ void	copy_env_variables(t_shell *shell, char **envp)
 	while (i < count)
 	{
 		length = ft_strlen(envp[i]);
-		shell->envp[i] = (char *)malloc(sizeof(char) * (length + 1));
 		if (ft_strncmp(envp[i], "SHLVL", 5) == 0)
-		{
-			shell->envp[i] = ft_strjoin("SHLVL=",
-					ft_itoa(ft_atoi(envp[i] + 6) + 1));
-		}
+			shell->envp[i] = return_shell_level(envp[i]);
 		else
+		{
+			shell->envp[i] = ft_malloc_checker(1, (length + 1));
 			ft_strlcpy(shell->envp[i], envp[i], length + 1);
+		}
 		i++;
 	}
 	shell->envp[i] = NULL;

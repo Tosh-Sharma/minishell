@@ -32,10 +32,11 @@ char	*find_appropriate_path(char **command, char **address)
 		free(path2);
 		result = access(path, X_OK);
 		if (result != -1)
-			return (path);
+			break ;
 		free(path);
 		i++;
 	}
+	free_strings(address);
 	if (result == -1)
 		return (NULL);
 	return (path);

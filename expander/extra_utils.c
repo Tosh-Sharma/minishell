@@ -82,11 +82,7 @@ char	*replace_com(char *res_com, char *command,
 	l = 0;
 	res_com = rep_com((char *[2]){command, res_com},
 			(int [4]){i, j, k, l}, positions, res_var);
-	while (res_var[++i] != NULL)
-	{
-		free(res_var[i]);
-	}
-	free(res_var);
+	free_strings(res_var);
 	return (res_com);
 }
 
@@ -138,10 +134,8 @@ char	*replace_env_variable(char *command, int *positions,
 	res_var = rep_env_var((char *[2]){command, var},
 			(int [6]){i, j, k, count, shell->env_y, shell->return_value},
 			positions, (char **[2]){res_var, shell->envp});
-	shell->res_com = (char *)malloc(sizeof(char)
-			* new_len_com(command, res_var, positions));
-	if (!shell->res_com)
-		perror_and_exit("Could not allocate memory for array.", 1);
+	shell->res_com = ft_malloc_checker(1,
+			new_len_com(command, res_var, positions));
 	shell->res_com = replace_com(shell->res_com, command, res_var, positions);
 	free(command);
 	return (shell->res_com);
