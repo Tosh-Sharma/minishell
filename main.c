@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/21 20:24:01 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/22 14:28:49 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,10 @@ void	set_up_terminal(int flag)
 
 	tcgetattr(STDIN_FILENO, &old);
 	new = old;
-	printf("old.c_lflag is %lu and ECHOCTL is %d\n", new.c_lflag, ECHOCTL);	
 	if (flag)
 		new.c_lflag |= ECHOCTL;
 	else
 		new.c_lflag &= ~ECHOCTL;
-	printf("new.c_lflag is %lu and ECHOCTL is %d\n", new.c_lflag, ECHOCTL);
 	tcsetattr(STDIN_FILENO, TCSANOW, &new);
 }
 

@@ -6,11 +6,13 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 16:03:55 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/21 17:52:32 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/22 15:54:14 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+extern t_shell	g_shell;
 
 void	execute_builtin_command(char *command, t_shell *shell)
 {
@@ -28,11 +30,21 @@ void	command_not_found(char *str, int flag)
 		exit(1);
 }
 
+void	handle_interrupt_child(int signum)
+{
+	(void)signum;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("\0", 0);
+	rl_redisplay();
+}
+
 void	execute_process(t_shell *shell, char *command)
 {
 	char	**address;
 	char	*exec_path;
 
+	signal(SIGINT, SIG_DFL);
 	address = ft_split(getenv("PATH"), ':');
 	shell->return_value = 0;
 	if (is_builtin_command(shell) == 1)

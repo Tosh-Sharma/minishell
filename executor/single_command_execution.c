@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/21 20:23:18 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/22 15:57:54 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 		perror_and_exit("Could not fork the process.", 1);
 	if (id == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, handle_quit);
 		io_redirection(shell, 0, -1);
 		shell->return_value = 0;
 		if (exec_path != NULL)

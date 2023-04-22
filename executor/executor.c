@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/21 16:24:10 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/22 15:38:46 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@ void	pipe_commands(t_shell *shell, char *command)
 	shell->split_com = ft_split(command, ' ');
 	if (pipe(fd) == -1)
 		perror_and_exit("Could not create pipe.", 1);
+	signal(SIGINT, SIG_IGN);
 	id = fork();
 	if (id == -1)
 		perror_and_exit("Could not fork the process.", 1);
 	if (id == 0)
 	{
+		signal(SIGINT, handle_interrupt_child);
 		io_redirection(shell, 1, fd[1]);
 		close(shell->temp_fd);
 		close(fd[0]);
@@ -43,11 +45,13 @@ void	multipipe_last(t_shell *shell, char *command)
 {
 	int	id;
 
+	signal(SIGINT, SIG_IGN);
 	id = fork();
 	if (id == -1)
 		perror_and_exit("Could not fork the process.", 1);
 	if (id == 0)
 	{
+		signal(SIGINT, handle_interrupt_child);
 		io_redirection(shell, 1, -1);
 		close(shell->temp_fd);
 		execute_process(shell, command);

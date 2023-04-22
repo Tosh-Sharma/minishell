@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   input_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:13:53 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/17 18:49:06 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/22 15:59:00 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+extern t_shell	g_shell;
 
 char	*join_with_nl(char *input, char *joiner)
 {
@@ -56,6 +58,7 @@ void	heredoc(char *delimiter)
 	int	file_fd;
 
 	file_fd = open("input.txt", O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	g_shell.heredoc_fd = file_fd;
 	read_with_delimiter(delimiter, file_fd);
 	close(file_fd);
 	file_fd = open("input.txt", O_RDONLY);
