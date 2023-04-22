@@ -18,13 +18,13 @@ void	mini_pwd(void)
 	int		size;
 
 	size = 100;
-	pwd = NULL;
-	pwd = getcwd(pwd, size);
+	pwd = getcwd(NULL, size);
 	if (pwd)
 	{
 		ft_putstr_fd(pwd, 1);
 		ft_putchar_fd('\n', 1);
 	}
+	free(pwd);
 }
 
 void	mini_echo_loop(char *command, int i)
@@ -116,6 +116,8 @@ void	mini_echo(char *command, int index, t_shell *shell)
 	int	i;
 	int	flag;
 
+
+	//printf ("command :%s\n",command);
 	if (index < 0)
 		write(1, "\n", 1);
 	else
@@ -132,7 +134,7 @@ void	mini_echo(char *command, int index, t_shell *shell)
 				++i;
 		flag = 0;
 		if ((mini_echo_loop_checker(command, i, flag)))
-			printf("not good\n");
+			shell->return_value = 1;
 		else
 		{
 			mini_echo_loop(command, i);
@@ -148,13 +150,13 @@ void	mini_cd(t_shell *shell)
 	int	i;
 
 	i = 0;
-	if (!shell->split_com[1])
+	if (shell->split_com[1] == NULL)
 	{
 		while (i < shell->env_y
 			&& join_and_cmp("HOME", shell->envp[i], 4) != 0)
 			i++;
 		if (i == shell->env_y)
-			printf("HOME not set\n"); //error
+			printf("HOME not set\n");
 		else
 			get_back_home(shell);
 	}
@@ -166,6 +168,11 @@ void	mini_cd(t_shell *shell)
 		if (!(new_dir))
 			change_pwd(shell);
 		else
-			printf("cd: %s: No such file or directory\n", shell->split_com[1]); //error
+		{
+			ft_putstr_fd("bash: cd: ", 2);
+			ft_putstr_fd(shell->split_com[1], 2);
+			ft_putstr_fd(": No such directory or not a directory\n", 2);
+			shell->return_value = 1;
+		}
 	}
 }

@@ -12,18 +12,8 @@
 
 #include "../minishell.h"
 
-/** TODO: Need to write a syntax checker for illegal syntax. You can refuse 
- * to handle all terrible input BUT make sure you don't crash.
- * There are a few things that we need to check for.
- * 1. We need to check if someone inserted something like 
- * two pipes together -> ||
- * 2. We need to check for illegal syntax in inserting env variables
- * Example: `echo ${HOSTNAME` is illegal.
- * 3. Environment variable names get expanded irrespective of anything
- * but if they are stuck with another thing without spaces, that should be
- * illegal or command not found. This is worth noting.
- * 4. There are a bunch of $ signals we can potentially tackle.
-*/
+extern t_shell g_shell;
+
 void	check_for_incorrect_syntax(char *input)
 {
 	(void)input;
@@ -32,7 +22,7 @@ void	check_for_incorrect_syntax(char *input)
 void	perror_and_exit(char *input, int exit_code)
 {
 	perror(input);
-	exit(exit_code);
+	my_exit(exit_code);
 }
 
 void	*ft_malloc_checker(int type, int size)
@@ -61,7 +51,8 @@ void	free_strings(char **str)
 	int	i;
 
 	i = -1;
-	while (str[++i] != NULL)
+	while (str != NULL && str[++i] != NULL)
 		free(str[i]);
 	free(str);
+	str = NULL;
 }

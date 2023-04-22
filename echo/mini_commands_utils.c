@@ -29,16 +29,11 @@ void	create_oldpwd(t_shell *shell, int flag)
 	int		size;
 
 	size = 100;
-	pwd = NULL;
-	pwd = getcwd(pwd, size);
+	pwd = getcwd(NULL, size);
 	if (flag)
-	{
-		str = ft_strdup("unset OLDPWD");
-		unset_command(shell, str);
-		free(str);
-	}
-	str = ft_strdup("export OLDPWD=");
-	str = ft_strjoin(str, pwd);
+		unset_command(shell, "unset OLDPWD");
+	str = ft_strjoin("export OLDPWD=", pwd);
+	free(pwd);
 	export_command(shell, str);
 	free(str);
 }
@@ -50,13 +45,10 @@ void	change_pwd(t_shell *shell)
 	int		size;
 
 	size = 100;
-	pwd = NULL;
-	pwd = getcwd(pwd, size);
-	str = ft_strdup("unset PWD");
-	free(str);
-	unset_command(shell, str);
-	str = ft_strdup("export PWD=");
-	str = ft_strjoin(str, pwd);
+	pwd = getcwd(NULL, size);
+	unset_command(shell, "unset PWD");
+	str = ft_strjoin("export PWD=", pwd);
+	free(pwd);
 	export_command(shell, str);
 	free(str);
 }
@@ -77,16 +69,15 @@ void	pwd_refresh(t_shell *shell)
 
 void	get_back_home(t_shell *shell)
 {
-	char	*str;
 	char	*res;
 	int		*pos;
 
 	pos = (int *)malloc(sizeof(int) * 1);
 	pos[0] = 3;
-	str = ft_strdup("cd $HOME");
-	res = replace_env_variable(str, pos, 1, shell);
-	free(shell->split_com[0]);
-	free(shell->split_com);
+	res = replace_env_variable(ft_strdup("cd $HOME"), pos, 1, shell);
+	free_strings(shell->split_com);
+	free(pos);
 	shell->split_com = ft_split(res, ' ');
+	free(res);
 	mini_cd(shell);
 }

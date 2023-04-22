@@ -14,6 +14,7 @@
 # define LIBFT_H
 # include<stdlib.h>
 # include <unistd.h>
+# include <stdio.h>
 
 typedef struct s_list
 {
@@ -43,7 +44,6 @@ char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 void		*ft_memchr(const void *s, int c, size_t n);
 int			ft_memcmp(const void *s1, const void *s2, size_t n);
 int			ft_atoi(const char *str);
-long long	ft_atoi_long_long(const char *str);
 void		*ft_calloc(size_t count, size_t size);
 char		*ft_strdup(char *src);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
@@ -64,7 +64,6 @@ void		ft_putnbr_16_caps(int num, int fd);
 char		*ft_revstr(char *str);
 char		*ft_straddchar(char const *s1, char c);
 int			*ft_cpyarray(int *dst, int *src, int n);
-long long	ft_superatoi(const char *str);
 t_list		*ft_lstnew(void *content);
 void		ft_lstadd_front(t_list **lst, t_list *new);
 int			ft_lstsize(t_list *lst);

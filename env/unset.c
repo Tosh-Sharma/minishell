@@ -130,5 +130,6 @@ void	unset_command(t_shell *shell, char *input)
 	count = i;
 	new_env_vars = (char **)malloc(sizeof(char *) * (shell->env_y - count));
 	copy_env_vars_except_marked(shell, new_env_vars, index, count);
+	free(index);
 	free_and_replace_vars(shell, new_env_vars, strings);
 }
