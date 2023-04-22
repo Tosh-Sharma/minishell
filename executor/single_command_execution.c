@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/22 17:48:37 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/22 19:56:12 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,14 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 		}
 	}
 	waitpid(-1, NULL, 0);
+}
+
+void	clean_up_post_exec(t_shell *shell)
+{
+	set_up_terminal(1);
+	free_strings(shell->split_com);
+	if (access("input.txt", F_OK) == 0)
+		unlink("input.txt");
 }
 
 /**
@@ -66,8 +74,5 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 		else
 			command_not_found(shell->split_com[0], 0);
 	}
-	set_up_terminal(1);
-	free_strings(shell->split_com);
-	if (access("input.txt", F_OK) == 0)
-		unlink("input.txt");
+	clean_up_post_exec(shell);
 }
