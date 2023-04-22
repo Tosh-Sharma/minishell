@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/22 15:00:47 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/22 17:50:46 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 typedef struct s_shell
 {
 	char	*input;
+	char	*command;
 	char	**envp;
 	int		return_value;
 	int		env_y;
@@ -82,7 +83,7 @@ void	get_back_home(t_shell *shell);
 void	exit_one(t_shell *shell);
 void	exit_multiple(t_shell *shell, int i);
 void	mini_return_value(t_shell *shell);
-void	execute_process(t_shell *shell, char *command);
+void	execute_process(t_shell *shell);
 int		ft_isnumber(char *num);
 int		equal_checker(char *envp);
 void	new_prompt(t_shell *shell);
@@ -105,6 +106,5 @@ void	command_not_found(char *str, int flag);
 void	set_up_terminal(int flag);
 void	handle_interrupt(int signum);
 void	handle_quit(int signum);
-void	handle_interrupt_child(int signum);
 
 #endif

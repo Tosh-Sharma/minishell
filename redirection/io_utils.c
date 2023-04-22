@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 15:20:19 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/17 16:10:34 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/22 17:48:11 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,29 @@ int	get_new_list_size(char **input, int old_size, char *in1, char *in2)
 	return (new_size + 2);
 }
 
+void	create_new_command(t_shell *shell)
+{
+	int		i;
+	char	*res;
+	char	*temp;
+
+	i = -1;
+	res = NULL;
+	while (shell->split_com[++i] != NULL)
+	{
+		temp = res;
+		res = ft_strjoin(temp, shell->split_com[i]);
+		free(temp);
+		if (shell->split_com[i + 1] != NULL)
+		{
+			temp = res;
+			res = ft_strjoin(temp, " ");
+			free(temp);
+		}
+	}
+	shell->command = res;
+}
+
 void	create_new_string(t_shell *shell, int new_size, char *in1, char *in2)
 {
 	int		i;
@@ -63,6 +86,7 @@ void	create_new_string(t_shell *shell, int new_size, char *in1, char *in2)
 	res[++j] = NULL;
 	free(shell->split_com);
 	shell->split_com = res;
+	create_new_command(shell);
 }
 
 void	io_redirection(t_shell *shell, int is_piped, int redirect_fd)

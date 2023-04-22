@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 16:03:55 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/22 15:54:14 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/22 17:50:30 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 extern t_shell	g_shell;
 
-void	execute_builtin_command(char *command, t_shell *shell)
+void	execute_builtin_command(t_shell *shell)
 {
 	shell->return_value = 0;
-	execute_builtin(command, shell);
+	execute_builtin(shell->command, shell);
 	exit(shell->return_value);
 }
 
@@ -30,25 +30,17 @@ void	command_not_found(char *str, int flag)
 		exit(1);
 }
 
-void	handle_interrupt_child(int signum)
-{
-	(void)signum;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("\0", 0);
-	rl_redisplay();
-}
-
-void	execute_process(t_shell *shell, char *command)
+void	execute_process(t_shell *shell)
 {
 	char	**address;
 	char	*exec_path;
 
 	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, handle_quit);
 	address = ft_split(getenv("PATH"), ':');
 	shell->return_value = 0;
 	if (is_builtin_command(shell) == 1)
-		execute_builtin_command(command, shell);
+		execute_builtin_command(shell);
 	else
 	{
 		if (access(shell->split_com[0], X_OK) != -1)

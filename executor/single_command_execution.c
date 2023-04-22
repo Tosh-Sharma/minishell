@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/22 15:57:54 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/22 17:48:37 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 	if (id == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, handle_quit);
+		signal(SIGQUIT, SIG_DFL);
 		io_redirection(shell, 0, -1);
 		shell->return_value = 0;
 		if (exec_path != NULL)
@@ -50,7 +50,10 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 	shell->split_com = ft_split(splitted_commands[0], ' ');
 	set_io_redirection_flags(shell);
 	if (is_builtin_command(shell) == 1)
-		execute_builtin(splitted_commands[0], shell);
+	{
+		io_redirection(shell, 0, -1);
+		execute_builtin(shell->command, shell);
+	}
 	else
 	{
 		address = ft_split(getenv("PATH"), ':');

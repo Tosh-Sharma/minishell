@@ -6,11 +6,20 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/22 15:38:46 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/22 17:55:28 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	handle_interrupt_child(int signum)
+{
+	(void)signum;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("\0", 0);
+	rl_redisplay();
+}
 
 void	pipe_commands(t_shell *shell, char *command)
 {
@@ -31,7 +40,7 @@ void	pipe_commands(t_shell *shell, char *command)
 		close(shell->temp_fd);
 		close(fd[0]);
 		close(fd[1]);
-		execute_process(shell, command);
+		execute_process(shell);
 	}
 	else
 	{
@@ -41,7 +50,7 @@ void	pipe_commands(t_shell *shell, char *command)
 	}
 }
 
-void	multipipe_last(t_shell *shell, char *command)
+void	multipipe_last(t_shell *shell)
 {
 	int	id;
 
@@ -54,7 +63,7 @@ void	multipipe_last(t_shell *shell, char *command)
 		signal(SIGINT, handle_interrupt_child);
 		io_redirection(shell, 1, -1);
 		close(shell->temp_fd);
-		execute_process(shell, command);
+		execute_process(shell);
 	}
 	else
 	{
@@ -81,11 +90,14 @@ void	execute_commands(t_shell *shell, char **splitted_commands, int count)
 			set_io_redirection_flags(shell);
 			pipe_commands(shell, splitted_commands[i]);
 			free_strings(shell->split_com);
+			if (shell->command != NULL)
+				free(shell->command);
 		}
 		shell->split_com = ft_split(splitted_commands[i], ' ');
 		set_io_redirection_flags(shell);
-		multipipe_last(shell, splitted_commands[i]);
+		multipipe_last(shell);
 		free_strings(shell->split_com);
+		free(shell->command);
 		if (access("input.txt", F_OK) == 0)
 			unlink("input.txt");
 	}

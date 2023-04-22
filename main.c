@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/22 14:28:49 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/22 17:53:56 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	print_welcome(int argc, char **argv, t_shell *shell)
 	printf("%s--------------------------------------------------\n\n", CYAN);
 	shell->input = NULL;
 	shell->new_line_flag = 1;
+	shell->command = NULL;
 }
 
 void	initialize(t_shell *shell)
