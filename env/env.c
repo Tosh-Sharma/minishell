@@ -57,6 +57,8 @@ void	export_command(t_shell *shell, char *input)
 		i = 0;
 		while (split_string[++i] != NULL)
 		{
+			if (ft_strcmp(split_string[i], "=") == 0)
+				ft_putstr_fd("bash: export: \'=\': not a valid identifier\n", 2);
 			if (is_env_var(split_string[i], shell) == 0)
 				add_env_var(split_string[i], shell);
 			else if (is_env_var(split_string[i], shell) == 1

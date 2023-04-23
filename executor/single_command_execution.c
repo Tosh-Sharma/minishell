@@ -28,12 +28,19 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 		{
 			shell->return_value = execve(exec_path, shell->split_com,
 					shell->envp);
-			perror("Something went wrong in code execution.");
 		}
 	}
 	waitpid(-1, &signal, 0);
 	free(exec_path);
 	signal_return_value(signal);
+}
+
+void	no_command_exec(char *str, t_shell *shell)
+{
+	shell->return_value = 127;
+	ft_putstr_fd("Command: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(" not found.\n", 2);
 }
 
 /**
@@ -59,13 +66,13 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 	{
 		address = ft_split(getenv("PATH"), ':');
 		if (access(shell->split_com[0], X_OK) != -1)
-			exec_path = shell->split_com[0];
+			exec_path = ft_strdup(shell->split_com[0]);
 		else
 			exec_path = find_appropriate_path(shell->split_com, address);
 		if (exec_path != NULL)
 			execute_single_process(shell, exec_path);
 		else
-			command_not_found(shell->split_com[0], 0, shell);
+			no_command_exec(shell->split_com[0], shell);
 	}
 	free_strings(shell->split_com);
 	if (access("input.txt", F_OK) == 0)

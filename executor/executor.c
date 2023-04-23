@@ -57,10 +57,8 @@ void	multipipe_last(t_shell *shell, char *command)
 		close(shell->temp_fd);
 		while (waitpid(-1, &signal, 0) != -1)
 			;
-		printf("Ret_value %d\nSignal TRUE = %d\n", shell->return_value, signal);
 		if (shell->return_value != 127)
 			signal_return_value(signal);
-		printf("Signal = %d\n", shell->return_value);
 	}
 }
 

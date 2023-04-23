@@ -22,18 +22,58 @@ void	env_count_update(t_shell *shell)
 	shell->env_y = i;
 }
 
-void	create_oldpwd(t_shell *shell, int flag)
+char	*get_previous_pwd(char *pwd, char *pwd_line, int count)
+{
+	int		i;
+
+	i = -1;
+	while (pwd_line[++i])
+	{
+		if (pwd_line[i] == '=')
+		{
+			while (pwd_line[++i])
+				++count;
+		}
+	}
+	pwd = ft_malloc_checker(1, count + 1);
+	i = -1;
+	count = -1;
+	while (pwd_line[++i])
+	{
+		if (pwd_line[i] == '=')
+		{
+			while (pwd_line[++i])
+				pwd[++count] = pwd_line[i];
+		}
+	}
+	pwd[++count] = '\0';
+	printf("res is %s\n", pwd);
+	return (pwd);
+}
+
+void	create_oldpwd(t_shell *shell)//, int flag)
 {
 	char	*pwd;
 	char	*str;
 	int		size;
+	int		i;
 
 	size = 100;
-	pwd = getcwd(NULL, size);
-	if (flag)
-		unset_command(shell, "unset OLDPWD");
-	str = ft_strjoin("export OLDPWD=", pwd);
-	free(pwd);
+	pwd = NULL;
+	// if (flag)
+	// 	unset_command(shell, "unset OLDPWD");
+	i = 0;
+	while (i < shell->env_y
+		&& join_and_cmp("PWD", shell->envp[i], 3) != 0)
+		i++;
+	if (i == shell->env_y)
+		str = ft_strjoin("export OLDPWD=", shell->pwd);
+	else
+	{
+		pwd = get_previous_pwd(pwd, shell->envp[i], -1);
+		str = ft_strjoin("export OLDPWD=", pwd);
+		free(pwd);		
+	}
 	export_command(shell, str);
 	free(str);
 }
@@ -42,29 +82,54 @@ void	change_pwd(t_shell *shell)
 {
 	char	*pwd;
 	char	*str;
-	int		size;
+	int		i;
 
-	size = 100;
-	pwd = getcwd(NULL, size);
-	unset_command(shell, "unset PWD");
-	str = ft_strjoin("export PWD=", pwd);
-	free(pwd);
-	export_command(shell, str);
-	free(str);
+	pwd = getcwd(NULL, 1000);
+	i = 0;
+	while (i < shell->env_y
+		&& join_and_cmp("PWD", shell->envp[i], 3) != 0)
+		i++;
+	if (i == shell->env_y)
+	{
+		nullify_string(shell->pwd);
+		shell->pwd = ft_strdup(pwd);
+		printf("new shell->pwd %s\n", shell->pwd);
+	}
+	else
+	{
+		unset_command(shell, "unset PWD");
+		str = ft_strjoin("export PWD=", pwd);
+		export_command(shell, str);
+		free(str);
+	}
+	free(pwd);	
 }
 
 void	pwd_refresh(t_shell *shell)
 {
-	int	i;
+	int		i;
 
+	i = 0;
+	while (i < shell->env_y
+		&& join_and_cmp("PWD", shell->envp[i], 3) != 0)
+		i++;
+	if (i == shell->env_y)
+	{
+		nullify_string(shell->pwd);
+		shell->pwd = getcwd(NULL, 1000);
+	}
 	i = 0;
 	while (i < shell->env_y
 		&& join_and_cmp("OLDPWD", shell->envp[i], 6) != 0)
 		i++;
-	if (i == shell->env_y)
-		create_oldpwd(shell, 0);
-	else
-		create_oldpwd(shell, 1);
+	 if (i == shell->env_y)
+	 {
+		nullify_string(shell->oldpwd);
+		shell->oldpwd = getcwd(NULL, 1000);
+		printf("new shell->OLDpwd %s\n", shell->oldpwd);
+	 }
+	 else
+		create_oldpwd(shell);//, 1);
 }
 
 void	get_back_home(t_shell *shell)

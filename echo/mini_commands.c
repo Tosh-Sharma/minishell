@@ -15,10 +15,8 @@
 void	mini_pwd(void)
 {
 	char	*pwd;
-	int		size;
 
-	size = 100;
-	pwd = getcwd(NULL, size);
+	pwd = getcwd(NULL, 1000);
 	if (pwd)
 	{
 		ft_putstr_fd(pwd, 1);
@@ -63,20 +61,16 @@ int	mini_echo_loop_checker(char *command, int i, int flag)
 	{
 		while (command[i] && command[i] != '"')
 		{
-			// printf("TOP command[%d] :%c\n", i, command[i]);
 			if ((command[i] == ' ' && command[i + 1] == ' '))
 				i++;
 			else
 			{
-				// printf("MID command[%d] :%c\n", i, command[i]);
-				if (command[i] == '\'' && command[i + 1] 
+				if (command[i] == '\'' && command[i + 1]
 					&& command[i + 1] != '\'')
 				{
-					// printf("single\n");
 					flag = 1;
 					while (command[++i])
 					{
-						// printf("BOT command[%d] :%c\n", i, command[i]);
 						if (command[i] == '\'' && flag)
 							flag = 0;
 						else if (command[i] == '\'' && !flag)
@@ -88,13 +82,11 @@ int	mini_echo_loop_checker(char *command, int i, int flag)
 				i++;
 			}
 		}
-		if (command[i] == '"' && command[i + 1] != '"') // TODO: needs to understand when there are no ending " 
+		if (command[i] == '"' && command[i + 1] != '"')
 		{
-			// printf("double\n");
 			flag = 2;
 			while (command[++i])
 			{
-				// printf("command[%d] :%c\n", i, command[i]);
 				if (command[i] == '"' && flag)
 					flag = 0;
 				else if (command[i] == '"' && !flag)
@@ -106,8 +98,6 @@ int	mini_echo_loop_checker(char *command, int i, int flag)
 		if (command[i] && command[i + 1])
 			i++;
 	}
-	// printf("i = %d\nres = %d\n", i, (int)ft_strlen(command));
-	// printf("flag = %d\n", flag);
 	return (0);
 }
 
@@ -116,8 +106,6 @@ void	mini_echo(char *command, int index, t_shell *shell)
 	int	i;
 	int	flag;
 
-
-	//printf ("command :%s\n",command);
 	if (index < 0)
 		write(1, "\n", 1);
 	else
