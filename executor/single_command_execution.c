@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/22 19:56:12 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/23 15:05:33 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	execute_single_process(t_shell *shell, char *exec_path)
 {
 	int		id;
+	int		status;
 
 	id = fork();
 	if (id == -1)
@@ -32,7 +33,9 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 			perror("Something went wrong in code execution.");
 		}
 	}
-	waitpid(-1, NULL, 0);
+	waitpid(-1, &status, 0);
+	free(exec_path);
+	signal_return_value(status);
 }
 
 void	clean_up_post_exec(t_shell *shell)
@@ -72,7 +75,7 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 		if (exec_path != NULL)
 			execute_single_process(shell, exec_path);
 		else
-			command_not_found(shell->split_com[0], 0);
+			command_not_found(shell->split_com[0], 0, shell);
 	}
 	clean_up_post_exec(shell);
 }

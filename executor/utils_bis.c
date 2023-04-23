@@ -12,11 +12,6 @@
 
 #include "../minishell.h"
 
-void	mini_return_value(t_shell *shell)
-{
-	printf("bash : %d: command not found\n", shell->return_value);
-}
-
 int	ft_isnumber(char *num)
 {
 	int	i;
@@ -47,19 +42,21 @@ void	exit_one(t_shell *shell)
 {
 	long long	num;
 
+	ft_putstr_fd("exit\n", 2);
 	if (!(ft_isnumber(shell->split_com[1]))
-		|| ((ft_superatoi(shell->split_com[1])) > 9223372036854775806
-			&& (ft_superatoi(shell->split_com[1])) < -9223372036854775807
-			&& (ft_superatoi(shell->split_com[1])) != 9223372036854775807
-			&& (ft_superatoi(shell->split_com[1]))
+		|| ((ft_atoill(shell->split_com[1], shell)) > 9223372036854775806
+			&& (ft_atoill(shell->split_com[1], shell)) < -9223372036854775807
+			&& (ft_atoill(shell->split_com[1], shell)) != 9223372036854775807
+			&& (ft_atoill(shell->split_com[1], shell))
 			!= (-9223372036854775807 - 1)))
-		shell->return_value = 255;
+		shell->return_value = 255;	
 	else
 	{	
-		num = ft_superatoi(shell->split_com[1]);
+		num = ft_atoill(shell->split_com[1], shell);
 		shell->return_value = num % 256;
 	}
-	exit(shell->return_value);
+	exit_num_arg(shell);
+	my_exit(shell->return_value);
 }
 
 void	exit_multiple(t_shell *shell, int i)
@@ -67,9 +64,9 @@ void	exit_multiple(t_shell *shell, int i)
 	if (i > 2 && !(ft_isnumber(shell->split_com[1])))
 	{
 		shell->return_value = 255;
-		printf("bash: exit: %s: numeric argument required\n",
-			shell->split_com[1]);
-		exit(shell->return_value);
+		ft_putstr_fd("exit\n", 2);
+		exit_num_arg(shell);
+		my_exit(shell->return_value);
 	}
 	else
 	{
