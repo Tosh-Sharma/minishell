@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   basic_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:41 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/18 16:56:08 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/23 15:25:07 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-extern t_shell g_shell;
+extern t_shell	g_shell;
 
 void	check_for_incorrect_syntax(char *input)
 {
@@ -54,5 +54,12 @@ void	free_strings(char **str)
 	while (str != NULL && str[++i] != NULL)
 		free(str[i]);
 	free(str);
+	str = NULL;
+}
+
+void	nullify_string(char *str)
+{
+	if (str != NULL)
+		free(str);
 	str = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 15:20:19 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/23 15:05:46 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/23 21:03:07 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	create_new_command(t_shell *shell)
 
 	i = -1;
 	res = NULL;
+	nullify_string(shell->command);
 	while (shell->split_com[++i] != NULL)
 	{
 		temp = res;
@@ -94,7 +95,7 @@ void	io_redirection(t_shell *shell, int is_piped, int redirect_fd)
 	int	input_routed;
 	int	output_routed;
 
-	input_routed = input_redirection(shell);
+	input_routed = input_redirection(shell, is_piped);
 	output_routed = output_redirection(shell);
 	if (is_piped == 1 && input_routed == 0)
 		dup2(shell->temp_fd, STDIN_FILENO);

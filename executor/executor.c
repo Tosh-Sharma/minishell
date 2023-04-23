@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/23 15:04:08 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/23 17:31:27 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	handle_interrupt_child(int signum)
 	rl_redisplay();
 }
 
-void	pipe_commands(t_shell *shell, char *command)
+void	pipe_commands(t_shell *shell)
 {
 	int	id;
 	int	fd[2];
@@ -29,6 +29,7 @@ void	pipe_commands(t_shell *shell, char *command)
 	if (pipe(fd) == -1)
 		perror_and_exit("Could not create pipe.", 1);
 	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, handle_quit);
 	id = fork();
 	if (id == -1)
 		perror_and_exit("Could not fork the process.", 1);
@@ -55,6 +56,7 @@ void	multipipe_last(t_shell *shell)
 	int	status;
 
 	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, handle_quit);
 	id = fork();
 	if (id == -1)
 		perror_and_exit("Could not fork the process.", 1);
@@ -91,7 +93,7 @@ void	execute_commands(t_shell *shell, char **splitted_commands, int count)
 		{
 			shell->split_com = ft_split(splitted_commands[i], ' ');
 			set_io_redirection_flags(shell);
-			pipe_commands(shell, splitted_commands[i]);
+			pipe_commands(shell);
 			free_strings(shell->split_com);
 			if (shell->command != NULL)
 				free(shell->command);

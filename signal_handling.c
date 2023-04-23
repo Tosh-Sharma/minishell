@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 17:45:43 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/23 15:02:29 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/23 22:16:15 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	handle_quit(int signum)
 
 	(void)signum;
 	pid = waitpid(-1, NULL, WNOHANG);
-	if (pid != -1 && g_shell.is_heredoc_active == 0)
+	if (pid != -1)
 	{
-		ft_putstr_fd("\nQuit: 3\n", 1);
+		ft_putstr_fd("Quit: 3\n", 1);
 		g_shell.return_value = 131;
 	}
 }

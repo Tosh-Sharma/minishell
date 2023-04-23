@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/23 14:53:28 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/23 22:17:05 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	print_welcome(int argc, char **argv, t_shell *shell)
 	printf("%s--------------------------------------------------\n\n", CYAN);
 	shell->input = NULL;
 	shell->new_line_flag = 1;
-	shell->command = NULL;
 	shell->return_value = 0;
 }
 
@@ -56,6 +55,7 @@ void	initialize(t_shell *shell)
 	set_up_terminal(0);
 	main_signal_handling();
 	shell->splitted_commands = NULL;
+	shell->command = NULL;
 	new_prompt(shell);
 	check_for_incorrect_syntax(shell->input);
 }

@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 16:03:55 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/22 17:50:30 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/23 18:00:53 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	execute_process(t_shell *shell)
 	char	*exec_path;
 
 	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, handle_quit);
 	address = ft_split(getenv("PATH"), ':');
 	shell->return_value = 0;
 	if (is_builtin_command(shell) == 1)

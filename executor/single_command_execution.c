@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/23 15:05:33 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/23 23:03:59 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 	int		status;
 
 	id = fork();
+	signal(SIGINT, SIG_IGN);
 	if (id == -1)
 		perror_and_exit("Could not fork the process.", 1);
 	if (id == 0)
@@ -63,7 +64,11 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 	if (is_builtin_command(shell) == 1)
 	{
 		io_redirection(shell, 0, -1);
+		if (shell->in_rd == 0 && shell->op_rd == 0
+			&& shell->is_heredoc_active == 0)
+			create_new_command(shell);
 		execute_builtin(shell->command, shell);
+		nullify_string(shell->command);
 	}
 	else
 	{

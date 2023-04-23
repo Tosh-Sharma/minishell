@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 02:31:42 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/18 20:39:01 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/23 20:52:04 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	unset_command(t_shell *shell, char *input)
 			break ;
 	}
 	count = i;
-	new_env_vars = (char **)malloc(sizeof(char *) * (shell->env_y - count));
+	new_env_vars = (char **)malloc(sizeof(char *) * (shell->env_y - count + 1));
 	copy_env_vars_except_marked(shell, new_env_vars, index, count);
 	free(index);
 	free_and_replace_vars(shell, new_env_vars, strings);

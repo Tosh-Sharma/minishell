@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/23 15:00:08 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/23 21:03:16 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ typedef struct s_shell
 	char	**split_com;
 	int		is_heredoc_active;
 	int		heredoc_fd;
+	int		op_rd;
+	int		in_rd;
 	int		temp_fd;
 }	t_shell;
 
@@ -90,11 +92,11 @@ int			ft_isnumber(char *num);
 int			equal_checker(char *envp);
 void		new_prompt(t_shell *shell);
 void		io_redirection(t_shell *shell, int is_piped, int redirect_fd);
-int			input_redirection(t_shell *shell);
+int			input_redirection(t_shell *shell, int is_piped);
 int			output_redirection(t_shell *shell);
 void		append_to_file(char *file_name);
 void		write_to_file(char *file_name);
-void		heredoc(char *delimiter);
+void		heredoc(char *delimiter, int is_piped);
 void		read_from_file(char *file_name);
 int			get_list_size(char **input);
 int			get_new_list_size(char **input, int old_size, char *in_1,
@@ -115,5 +117,7 @@ char		*remove_quotes(char *command);
 void		set_up_terminal(int flag);
 void		handle_interrupt(int signum);
 void		handle_quit(int signum);
+void		nullify_string(char *str);
+void		create_new_command(t_shell *shell);
 
 #endif
