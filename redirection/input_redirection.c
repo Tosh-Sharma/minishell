@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:13:53 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/23 23:01:47 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/23 23:11:22 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,6 @@ void	heredoc_special_sigint(int signum)
 		close(g_shell.heredoc_fd);
 		g_shell.heredoc_fd = -1;
 		exit(1);
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
 	}
 }
 
@@ -100,7 +97,7 @@ void	forked_heredoc(char *delimiter)
 		read_with_delimiter(delimiter, file_fd);
 		close(file_fd);
 	}
-	waitpid(id, NULL, 0);
+	waitpid(-1, NULL, 0);
 	signal(SIGINT, handle_interrupt);
 	signal(SIGQUIT, SIG_IGN);
 	file_fd = open("input.txt", O_RDONLY);
