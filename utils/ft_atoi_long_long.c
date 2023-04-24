@@ -45,29 +45,24 @@ long long	calculate_number_super(const char *str, int is_neg, t_shell *shell)
 
 	i = 0;
 	num = 0;
-
 	while (str[i] >= 48 && str[i] <= 57 && str[i] != '\0')
 	{
 		num = (num * 10) + (str[i] - 48);
-		if ((num > 922337203685477580 && str[i + 1] != '\0') || (num == 922337203685477580
-				&& ((is_neg && str[i + 1] > 56)
+		if ((num > 922337203685477580 && str[i + 1] != '\0')
+			|| (num == 922337203685477580 && ((is_neg && str[i + 1] > 56)
 					|| (!(is_neg) && str[i + 1] > 55))))
-			{
-				exit_num_arg(shell);
-				my_exit(255);
-			}
+		{
+			exit_num_arg(shell);
+			my_exit(255);
+		}
 		i++;
-
 	}
 	if ((str[i] < 48 || str[i] > 57) && str[i] != 0)
 	{
 		exit_num_arg(shell);
 		my_exit(255);
 	}
-	if (is_neg)
-		return (num * -1);
-	else
-		return (num);
+	return (return_value_check(is_neg, num));
 }
 
 long long	ft_atoill(const char *str, t_shell *shell)

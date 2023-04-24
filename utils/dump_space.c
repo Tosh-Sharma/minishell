@@ -1,35 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   dump_space.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/26 16:59:54 by tsharma           #+#    #+#             */
-/*   Updated: 2022/05/03 17:42:34 by tsharma          ###   ########.fr       */
+/*   Created: 2022/04/25 17:45:12 by tsharma           #+#    #+#             */
+/*   Updated: 2022/07/18 18:52:50 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-char	*ft_strdup(char *src)
+int	return_value_check(int is_neg, int num)
 {
-	char	*dest;
-	int		len;
-	int		i;
-
-	i = 0;
-	len = ft_strlen(src);
-	printf("len = %d\n", len);
-	dest = (char *)malloc(sizeof(char) * (len + 1));
-	if (!dest)
-		return (NULL);
-	while (src[i] != '\0')
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	printf("dest is :%s\n", dest);
-	return (dest);
+	if (is_neg)
+		return (num * -1);
+	else
+		return (num);
 }

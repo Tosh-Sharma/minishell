@@ -5,15 +5,15 @@ LIB = libft.a
 SRCS = 	main.c \
 		parsing.c \
 		signal_handling.c \
-		utils/basic_utils.c utils/ft_atoi_long_long.c \
-		env/env.c env/env_bis.c \
+		utils/basic_utils.c utils/ft_atoi_long_long.c utils/dump_space.c \
+		env/env.c env/env_bis.c env/env_utils.c \
 		env/unset.c \
 		env/unset_utilities.c \
 		expander/expander.c expander/extra_utils.c expander/extra_utils_bis.c \
 		executor/executor.c executor/process.c \
 		executor/single_command_execution.c \
 		executor/utils.c executor/utils_bis.c \
-		echo/mini_commands.c echo/mini_commands_utils.c \
+		echo/mini_commands.c echo/mini_commands_utils.c echo/mini_pwd_utils.c \
 		redirection/io_redirection.c redirection/input_redirection.c \
 		redirection/io_utils.c \
 		redirection/set_io_redirection_flags.c \

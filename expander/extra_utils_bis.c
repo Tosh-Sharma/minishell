@@ -56,3 +56,15 @@ char	*replace_var(char *new_var, char *var, char *env_row, int return_value)
 		return (new_var);
 	}
 }
+
+char	*dummy_replace_var(char *var, char *pwd, char *oldpwd)
+{
+	if (ft_strcmp(var, "PWD") == 0 && pwd != NULL
+		&& ft_strcmp(pwd, "\""))
+		return (ft_strdup(pwd));
+	else if (ft_strcmp(var, "OLDPWD") == 0 && oldpwd != NULL
+		&& ft_strcmp(oldpwd, "\""))
+		return (ft_strdup(oldpwd));
+	else
+		return (ft_strdup("\""));
+}

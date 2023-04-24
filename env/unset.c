@@ -55,6 +55,7 @@ void	mark_indexes_for_not_copying(t_shell *shell, char **strings, int *index)
 	int	j;
 	int	index_counter;
 
+	free_pwds(strings, shell);
 	i = -1;
 	index_counter = -1;
 	while (shell->envp[++i] != NULL)

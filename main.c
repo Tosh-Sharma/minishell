@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/24 12:32:03 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 15:28:17 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ void	my_exit(int exit_num)
 		free_strings(g_shell.splitted_commands);
 	if (g_shell.envp != NULL)
 		free_strings(g_shell.envp);
+	if (g_shell.oldpwd != NULL)
+		nullify_string(g_shell.oldpwd);
+	if (g_shell.pwd != NULL)
+		nullify_string(g_shell.pwd);
 	exit(exit_num);
 }
 
@@ -48,6 +52,8 @@ void	print_welcome(int argc, char **argv, t_shell *shell)
 	shell->input = NULL;
 	shell->new_line_flag = 1;
 	shell->return_value = 0;
+	shell->pwd = NULL;
+	shell->oldpwd = NULL;
 }
 
 void	initialize(t_shell *shell)

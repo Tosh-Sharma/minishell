@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/23 21:03:16 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 15:27:33 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct s_shell
 	char	*command;
 	char	**envp;
 	char	**splitted_commands;
+	char	*pwd;
+	char	*oldpwd;
 	int		return_value;
 	int		env_y;
 	char	**env_input;
@@ -119,5 +121,15 @@ void		handle_interrupt(int signum);
 void		handle_quit(int signum);
 void		nullify_string(char *str);
 void		create_new_command(t_shell *shell);
+char		*get_previous_pwd(char *pwd, char *pwd_line, int count);
+void		real_mini_cd(t_shell *shell);
+char		*dummy_replace_var(char *var, char *pwd, char *oldpwd);
+void		free_pwds(char **strings, t_shell *shell);
+int			return_value_check(int is_neg, int num);
+void		export_printer(char *str, t_shell *shell);
+void		mini_echo_break(char *command, int index, t_shell *shell);
+int			mini_echo_loop_checker(char *command, int i);
+void		mini_echo_break(char *command, int index, t_shell *shell);
+void		mini_echo_loop(char *command, int i);
 
 #endif

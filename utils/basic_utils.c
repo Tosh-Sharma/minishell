@@ -46,6 +46,13 @@ void	*ft_malloc_checker(int type, int size)
 	}
 }
 
+void	nullify_string(char *str)
+{
+	if (str != NULL)
+		free(str);
+	str = NULL;
+}
+
 void	free_strings(char **str)
 {
 	int	i;

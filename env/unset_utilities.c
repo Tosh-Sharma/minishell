@@ -24,3 +24,17 @@ int	join_and_cmp(const char *s1, const char *s2, size_t n)
 	free(s1_plus);
 	return (result);
 }
+
+void	free_pwds(char **strings, t_shell *shell)
+{
+	int	i;
+
+	i = -1;
+	while (strings[++i])
+	{
+		if (ft_strcmp(strings[i], "PWD") == 0)
+			nullify_string(shell->pwd);
+		if (ft_strcmp(strings[i], "OLDPWD") == 0)
+			nullify_string(shell->oldpwd);
+	}
+}
