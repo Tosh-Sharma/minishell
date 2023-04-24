@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 17:45:43 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/18 19:50:12 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/24 16:28:07 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,57 +16,13 @@ extern t_shell	g_shell;
 
 void	handle_quit(int signum)
 {
-	printf("We got a signal %d\n", signum);
-	my_exit(1);
-}
-
-void	handle_interrupt(int signum)
-{
-	printf("We got a signal %d\n", signum);
-	my_exit(1);
-}
-
-void	signal_return_value(int status)
-{
-	if (WIFEXITED(status))
-		g_shell.return_value = WEXITSTATUS(status);
-	/*if (WIFSIGNALED(status))
-	{
-		if (WTERMSIG(status) == 13)
-			g_shell.return_value = 0;
-	}
-	else if (WIFEXITED(status))
-		g_shell.return_value = WEXITSTATUS(status) + 128;
-	else if (WIFSTOPPED(status))
-		g_shell.return_value = WSTOPSIG(status) + 128;*/
-}
-
-void	handle_signal(int signo)
-{
 	pid_t	pid;
-	int		status;
 
-	pid = waitpid(-1, &status, WNOHANG);
-	if (signo == SIGINT)
+	(void)signum;
+	if (g_shell.is_heredoc_active == 0)
 	{
-		if (pid == -1)
-		{
-			if (g_shell.input == NULL || g_shell.input[0] == '\0')
-			{
-				ft_putchar_fd('\n', 1);
-			}
-		}
-		else
-		{
-			ft_putchar_fd('\n', 1);
-			g_shell.return_value = 130;
-		}
-	}
-	else if (signo == SIGQUIT)
-	{
-		if (pid == -1)
-			ft_putchar_fd('\n', 1);
-		else
+		pid = waitpid(-1, NULL, WNOHANG);
+		if (pid != -1)
 		{
 			ft_putstr_fd("Quit: 3\n", 1);
 			g_shell.return_value = 131;
@@ -74,8 +30,45 @@ void	handle_signal(int signo)
 	}
 }
 
-void	signal_handling(void)
+void	handle_interrupt(int signum)
 {
-	signal(SIGINT, handle_signal);
-	signal(SIGQUIT, handle_signal);
+	pid_t	pid;
+	int		status;
+
+	(void)signum;
+	if (g_shell.is_heredoc_active == 1)
+	{
+		if (g_shell.split_com != NULL)
+		{
+			close(g_shell.heredoc_fd);
+			g_shell.is_heredoc_active = 0;
+			g_shell.heredoc_fd = -1;
+		}
+	}
+	else
+	{
+		pid = waitpid(-1, &status, 0);
+		signal_return_value(status);
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("\0", 0);
+		if (pid == -1)
+			rl_redisplay();
+	}
+}
+
+void	signal_return_value(int status)
+{
+	if (WIFSIGNALED(status) && WTERMSIG(status) == 13)
+		g_shell.return_value = 0;
+	else if (WIFEXITED(status))
+		g_shell.return_value = WEXITSTATUS(status) + 128;
+	else if (WIFSTOPPED(status))
+		g_shell.return_value = WSTOPSIG(status) + 128;
+}
+
+void	main_signal_handling(void)
+{
+	signal(SIGINT, handle_interrupt);
+	signal(SIGQUIT, SIG_IGN);
 }

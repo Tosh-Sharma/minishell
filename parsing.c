@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 17:45:46 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/18 17:52:36 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/24 17:04:53 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void	parser(t_shell *shell)
 	int		pipe_count;
 	int		*pipe_positions;
 
+	add_history(shell->input);
 	pipe_count = get_pipe_count(shell->input, '|');
 	pipe_positions = (int *)malloc(sizeof(int) * pipe_count);
 	if (!pipe_positions)

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   input_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:13:53 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/17 18:49:06 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/24 13:57:28 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+extern t_shell	g_shell;
 
 char	*join_with_nl(char *input, char *joiner)
 {
@@ -35,6 +37,7 @@ void	read_with_delimiter(char *delimiter, int file_fd)
 {
 	char	*input;
 	char	*result;
+	char	*temp;
 
 	result = NULL;
 	while (1)
@@ -48,28 +51,65 @@ void	read_with_delimiter(char *delimiter, int file_fd)
 		else
 		result = join_with_nl(result, input);
 	}
+	temp = result;
+	result = ft_strjoin(temp, "\n");
+	free(temp);
 	write(file_fd, result, ft_strlen(result));
 }
 
-void	heredoc(char *delimiter)
+void	heredoc_sigint_quit(int signum)
+{
+	(void)signum;
+	if (g_shell.heredoc_fd != -1)
+	{
+		close(g_shell.heredoc_fd);
+		g_shell.heredoc_fd = -1;
+		exit(1);
+	}
+}
+
+void	forked_heredoc(char *delimiter)
 {
 	int	file_fd;
+	int	id;
 
-	file_fd = open("input.txt", O_CREAT | O_WRONLY | O_TRUNC, 0777);
-	read_with_delimiter(delimiter, file_fd);
-	close(file_fd);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	id = fork();
+	if (id == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		file_fd = open("input.txt", O_CREAT | O_WRONLY | O_TRUNC, 0777);
+		g_shell.heredoc_fd = file_fd;
+		read_with_delimiter(delimiter, file_fd);
+		close(file_fd);
+	}
+	waitpid(-1, NULL, 0);
+	signal(SIGINT, handle_interrupt);
+	signal(SIGQUIT, SIG_IGN);
 	file_fd = open("input.txt", O_RDONLY);
 	dup2(file_fd, STDIN_FILENO);
 	close(file_fd);
 }
 
-void	read_from_file(char *file_name)
+void	heredoc(char *delimiter, int is_piped)
 {
-	int	fd;
+	int	file_fd;
 
-	fd = open(file_name, O_RDONLY);
-	if (fd == -1)
-		perror_and_exit("Could not open file.", 1);
-	dup2(fd, STDIN_FILENO);
-	close(fd);
+	if (is_piped == 0 && is_builtin_command(&g_shell) == 1)
+		forked_heredoc(delimiter);
+	else
+	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, heredoc_sigint_quit);
+		file_fd = open("input.txt", O_CREAT | O_WRONLY | O_TRUNC, 0777);
+		g_shell.heredoc_fd = file_fd;
+		read_with_delimiter(delimiter, file_fd);
+		close(file_fd);
+		signal(SIGINT, handle_interrupt);
+		file_fd = open("input.txt", O_RDONLY);
+		dup2(file_fd, STDIN_FILENO);
+		close(file_fd);
+		signal(SIGQUIT, handle_quit);
+	}
 }

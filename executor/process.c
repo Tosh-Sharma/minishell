@@ -3,19 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 16:03:55 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/17 20:07:44 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/24 16:51:04 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	execute_builtin_command(char *command, t_shell *shell)
+extern t_shell	g_shell;
+
+void	execute_builtin_command(t_shell *shell)
 {
 	shell->return_value = 0;
-	execute_builtin(command, shell);
+	execute_builtin(shell->command, shell);
 	exit(shell->return_value);
 }
 
@@ -29,15 +31,19 @@ void	command_not_found(char *str, int flag, t_shell *shell)
 		my_exit(shell->return_value);
 }
 
-void	execute_process(t_shell *shell, char *command)
+void	execute_process(t_shell *shell)
 {
 	char	**address;
+	char	*path;
 	char	*exec_path;
 
-	address = ft_split(getenv("PATH"), ':');
+	signal(SIGINT, SIG_DFL);
+	path = get_env(shell);
+	address = ft_split(path, ':');
+	free(path);
 	shell->return_value = 0;
 	if (is_builtin_command(shell) == 1)
-		execute_builtin_command(command, shell);
+		execute_builtin_command(shell);
 	else
 	{
 		if (access(shell->split_com[0], X_OK) != -1)

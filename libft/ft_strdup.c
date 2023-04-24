@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 16:59:54 by tsharma           #+#    #+#             */
-/*   Updated: 2022/05/03 17:42:34 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 15:30:52 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ char	*ft_strdup(char *src)
 
 	i = 0;
 	len = ft_strlen(src);
-	printf("len = %d\n", len);
 	dest = (char *)malloc(sizeof(char) * (len + 1));
 	if (!dest)
 		return (NULL);
@@ -30,6 +29,5 @@ char	*ft_strdup(char *src)
 		i++;
 	}
 	dest[i] = '\0';
-	printf("dest is :%s\n", dest);
 	return (dest);
 }

@@ -3,25 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   single_command_execution.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/18 18:03:35 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/24 17:28:54 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+extern t_shell	g_shell;
+
 void	execute_single_process(t_shell *shell, char *exec_path)
 {
 	int		id;
-	int		signal;
+	int		status;
 
 	id = fork();
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, handle_quit);
 	if (id == -1)
 		perror_and_exit("Could not fork the process.", 1);
 	if (id == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		io_redirection(shell, 0, -1);
 		shell->return_value = 0;
 		if (exec_path != NULL)
@@ -30,9 +35,26 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 					shell->envp);
 		}
 	}
-	waitpid(-1, &signal, 0);
+	waitpid(-1, &status, 0);
 	free(exec_path);
-	signal_return_value(signal);
+}
+
+void	clean_up_post_exec(t_shell *shell)
+{
+	set_up_terminal(1);
+	free_strings(shell->split_com);
+	if (access("input.txt", F_OK) == 0)
+		unlink("input.txt");
+}
+
+void	single_builtin_exec(t_shell *shell)
+{
+	io_redirection(shell, 0, -1);
+	if (shell->in_rd == 0 && shell->op_rd == 0
+		&& shell->is_heredoc_active == 0)
+		create_new_command(shell);
+	execute_builtin(shell->command, shell);
+	nullify_string(shell->command);
 }
 
 void	no_command_exec(char *str, t_shell *shell)
@@ -54,17 +76,17 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 {
 	char	**address;
 	char	*exec_path;
+	char	*path;
 
 	shell->split_com = ft_split(splitted_commands[0], ' ');
-	set_io_redirection_flags(shell);
+	set_io_redirection_flags(shell, shell->split_com);
 	if (is_builtin_command(shell) == 1)
-	{
-		io_redirection(shell, 0, -1);
-		execute_builtin(splitted_commands[0], shell);
-	}
+		single_builtin_exec(shell);
 	else
 	{
-		address = ft_split(getenv("PATH"), ':');
+		path = get_env(shell);
+		address = ft_split(path, ':');
+		free(path);
 		if (access(shell->split_com[0], X_OK) != -1)
 			exec_path = ft_strdup(shell->split_com[0]);
 		else
@@ -74,7 +96,5 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 		else
 			no_command_exec(shell->split_com[0], shell);
 	}
-	free_strings(shell->split_com);
-	if (access("input.txt", F_OK) == 0)
-		unlink("input.txt");
+	clean_up_post_exec(shell);
 }

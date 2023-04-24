@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/04 11:58:17 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/24 16:40:24 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,54 +37,54 @@ void	new_prompt(t_shell *shell)
 		shell->new_line_flag = 1;
 	}
 	else
-	{
 		shell->input = readline("$>:");
-	}
 }
 
-void	print_welcome(void)
+void	print_welcome(int argc, char **argv, t_shell *shell)
 {
+	(void)argc;
+	(void)argv;
 	printf("\n%s--------------------------------------------------\n", CYAN);
 	printf("%s¦                                                ¦\n", CYAN);
 	printf("%s¦        Welcome Chapri, to T&T Minishell        ¦\n", WHITE);
 	printf("%s¦                                                ¦\n", CYAN);
 	printf("%s--------------------------------------------------\n\n", CYAN);
-	g_shell.return_value = 0;
-	g_shell.pwd = NULL;
-	g_shell.oldpwd = NULL;
+	shell->input = NULL;
+	shell->new_line_flag = 1;
+	shell->return_value = 0;
+	shell->pwd = NULL;
+	shell->oldpwd = NULL;
 }
 
 void	initialize(t_shell *shell)
 {
+	set_up_terminal(0);
+	main_signal_handling();
 	shell->splitted_commands = NULL;
-	signal_handling();
+	shell->command = NULL;
 	new_prompt(shell);
 	check_for_incorrect_syntax(shell->input);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	(void)argc;
-	(void)argv;
-	g_shell.input = NULL;
-	g_shell.new_line_flag = 1;
 	if (!envp || envp[0] == 0)
 		return (0);
 	copy_env_variables(&g_shell, envp);
-	print_welcome();
+	print_welcome(argc, argv, &g_shell);
 	while (1)
 	{
 		initialize(&g_shell);
-		if (g_shell.input && g_shell.input[0])
+		if (g_shell.input == NULL)
 		{
-			add_history(g_shell.input);
-			parser(&g_shell);
-		}
-		else if (g_shell.input == NULL)
-		{
-			ft_putstr_fd("\nexit\n", 1);
+			ft_putstr_fd("exit\n", 1);
 			my_exit(g_shell.return_value);
 		}
+		process_input(&g_shell);
+		if (g_shell.input[0] == '\0')
+			free(g_shell.input);
+		else if (g_shell.input && g_shell.input[0])
+			parser(&g_shell);
 	}
 	return (0);
 }

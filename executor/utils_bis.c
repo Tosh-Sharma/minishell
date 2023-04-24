@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_bis.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:44:57 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/04 12:28:24 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/24 15:55:42 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,20 @@ void	exit_one(t_shell *shell)
 
 	ft_putstr_fd("exit\n", 2);
 	if (!(ft_isnumber(shell->split_com[1]))
-		|| ((ft_atoill(shell->split_com[1], shell)) > 9223372036854775806
+		|| ((ft_atoill(shell->split_com[1], shell)) > 9223372036854775807
 			&& (ft_atoill(shell->split_com[1], shell)) < -9223372036854775807
 			&& (ft_atoill(shell->split_com[1], shell)) != 9223372036854775807
 			&& (ft_atoill(shell->split_com[1], shell))
 			!= (-9223372036854775807 - 1)))
+	{
 		shell->return_value = 255;
+		exit_num_arg(shell);
+	}
 	else
-	{	
+	{
 		num = ft_atoill(shell->split_com[1], shell);
 		shell->return_value = num % 256;
 	}
-	exit_num_arg(shell);
 	my_exit(shell->return_value);
 }
 
@@ -71,6 +73,7 @@ void	exit_multiple(t_shell *shell, int i)
 	else
 	{
 		shell->return_value = 1;
+		ft_putstr_fd("exit\n", 2);
 		printf("bash: exit: too many arguments\n");
 	}
 }

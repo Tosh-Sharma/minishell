@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/18 19:49:51 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/24 17:43:16 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <termios.h>
 # include "libft/libft.h"
 # include <stdbool.h>
 # include <readline/readline.h>
@@ -35,6 +36,7 @@
 typedef struct s_shell
 {
 	char	*input;
+	char	*command;
 	char	**envp;
 	char	**splitted_commands;
 	char	*pwd;
@@ -45,16 +47,18 @@ typedef struct s_shell
 	char	*res_com;
 	int		new_line_flag;
 	char	**split_com;
-	int		is_file_input;
 	int		is_heredoc_active;
-	int		output_write;
-	int		output_append;
+	int		heredoc_fd;
+	int		op_rd;
+	int		in_rd;
 	int		temp_fd;
-	int		sigint;
+	int		fs;
+	int		fd;
 }	t_shell;
 
 void		parser(t_shell *shell);
-void		signal_handling(void);
+void		rl_replace_line(const char *input, int number);
+void		main_signal_handling(void);
 void		copy_env_variables(t_shell *shell, char **envp);
 void		check_for_incorrect_syntax(char *input);
 void		perror_and_exit(char *input, int exit_code);
@@ -87,23 +91,23 @@ void		pwd_refresh(t_shell *shell);
 void		get_back_home(t_shell *shell);
 void		exit_one(t_shell *shell);
 void		exit_multiple(t_shell *shell, int i);
-void		execute_process(t_shell *shell, char *command);
+void		execute_process(t_shell *shell);
 int			ft_isnumber(char *num);
 int			equal_checker(char *envp);
 void		new_prompt(t_shell *shell);
 void		io_redirection(t_shell *shell, int is_piped, int redirect_fd);
-int			input_redirection(t_shell *shell);
+int			input_redirection(t_shell *shell, int is_piped);
 int			output_redirection(t_shell *shell);
 void		append_to_file(char *file_name);
 void		write_to_file(char *file_name);
-void		heredoc(char *delimiter);
+void		heredoc(char *delimiter, int is_piped);
 void		read_from_file(char *file_name);
 int			get_list_size(char **input);
 int			get_new_list_size(char **input, int old_size, char *in_1,
 				char *in_2);
 void		create_new_string(t_shell *shell, int new_size, char *in1,
 				char *in2);
-void		set_io_redirection_flags(t_shell *shell);
+void		set_io_redirection_flags(t_shell *shell, char **input);
 void		free_strings(char **str);
 int			is_env_var(char *str, t_shell *shell);
 void		add_env_var(char *str, t_shell *shell);
@@ -114,7 +118,11 @@ void		exit_num_arg(t_shell *shell);
 long long	ft_atoill(const char *str, t_shell *shell);
 void		signal_return_value(int status);
 char		*remove_quotes(char *command);
+void		set_up_terminal(int flag);
+void		handle_interrupt(int signum);
+void		handle_quit(int signum);
 void		nullify_string(char *str);
+void		create_new_command(t_shell *shell);
 char		*get_previous_pwd(char *pwd, char *pwd_line, int count);
 void		real_mini_cd(t_shell *shell);
 char		*dummy_replace_var(char *var, char *pwd, char *oldpwd);
@@ -125,5 +133,7 @@ void		mini_echo_break(char *command, int index, t_shell *shell);
 int			mini_echo_loop_checker(char *command, int i);
 void		mini_echo_break(char *command, int index, t_shell *shell);
 void		mini_echo_loop(char *command, int i);
+void		process_input(t_shell *shell);
+char		*get_env(t_shell *shell);
 
 #endif
