@@ -55,6 +55,7 @@ void	mark_indexes_for_not_copying(t_shell *shell, char **strings, int *index)
 	int	j;
 	int	index_counter;
 
+	free_pwds(strings, shell);
 	i = -1;
 	index_counter = -1;
 	while (shell->envp[++i] != NULL)
@@ -128,7 +129,7 @@ void	unset_command(t_shell *shell, char *input)
 			break ;
 	}
 	count = i;
-	new_env_vars = (char **)malloc(sizeof(char *) * (shell->env_y - count));
+	new_env_vars = (char **)malloc(sizeof(char *) * (shell->env_y - count + 1));
 	copy_env_vars_except_marked(shell, new_env_vars, index, count);
 	free(index);
 	free_and_replace_vars(shell, new_env_vars, strings);

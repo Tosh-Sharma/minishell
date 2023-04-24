@@ -106,7 +106,7 @@ char	**rep_env_var(char **c, int *i, int *pos, char ***t)
 			ft_strlen(c[1])) != 0)
 			++i[1];
 		if (i[1] == i[4] && (ft_strcmp(c[1], "\?")) != 0)
-			t[0][i[0]] = ft_strdup("\"");
+			t[0][i[0]] = dummy_replace_var(c[1], c[2], c[3]);
 		else
 			t[0][i[0]] = replace_var(t[0][i[0]], c[1], t[1][i[1]], i[5]);
 		free(c[1]);
@@ -131,7 +131,7 @@ char	*replace_env_variable(char *command, int *positions,
 	res_var = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!res_var)
 		perror_and_exit("Could not allocate memory for array.", 1);
-	res_var = rep_env_var((char *[2]){command, var},
+	res_var = rep_env_var((char *[4]){command, var, shell->pwd, shell->oldpwd},
 			(int [6]){i, j, k, count, shell->env_y, shell->return_value},
 			positions, (char **[2]){res_var, shell->envp});
 	shell->res_com = ft_malloc_checker(1,

@@ -22,6 +22,10 @@ void	my_exit(int exit_num)
 		free_strings(g_shell.splitted_commands);
 	if (g_shell.envp != NULL)
 		free_strings(g_shell.envp);
+	if (g_shell.oldpwd != NULL)
+		nullify_string(g_shell.oldpwd);
+	if (g_shell.pwd != NULL)
+		nullify_string(g_shell.pwd);
 	exit(exit_num);
 }
 
@@ -46,6 +50,8 @@ void	print_welcome(void)
 	printf("%s¦                                                ¦\n", CYAN);
 	printf("%s--------------------------------------------------\n\n", CYAN);
 	g_shell.return_value = 0;
+	g_shell.pwd = NULL;
+	g_shell.oldpwd = NULL;
 }
 
 void	initialize(t_shell *shell)

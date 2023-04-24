@@ -26,7 +26,6 @@ char	*handle_num(int n, int is_neg, int i)
 	}
 	s[i] = '\0';
 	res = (char *)malloc(sizeof(char) * (i + is_neg + 1));
-	printf("\n\nsize = %d\n\n", (i + is_neg));
 	if (!res)
 		return (NULL);
 	j = is_neg;
@@ -39,7 +38,6 @@ char	*handle_num(int n, int is_neg, int i)
 		j++;
 	}
 	res[j] = '\0';
-	printf("\n\nres :%s\n\n", res);
 	return (res);
 }
 

@@ -54,12 +54,7 @@ void	handle_signal(int signo)
 			if (g_shell.input == NULL || g_shell.input[0] == '\0')
 			{
 				ft_putchar_fd('\n', 1);
-				//new_prompt(&g_shell);
 			}
-			// rl_on_new_line();
-			// rl_line_buffer[0] = '\0';
-			// free(g_shell.input);
-			// rl_redisplay();
 		}
 		else
 		{

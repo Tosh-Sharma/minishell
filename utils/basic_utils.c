@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-extern t_shell g_shell;
+extern t_shell	g_shell;
 
 void	check_for_incorrect_syntax(char *input)
 {
@@ -44,6 +44,13 @@ void	*ft_malloc_checker(int type, int size)
 			perror_and_exit("Could not allocate memory", 1);
 		return (s);
 	}
+}
+
+void	nullify_string(char *str)
+{
+	if (str != NULL)
+		free(str);
+	str = NULL;
 }
 
 void	free_strings(char **str)

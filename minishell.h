@@ -37,6 +37,8 @@ typedef struct s_shell
 	char	*input;
 	char	**envp;
 	char	**splitted_commands;
+	char	*pwd;
+	char	*oldpwd;
 	int		return_value;
 	int		env_y;
 	char	**env_input;
@@ -112,5 +114,16 @@ void		exit_num_arg(t_shell *shell);
 long long	ft_atoill(const char *str, t_shell *shell);
 void		signal_return_value(int status);
 char		*remove_quotes(char *command);
+void		nullify_string(char *str);
+char		*get_previous_pwd(char *pwd, char *pwd_line, int count);
+void		real_mini_cd(t_shell *shell);
+char		*dummy_replace_var(char *var, char *pwd, char *oldpwd);
+void		free_pwds(char **strings, t_shell *shell);
+int			return_value_check(int is_neg, int num);
+void		export_printer(char *str, t_shell *shell);
+void		mini_echo_break(char *command, int index, t_shell *shell);
+int			mini_echo_loop_checker(char *command, int i);
+void		mini_echo_break(char *command, int index, t_shell *shell);
+void		mini_echo_loop(char *command, int i);
 
 #endif

@@ -49,7 +49,7 @@ void	exit_one(t_shell *shell)
 			&& (ft_atoill(shell->split_com[1], shell)) != 9223372036854775807
 			&& (ft_atoill(shell->split_com[1], shell))
 			!= (-9223372036854775807 - 1)))
-		shell->return_value = 255;	
+		shell->return_value = 255;
 	else
 	{	
 		num = ft_atoill(shell->split_com[1], shell);

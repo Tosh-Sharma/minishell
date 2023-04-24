@@ -63,11 +63,6 @@ void	create_new_string(t_shell *shell, int new_size, char *in1, char *in2)
 	res[++j] = NULL;
 	free(shell->split_com);
 	shell->split_com = res;
-	/*i = -1;
-	while (split_com[i])
-	{
-
-	}*/
 }
 
 void	io_redirection(t_shell *shell, int is_piped, int redirect_fd)
