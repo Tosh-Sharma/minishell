@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 02:06:41 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/23 15:25:07 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 15:29:28 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,5 @@ void	free_strings(char **str)
 	while (str != NULL && str[++i] != NULL)
 		free(str[i]);
 	free(str);
-	str = NULL;
-}
-
-void	nullify_string(char *str)
-{
-	if (str != NULL)
-		free(str);
 	str = NULL;
 }

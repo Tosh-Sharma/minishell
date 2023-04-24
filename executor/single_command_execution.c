@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/24 13:38:06 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 17:28:54 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 	}
 	waitpid(-1, &status, 0);
 	free(exec_path);
-	signal_return_value(status);
 }
 
 void	clean_up_post_exec(t_shell *shell)
@@ -48,11 +47,14 @@ void	clean_up_post_exec(t_shell *shell)
 		unlink("input.txt");
 }
 
-void	norm_comp(t_shell *shell)
+void	single_builtin_exec(t_shell *shell)
 {
+	io_redirection(shell, 0, -1);
 	if (shell->in_rd == 0 && shell->op_rd == 0
 		&& shell->is_heredoc_active == 0)
 		create_new_command(shell);
+	execute_builtin(shell->command, shell);
+	nullify_string(shell->command);
 }
 
 void	no_command_exec(char *str, t_shell *shell)
@@ -74,19 +76,17 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 {
 	char	**address;
 	char	*exec_path;
+	char	*path;
 
 	shell->split_com = ft_split(splitted_commands[0], ' ');
-	set_io_redirection_flags(shell);
+	set_io_redirection_flags(shell, shell->split_com);
 	if (is_builtin_command(shell) == 1)
-	{
-		io_redirection(shell, 0, -1);
-		norm_comp(shell);
-		execute_builtin(shell->command, shell);
-		nullify_string(shell->command);
-	}
+		single_builtin_exec(shell);
 	else
 	{
-		address = ft_split(getenv("PATH"), ':');
+		path = get_env(shell);
+		address = ft_split(path, ':');
+		free(path);
 		if (access(shell->split_com[0], X_OK) != -1)
 			exec_path = ft_strdup(shell->split_com[0]);
 		else

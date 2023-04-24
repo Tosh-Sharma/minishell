@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:55:38 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/24 15:27:33 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 17:43:16 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ typedef struct s_shell
 	int		op_rd;
 	int		in_rd;
 	int		temp_fd;
+	int		fs;
+	int		fd;
 }	t_shell;
 
 void		parser(t_shell *shell);
@@ -105,7 +107,7 @@ int			get_new_list_size(char **input, int old_size, char *in_1,
 				char *in_2);
 void		create_new_string(t_shell *shell, int new_size, char *in1,
 				char *in2);
-void		set_io_redirection_flags(t_shell *shell);
+void		set_io_redirection_flags(t_shell *shell, char **input);
 void		free_strings(char **str);
 int			is_env_var(char *str, t_shell *shell);
 void		add_env_var(char *str, t_shell *shell);
@@ -131,5 +133,7 @@ void		mini_echo_break(char *command, int index, t_shell *shell);
 int			mini_echo_loop_checker(char *command, int i);
 void		mini_echo_break(char *command, int index, t_shell *shell);
 void		mini_echo_loop(char *command, int i);
+void		process_input(t_shell *shell);
+char		*get_env(t_shell *shell);
 
 #endif

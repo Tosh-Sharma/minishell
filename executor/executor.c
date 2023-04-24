@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 22:54:48 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/24 15:25:56 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 17:44:21 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,13 @@ void	execute_commands(t_shell *shell, char **splitted_commands, int count)
 		while (++i < (count - 1))
 		{
 			shell->split_com = ft_split(splitted_commands[i], ' ');
-			set_io_redirection_flags(shell);
+			set_io_redirection_flags(shell, shell->split_com);
 			pipe_commands(shell);
 			free_strings(shell->split_com);
 			nullify_string(shell->command);
 		}
 		shell->split_com = ft_split(splitted_commands[i], ' ');
-		set_io_redirection_flags(shell);
+		set_io_redirection_flags(shell, shell->split_com);
 		multipipe_last(shell);
 		free_strings(shell->split_com);
 		nullify_string(shell->command);

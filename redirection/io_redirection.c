@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 14:13:13 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/23 21:02:31 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 17:54:44 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,8 @@ int	input_redirection(t_shell *shell, int is_piped)
 
 	input_redirect = 0;
 	i = -1;
-	while (shell->split_com[++i])
-	{
-		if (ft_strcmp(shell->split_com[i], "<<") == 0
-			|| ft_strcmp(shell->split_com[i], "<") == 0)
-			input_redirect = 1;
-	}
+	if (shell->in_rd == 1 || shell->is_heredoc_active == 1)
+		input_redirect = 1;
 	if (input_redirect == 1)
 	{
 		old_size = get_list_size(shell->split_com);
@@ -82,12 +78,8 @@ int	output_redirection(t_shell *shell)
 
 	i = -1;
 	output_routed = 0;
-	while (shell->split_com[++i])
-	{
-		if (ft_strncmp(shell->split_com[i], ">>", 2) == 0
-			|| ft_strncmp(shell->split_com[i], ">", 1) == 0)
-			output_routed = 1;
-	}
+	if (shell->op_rd == 1)
+		output_routed = 1;
 	if (output_routed == 1)
 	{
 		old_size = get_list_size(shell->split_com);

@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/24 15:28:17 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 16:40:24 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,6 @@ void	initialize(t_shell *shell)
 	check_for_incorrect_syntax(shell->input);
 }
 
-void	set_up_terminal(int flag)
-{
-	struct termios	new;
-	struct termios	old;
-
-	tcgetattr(STDIN_FILENO, &old);
-	new = old;
-	if (flag)
-		new.c_lflag |= ECHOCTL;
-	else
-		new.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &new);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	if (!envp || envp[0] == 0)
@@ -89,13 +75,16 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		initialize(&g_shell);
-		if (g_shell.input && g_shell.input[0])
-			parser(&g_shell);
-		else if (g_shell.input == NULL)
+		if (g_shell.input == NULL)
 		{
 			ft_putstr_fd("exit\n", 1);
 			my_exit(g_shell.return_value);
 		}
+		process_input(&g_shell);
+		if (g_shell.input[0] == '\0')
+			free(g_shell.input);
+		else if (g_shell.input && g_shell.input[0])
+			parser(&g_shell);
 	}
 	return (0);
 }

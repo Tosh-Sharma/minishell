@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 17:45:43 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/24 15:26:56 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 16:28:07 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	handle_quit(int signum)
 void	handle_interrupt(int signum)
 {
 	pid_t	pid;
+	int		status;
 
 	(void)signum;
 	if (g_shell.is_heredoc_active == 1)
@@ -46,7 +47,8 @@ void	handle_interrupt(int signum)
 	}
 	else
 	{
-		pid = waitpid(-1, 0, 0);
+		pid = waitpid(-1, &status, 0);
+		signal_return_value(status);
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("\0", 0);

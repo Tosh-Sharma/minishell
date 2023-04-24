@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 16:03:55 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/23 18:00:53 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 16:51:04 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,13 @@ void	command_not_found(char *str, int flag, t_shell *shell)
 void	execute_process(t_shell *shell)
 {
 	char	**address;
+	char	*path;
 	char	*exec_path;
 
 	signal(SIGINT, SIG_DFL);
-	address = ft_split(getenv("PATH"), ':');
+	path = get_env(shell);
+	address = ft_split(path, ':');
+	free(path);
 	shell->return_value = 0;
 	if (is_builtin_command(shell) == 1)
 		execute_builtin_command(shell);

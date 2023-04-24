@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toshsharma <toshsharma@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:44:57 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/04 15:55:49 by toshsharma       ###   ########.fr       */
+/*   Updated: 2023/04/24 16:56:00 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ char	*find_appropriate_path(char **command, char **address)
 	int		result;
 
 	i = 0;
+	if (address == NULL)
+		return (NULL);
 	while (address[i] != NULL)
 	{
 		result = -1;
