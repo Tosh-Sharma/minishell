@@ -12,12 +12,41 @@
 
 #include "../minishell.h"
 
+void	swap_strings(char **a, char **b)
+{
+	char	*temp;
+
+	temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+void	sort_strings_by_ascii(char **strings, int num_strings)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < num_strings - 1)
+	{
+		j = i + 1;
+		while (j < num_strings)
+		{
+			if (ft_strcmp(strings[i], strings[j]) > 0)
+				swap_strings(&strings[i], &strings[j]);
+			j++;
+		}
+		i++;
+	}
+}
+
 void	export_printer(char *str, t_shell *shell)
 {
 	int	i;
 	int	j;
 
 	i = -1;
+	sort_strings_by_ascii(shell->envp, shell->env_y);
 	while (++i < shell->env_y)
 	{
 		j = -1;
@@ -37,63 +66,6 @@ void	export_printer(char *str, t_shell *shell)
 				ft_putchar_fd(shell->envp[i][j], 1);
 		}
 		ft_putchar_fd('\n', 1);
-	}
-}
-
-void	export_command(t_shell *shell, char *input)
-{
-	int		count;
-	int		i;
-	char	**split_string;
-
-	split_string = ft_split(input, ' ');
-	count = 0;
-	while (split_string[count] != NULL)
-		++count;
-	if (count == 1)
-		env_command(shell, 1);
-	else
-	{
-		i = 0;
-		while (split_string[++i] != NULL)
-		{
-			if (ft_strcmp(split_string[i], "=") == 0)
-				ft_putstr_fd("bash: export: \'=\': not a valid identifier\n", 2);
-			if (is_env_var(split_string[i], shell) == 0)
-				add_env_var(split_string[i], shell);
-			else if (is_env_var(split_string[i], shell) == 1
-				&& equal_checker(split_string[i]) == 1)
-				update_env_var(split_string[i], shell);
-		}
-	}
-	free_strings(split_string);
-}
-
-void	env_command(t_shell *shell, int flag)
-{
-	int		i;
-
-	i = -1;
-	if (shell->split_com[1])
-	{
-		ft_putstr_fd("env: ", 2);
-		ft_putstr_fd(shell->split_com[1], 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-		shell->return_value = 127;
-	}
-	else
-	{
-		env_count_update(shell);
-		if (flag == 0)
-		{
-			while (++i < shell->env_y)
-			{
-				if (equal_checker(shell->envp[i]))
-					printf("%s\n", shell->envp[i]);
-			}
-		}
-		else
-			export_printer("declare -x ", shell);
 	}
 }
 

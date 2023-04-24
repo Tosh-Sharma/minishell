@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-extern t_shell g_shell;
+extern t_shell	g_shell;
 
 void	check_for_incorrect_syntax(char *input)
 {
@@ -59,10 +59,7 @@ void	free_strings(char **str)
 
 	i = -1;
 	while (str != NULL && str[++i] != NULL)
-	{
-		//printf("%d:%s\n", i, str[i]);
 		free(str[i]);
-	}
 	free(str);
 	str = NULL;
 }

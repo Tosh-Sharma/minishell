@@ -55,17 +55,7 @@ void	mark_indexes_for_not_copying(t_shell *shell, char **strings, int *index)
 	int	j;
 	int	index_counter;
 
-	i = -1;
-	while (strings[++i])
-	{
-		printf("pwd in unset is %s\n", shell->pwd);
-		printf("oldpwd in unset is %s\n", shell->oldpwd);
-		printf("string[%d] = %s\n", i, strings[i]);
-		if (ft_strcmp(strings[i], "PWD") == 0)
-			nullify_string(shell->pwd);
-		if (ft_strcmp(strings[i], "OLDPWD") == 0)
-			nullify_string(shell->oldpwd);
-	}
+	free_pwds(strings, shell);
 	i = -1;
 	index_counter = -1;
 	while (shell->envp[++i] != NULL)

@@ -82,29 +82,8 @@ char	*replace_com(char *res_com, char *command,
 	l = 0;
 	res_com = rep_com((char *[2]){command, res_com},
 			(int [4]){i, j, k, l}, positions, res_var);
-	while (res_var[++i] != NULL)
-		printf("res_var[%d] is %s\n", i, res_var[i]);
 	free_strings(res_var);
 	return (res_com);
-}
-
-char	*dummy_replace_var(char *var, char *pwd, char *oldpwd)
-{
-	printf("var in exp is %s\n", var);
-	if (ft_strcmp(var, "PWD") == 0 && pwd != NULL
-		&& ft_strcmp(pwd, "\""))
-	{
-		printf("pwd in expander :%s\n", pwd);
-		return (ft_strdup(pwd));
-	}
-	else if (ft_strcmp(var, "OLDPWD") == 0 && oldpwd != NULL
-		&& ft_strcmp(oldpwd, "\""))
-	{
-		printf("oldpwd in expander :%s\n", oldpwd);
-		return (ft_strdup(oldpwd));
-	}
-	else
-		return (ft_strdup("\""));
 }
 
 char	**rep_env_var(char **c, int *i, int *pos, char ***t)
@@ -125,11 +104,7 @@ char	**rep_env_var(char **c, int *i, int *pos, char ***t)
 		i[1] = 0;
 		while (i[1] < i[4] && join_and_cmp(c[1], t[1][i[1]],
 			ft_strlen(c[1])) != 0)
-		{
-			printf("var :%s\nenvp[%d] :%s\n", c[1], i[1], t[1][i[1]]);
 			++i[1];
-		}
-			
 		if (i[1] == i[4] && (ft_strcmp(c[1], "\?")) != 0)
 			t[0][i[0]] = dummy_replace_var(c[1], c[2], c[3]);
 		else

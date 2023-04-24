@@ -22,7 +22,7 @@ void	my_exit(int exit_num)
 		free_strings(g_shell.splitted_commands);
 	if (g_shell.envp != NULL)
 		free_strings(g_shell.envp);
-	if (g_shell.oldpwd != NULL)	
+	if (g_shell.oldpwd != NULL)
 		nullify_string(g_shell.oldpwd);
 	if (g_shell.pwd != NULL)
 		nullify_string(g_shell.pwd);
