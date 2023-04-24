@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:04:58 by tsharma           #+#    #+#             */
-/*   Updated: 2023/04/23 22:17:05 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 12:32:03 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	main(int argc, char **argv, char **envp)
 			parser(&g_shell);
 		else if (g_shell.input == NULL)
 		{
-			ft_putstr_fd("\nexit\n", 1);
+			ft_putstr_fd("exit\n", 1);
 			my_exit(g_shell.return_value);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 17:13:53 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/23 23:11:22 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 13:57:28 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,30 +68,17 @@ void	heredoc_sigint_quit(int signum)
 	}
 }
 
-void	heredoc_special_sigint(int signum)
-{
-	(void)signum;
-	printf("This is here doc special sigint\n");
-	if (g_shell.heredoc_fd != -1)
-	{
-		close(g_shell.heredoc_fd);
-		g_shell.heredoc_fd = -1;
-		exit(1);
-	}
-}
-
 void	forked_heredoc(char *delimiter)
 {
 	int	file_fd;
 	int	id;
 
-	printf("Its a forked heredoc\n");
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	id = fork();
 	if (id == 0)
 	{
-		signal(SIGINT, heredoc_special_sigint);
+		signal(SIGINT, SIG_DFL);
 		file_fd = open("input.txt", O_CREAT | O_WRONLY | O_TRUNC, 0777);
 		g_shell.heredoc_fd = file_fd;
 		read_with_delimiter(delimiter, file_fd);
@@ -123,5 +110,6 @@ void	heredoc(char *delimiter, int is_piped)
 		file_fd = open("input.txt", O_RDONLY);
 		dup2(file_fd, STDIN_FILENO);
 		close(file_fd);
+		signal(SIGQUIT, handle_quit);
 	}
 }

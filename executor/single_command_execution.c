@@ -6,11 +6,13 @@
 /*   By: tsharma <tsharma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 12:29:23 by toshsharma        #+#    #+#             */
-/*   Updated: 2023/04/23 23:03:59 by tsharma          ###   ########.fr       */
+/*   Updated: 2023/04/24 13:38:06 by tsharma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+extern t_shell	g_shell;
 
 void	execute_single_process(t_shell *shell, char *exec_path)
 {
@@ -19,12 +21,12 @@ void	execute_single_process(t_shell *shell, char *exec_path)
 
 	id = fork();
 	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, handle_quit);
 	if (id == -1)
 		perror_and_exit("Could not fork the process.", 1);
 	if (id == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
 		io_redirection(shell, 0, -1);
 		shell->return_value = 0;
 		if (exec_path != NULL)
@@ -47,6 +49,13 @@ void	clean_up_post_exec(t_shell *shell)
 		unlink("input.txt");
 }
 
+void	norm_comp(t_shell *shell)
+{
+	if (shell->in_rd == 0 && shell->op_rd == 0
+		&& shell->is_heredoc_active == 0)
+		create_new_command(shell);
+}
+
 /**
  * If it is a single command, first check if it is a built in.
  * If its a built-in, do the needful and then return the result to
@@ -64,9 +73,7 @@ void	single_command_execution(t_shell *shell, char **splitted_commands)
 	if (is_builtin_command(shell) == 1)
 	{
 		io_redirection(shell, 0, -1);
-		if (shell->in_rd == 0 && shell->op_rd == 0
-			&& shell->is_heredoc_active == 0)
-			create_new_command(shell);
+		norm_comp(shell);
 		execute_builtin(shell->command, shell);
 		nullify_string(shell->command);
 	}
